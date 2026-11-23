@@ -1,0 +1,1712 @@
+[
+  {
+    "id": "1493040130867",
+    "number": 1,
+    "german": "vorstellen",
+    "forms": "stellt vor · stellte vor · hat vorgestellt",
+    "sentenceDe": "1. Der Manager stellt das neue Konzept vor.",
+    "english": "to introduce, imagine",
+    "sentenceEn": "1. The manager introduces the new concept.",
+    "rank": "299"
+  },
+  {
+    "id": "1493040130874",
+    "number": 2,
+    "german": "anders",
+    "forms": "",
+    "sentenceDe": "1. Man kann das Problem auch anders lösen.",
+    "english": "different, differently",
+    "sentenceEn": "1. One can solve the problem differently.",
+    "rank": "306"
+  },
+  {
+    "id": "1493040130926",
+    "number": 3,
+    "german": "aussehen, sieht aus, hat ausgesehen",
+    "forms": "",
+    "sentenceDe": "1. Sie sieht aus wie ihre Großmutter.",
+    "english": "to appear, look",
+    "sentenceEn": "1. She looks like her grandmother.",
+    "rank": "358"
+  },
+  {
+    "id": "1493040130944",
+    "number": 4,
+    "german": "der Anfang, -en",
+    "forms": "",
+    "sentenceDe": "1. Am Anfang war das Wort.",
+    "english": "beginning",
+    "sentenceEn": "1. In the beginning was the Word.",
+    "rank": "377"
+  },
+  {
+    "id": "1493040130966",
+    "number": 5,
+    "german": "öffentlich",
+    "forms": "",
+    "sentenceDe": "1. Die Sitzung des Parlaments ist öffentlich.",
+    "english": "public",
+    "sentenceEn": "1. The Parliament session is public.",
+    "rank": "399"
+  },
+  {
+    "id": "1493040131050",
+    "number": 6,
+    "german": "ausgehen, geht aus, ist ausgegangen",
+    "forms": "",
+    "sentenceDe": "1. Ich kaufe immer mehr Milch, bevor sie ausgeht.2. Ich gehe davon aus, dass du mitkommst.",
+    "english": "to run out / to assume / go out",
+    "sentenceEn": "1. I always buy more milk before it runs out.2. I assume that you are coming with me.",
+    "rank": "483"
+  },
+  {
+    "id": "1493040131057",
+    "number": 7,
+    "german": "das Auto, -s",
+    "forms": "",
+    "sentenceDe": "Mein Auto hat einen Totalschaden.",
+    "english": "automobile, car",
+    "sentenceEn": "My car has a total loss.",
+    "rank": "490"
+  },
+  {
+    "id": "1493040131071",
+    "number": 8,
+    "german": "modern",
+    "forms": "",
+    "sentenceDe": "1. Moderne Autos haben Airbags.",
+    "english": "modern",
+    "sentenceEn": "1. Modern cars have airbags.",
+    "rank": "504"
+  },
+  {
+    "id": "1493040131096",
+    "number": 9,
+    "german": "der Gedanke",
+    "forms": "die Gedanken",
+    "sentenceDe": "1. Mach dir keine Gedanken!",
+    "english": "thought",
+    "sentenceEn": "1. Do not worry!",
+    "rank": "529"
+  },
+  {
+    "id": "1493040131119",
+    "number": 10,
+    "german": "das Gesetz",
+    "forms": "die Gesetze",
+    "sentenceDe": "1. Er hat das Gesetz gebrochen.",
+    "english": "law",
+    "sentenceEn": "1. He broke the law.",
+    "rank": "552"
+  },
+  {
+    "id": "1493040131121",
+    "number": 11,
+    "german": "der Arm, -e",
+    "forms": "",
+    "sentenceDe": "1. Ich habe mir meinen Arm gebrochen.",
+    "english": "arm (noun)",
+    "sentenceEn": "1. I've broken my arm.",
+    "rank": "554"
+  },
+  {
+    "id": "1493040131146",
+    "number": 12,
+    "german": "die Grenze",
+    "forms": "die Grenzen",
+    "sentenceDe": "1. An der Grenze gibt es einen Zaun.",
+    "english": "border",
+    "sentenceEn": "1. At the border there is a fence.",
+    "rank": "579"
+  },
+  {
+    "id": "1493040131243",
+    "number": 13,
+    "german": "die Sicherheit",
+    "forms": "die Sicherheiten",
+    "sentenceDe": "1. Sicherheit ist wichtiger als Schnelligkeit.",
+    "english": "security, safety",
+    "sentenceEn": "1. Safety is more important than speed.",
+    "rank": "676"
+  },
+  {
+    "id": "1493040131258",
+    "number": 14,
+    "german": "außer",
+    "forms": "",
+    "sentenceDe": "1. Außer ihm hat keiner hier gute Noten.",
+    "english": "except, apart from",
+    "sentenceEn": "1. No one has good grades here, except him",
+    "rank": "691"
+  },
+  {
+    "id": "1493040131275",
+    "number": 15,
+    "german": "die Antwort, -en",
+    "forms": "",
+    "sentenceDe": "Ich habe ihm noch keine Antwort gegeben.",
+    "english": "answer, reply",
+    "sentenceEn": "I have not answered him yet.",
+    "rank": "708"
+  },
+  {
+    "id": "1493040131276",
+    "number": 16,
+    "german": "bitten",
+    "forms": "bittet · bat · hat gebeten",
+    "sentenceDe": "1. Ich bitte dich um einen kleinen Gefallen.",
+    "english": "to request, ask",
+    "sentenceEn": "1. I ask you for a small favor.",
+    "rank": "709"
+  },
+  {
+    "id": "1493040131291",
+    "number": 17,
+    "german": "die Polizei, die Polizeien",
+    "forms": "",
+    "sentenceDe": "1. Die Polizei erreicht den Unfallort zuerst.",
+    "english": "police",
+    "sentenceEn": "1. The police reaches the scene of the accident first.",
+    "rank": "724"
+  },
+  {
+    "id": "1493040131294",
+    "number": 18,
+    "german": "die Ausbildung, -en",
+    "forms": "",
+    "sentenceDe": "1. Laura ist noch in der Ausbildung.",
+    "english": "training, development, apprenticeship",
+    "sentenceEn": "1. Laura is still in training.",
+    "rank": "727"
+  },
+  {
+    "id": "1493040131305",
+    "number": 19,
+    "german": "melden",
+    "forms": "meldet · meldete · hat gemeldet",
+    "sentenceDe": "1. Der Wetterbericht meldet Schnee für das Wochenende.",
+    "english": "to report, register",
+    "sentenceEn": "1. The weather reports snow for the weekend.",
+    "rank": "738"
+  },
+  {
+    "id": "1493040131325",
+    "number": 20,
+    "german": "die Ordnung",
+    "forms": "die Ordnungen",
+    "sentenceDe": "1. Ordnung ist das halbe Leben.",
+    "english": "order, tidiness",
+    "sentenceEn": "1. Order is half of life.",
+    "rank": "758"
+  },
+  {
+    "id": "1493040131344",
+    "number": 21,
+    "german": "aktuell",
+    "forms": "",
+    "sentenceDe": "1. Die aktuellsten Daten findet man im Internet.",
+    "english": "current",
+    "sentenceEn": "1. The current information can be found on the Internet.",
+    "rank": "777"
+  },
+  {
+    "id": "1493040131371",
+    "number": 22,
+    "german": "antworten, antwortet, hat geantwortet",
+    "forms": "",
+    "sentenceDe": "Anna antwortet auf die Frage ihrer Lehrerin.",
+    "english": "to answer",
+    "sentenceEn": "Anna answers the teacher's question.",
+    "rank": "804"
+  },
+  {
+    "id": "1493040131418",
+    "number": 23,
+    "german": "drücken",
+    "forms": "drückt · drückte · hat gedrückt",
+    "sentenceDe": "1. Sie müssen diesen Knopf hier drücken!",
+    "english": "to press, push",
+    "sentenceEn": "1. You have to push this button here!",
+    "rank": "851"
+  },
+  {
+    "id": "1493040131469",
+    "number": 24,
+    "german": "der Artikel, -",
+    "forms": "",
+    "sentenceDe": "1. Artikel eins des Grundgesetzes lautet: Die Würde des Menschen ist unantastbar.",
+    "english": "article",
+    "sentenceEn": "1. Article One of the constitution reads: Human dignity is inviolable.",
+    "rank": "903"
+  },
+  {
+    "id": "1493040131513",
+    "number": 25,
+    "german": "die Kenntnis",
+    "forms": "die Kenntnisse",
+    "sentenceDe": "1. Ich habe das zur Kenntnis genommen.",
+    "english": "knowledge",
+    "sentenceEn": "1. I have taken this to knowledge.",
+    "rank": "947"
+  },
+  {
+    "id": "1493040131613",
+    "number": 26,
+    "german": "der Politiker",
+    "forms": "die Politiker",
+    "sentenceDe": "1. Viele Politiker sind Lehrer.",
+    "english": "politician",
+    "sentenceEn": "1. Many politicians are teachers.",
+    "rank": "1049"
+  },
+  {
+    "id": "1493040131635",
+    "number": 27,
+    "german": "die Ruhe",
+    "forms": "",
+    "sentenceDe": "1. Junge Eltern brauchen Ruhe und Erholung.",
+    "english": "silence, peace",
+    "sentenceEn": "1. Young parents need silence and relaxation.",
+    "rank": "1071"
+  },
+  {
+    "id": "1493040131647",
+    "number": 28,
+    "german": "der Antrag, die Anträge",
+    "forms": "",
+    "sentenceDe": "1. Sie müssen diesen Antrag ausfüllen.",
+    "english": "application [form], proposal, request",
+    "sentenceEn": "1. You must complete this application.",
+    "rank": "1083"
+  },
+  {
+    "id": "1493040131650",
+    "number": 29,
+    "german": "funktionieren",
+    "forms": "funktioniert · funktionierte · hat funktioniert",
+    "sentenceDe": "1. Wie funktioniert dieses Programm?",
+    "english": "to function, work",
+    "sentenceEn": "1. How does this program function?",
+    "rank": "1086"
+  },
+  {
+    "id": "1493040131678",
+    "number": 30,
+    "german": "das Amt",
+    "forms": "die Ämter",
+    "sentenceDe": "1. Sie nimmt in ihrer Partei ein hohes Amt ein.",
+    "english": "office, department, function",
+    "sentenceEn": "1. She is holding a high office in her party.",
+    "rank": "1114"
+  },
+  {
+    "id": "1493040131683",
+    "number": 31,
+    "german": "außerhalb",
+    "forms": "",
+    "sentenceDe": "1. Wir wohnen außerhalb der Stadt.",
+    "english": "outside (opposite of within)",
+    "sentenceEn": "1. We live outside the city.",
+    "rank": "1119"
+  },
+  {
+    "id": "1493040131738",
+    "number": 32,
+    "german": "aufstehen, steht auf, ist aufgestanden",
+    "forms": "",
+    "sentenceDe": "1. Am Wochenende müssen wir nicht so früh aufstehen.",
+    "english": "to stand up, get up",
+    "sentenceEn": "1. On weekends we don't have to get up so early.",
+    "rank": "1174"
+  },
+  {
+    "id": "1493040131765",
+    "number": 33,
+    "german": "das Gebäude",
+    "forms": "die Gebäude",
+    "sentenceDe": "1. In diesem Gebäude befindet sich die Stadtverwaltung.",
+    "english": "building",
+    "sentenceEn": "1. This building houses the city administration.",
+    "rank": "1201"
+  },
+  {
+    "id": "1493040131776",
+    "number": 34,
+    "german": "die Ausstellung,-en",
+    "forms": "",
+    "sentenceDe": "1. Es handelt sich hier um eine Ausstellung zeitgenössischer Maler.",
+    "english": "exhibition",
+    "sentenceEn": "1. This is an exhibition of contemporary painters.",
+    "rank": "1212"
+  },
+  {
+    "id": "1493040131854",
+    "number": 35,
+    "german": "abgeben",
+    "forms": "gibt ab · gab ab · hat abgegeben",
+    "sentenceDe": "1. Andreas hat seine Hausarbeit nicht rechtzeitig abgegeben.",
+    "english": "to give, hand in, submit, hand over, give away",
+    "sentenceEn": "1. Andreas has not submitted his homework on time.",
+    "rank": "1290"
+  },
+  {
+    "id": "1493040131893",
+    "number": 36,
+    "german": "automatisch",
+    "forms": "",
+    "sentenceDe": "1. Die Anmeldung erfolgt automatisch.",
+    "english": "automatic",
+    "sentenceEn": "1. The registration is done automatically.",
+    "rank": "1329"
+  },
+  {
+    "id": "1493040131913",
+    "number": 37,
+    "german": "die Behörde",
+    "forms": "die Behörden",
+    "sentenceDe": "1. Wenden Sie sich bitte an die zuständigen Behörden.",
+    "english": "department, authorities",
+    "sentenceEn": "1. Please refer to the appropriate authorities.",
+    "rank": "1349"
+  },
+  {
+    "id": "1493040131931",
+    "number": 38,
+    "german": "ausmachen, macht aus, hat ausgemacht",
+    "forms": "",
+    "sentenceDe": "1. Wir müssen einen Treffpunkt ausmachen.",
+    "english": "to put out, agree",
+    "sentenceEn": "1. We need to agree on a meeting point.",
+    "rank": "1367"
+  },
+  {
+    "id": "1493040131975",
+    "number": 39,
+    "german": "aufhören, hört auf, hat aufgehört",
+    "forms": "",
+    "sentenceDe": "1. Hör endlich auf zu reden, du nervst!",
+    "english": "to stop",
+    "sentenceEn": "1. Stop talking finally, you are getting on my nerves!",
+    "rank": "1411"
+  },
+  {
+    "id": "1493040131991",
+    "number": 40,
+    "german": "pflegen",
+    "forms": "pflegt · pflegte · hat gepflegt",
+    "sentenceDe": "1. Kakteen muss man wenig pflegen.",
+    "english": "to care, cultivate",
+    "sentenceEn": "1. Cacti need only a little bit of care.",
+    "rank": "1427"
+  },
+  {
+    "id": "1493040132018",
+    "number": 41,
+    "german": "bestellen - bestellt · bestellte · hat bestellt",
+    "forms": "",
+    "sentenceDe": "1. Ich habe einen Cocktail bestellt.",
+    "english": "1. to order, reserve",
+    "sentenceEn": "1. I ordered a cocktail.",
+    "rank": "1454"
+  },
+  {
+    "id": "1493040132261",
+    "number": 42,
+    "german": "der Tourist",
+    "forms": "die Touristen",
+    "sentenceDe": "1. Touristen sind oft nicht sehr beliebt bei den Einheimischen.",
+    "english": "tourist",
+    "sentenceEn": "1. Tourists are often not very popular with the locals.",
+    "rank": "1697"
+  },
+  {
+    "id": "1493040132274",
+    "number": 43,
+    "german": "aussprechen, spricht aus, hat ausgesprochen",
+    "forms": "",
+    "sentenceDe": "1. Du musst deine Zweifel aussprechen.",
+    "english": "to pronounce, express",
+    "sentenceEn": "1. You must express your doubts.",
+    "rank": "1710"
+  },
+  {
+    "id": "1493040132275",
+    "number": 44,
+    "german": "bedienen",
+    "forms": "bedient - bediente - hat bedient",
+    "sentenceDe": "1. Den Fernseher bedient man mit einer Fernbedienung.",
+    "english": "to serve, operate",
+    "sentenceEn": "1. The television is operated with a remote control.",
+    "rank": "1711"
+  },
+  {
+    "id": "1493040132279",
+    "number": 45,
+    "german": "bunt",
+    "forms": "",
+    "sentenceDe": "1. Kinder malen gern mit bunten Farben.",
+    "english": "colourful",
+    "sentenceEn": "1. Children love to paint with colourful colors.",
+    "rank": "1715"
+  },
+  {
+    "id": "1493040132280",
+    "number": 46,
+    "german": "dringend",
+    "forms": "",
+    "sentenceDe": "1. Es muss dringend jemand die Wasserleitung reparieren, sie ist defekt.",
+    "english": "urgent",
+    "sentenceEn": "1. Someone urgently needs to repair the water line, it is broken.",
+    "rank": "1716"
+  },
+  {
+    "id": "1493040132296",
+    "number": 47,
+    "german": "das Parlament",
+    "forms": "die Parlamente",
+    "sentenceDe": "1. Im Parlament wird über Gesetze abgestimmt.",
+    "english": "parliament",
+    "sentenceEn": "1. The Parliament votes on laws.",
+    "rank": "1732"
+  },
+  {
+    "id": "1493040132369",
+    "number": 48,
+    "german": "die Verwaltung",
+    "forms": "die Verwaltungen",
+    "sentenceDe": "1. Die Verwaltung der Universität befindet sich in einem extra Gebäude.",
+    "english": "administration",
+    "sentenceEn": "1. The administration of the university is located in a separate building.",
+    "rank": "1805"
+  },
+  {
+    "id": "1493040132378",
+    "number": 49,
+    "german": "der Betrag",
+    "forms": "die Beträge",
+    "sentenceDe": "1. Von meinem Konto wurde ein größerer Betrag abgebucht.",
+    "english": "amount (of money)",
+    "sentenceEn": "1. A larger amount was debited from my account.",
+    "rank": "1814"
+  },
+  {
+    "id": "1493040132413",
+    "number": 50,
+    "german": "der Fahrer - die Fahrer",
+    "forms": "",
+    "sentenceDe": "1. Der Fahrer des PKW war betrunken, als er den Unfall verursachte.",
+    "english": "driver, chauffeur, rider, motorist, operator, train operator",
+    "sentenceEn": "1. The driver of the car was drunk when he caused the accident.",
+    "rank": "1849"
+  },
+  {
+    "id": "1493040132449",
+    "number": 51,
+    "german": "arm",
+    "forms": "",
+    "sentenceDe": "1. Sie stammt aus armen Verhältnissen.",
+    "english": "poor",
+    "sentenceEn": "1. She comes from a poor background.",
+    "rank": "1885"
+  },
+  {
+    "id": "1493040132483",
+    "number": 52,
+    "german": "der Anschluss",
+    "forms": "",
+    "sentenceDe": "Leider habe ich meinen Anschluss nach Zürich verpasst. Jetzt muss ich zwei Stunden warten.",
+    "english": "connection",
+    "sentenceEn": "Unfortunately, I missed my connection to Zurich. Now I have to wait for two hours.",
+    "rank": "1919"
+  },
+  {
+    "id": "1493040132559",
+    "number": 53,
+    "german": "erledigen",
+    "forms": "erledigt · erledigte · hat erledigt",
+    "sentenceDe": "1. Ich erledige meine Hausarbeiten am Wochenende.",
+    "english": "finish, complete, finish off, kill, bring down, cook goose, do (for), wear out, ruin, dispatch, to settle, take care",
+    "sentenceEn": "1. I do my housework on the weekend.",
+    "rank": "1995"
+  },
+  {
+    "id": "1493040132584",
+    "number": 54,
+    "german": "ausgeben, gibt aus, hat ausgegeben",
+    "forms": "",
+    "sentenceDe": "1. Gib nicht so viel Geld aus!",
+    "english": "to spend",
+    "sentenceEn": "1. Do not spend so much money!",
+    "rank": "2020"
+  },
+  {
+    "id": "1493040132716",
+    "number": 55,
+    "german": "der Kredit",
+    "forms": "die Kredite",
+    "sentenceDe": "1. Die Bank hat dem jungen Ehepaar einen Kredit gewährt.",
+    "english": "credit",
+    "sentenceEn": "1. The Bank has granted a loan to the young couple.",
+    "rank": "2152"
+  },
+  {
+    "id": "1493040132737",
+    "number": 56,
+    "german": "aufpassen",
+    "forms": "passt auf, hat aufgepasst",
+    "sentenceDe": "1. Kannst du heute Abend auf meine Kinder aufpassen?",
+    "english": "to pay attention, take care",
+    "sentenceEn": "1. Can you take care of my kids tonight?",
+    "rank": "2173"
+  },
+  {
+    "id": "1493040132855",
+    "number": 57,
+    "german": "das Wunder",
+    "forms": "",
+    "sentenceDe": "1. Ein Wunder ist geschehen.",
+    "english": "miracle",
+    "sentenceEn": "1. A miracle has happened.",
+    "rank": "2291"
+  },
+  {
+    "id": "1493040132863",
+    "number": 58,
+    "german": "die Auskunft, ̈-e",
+    "forms": "",
+    "sentenceDe": "1. Können Sie mir bitte eine Auskunft geben?",
+    "english": "information",
+    "sentenceEn": "1. Can you please give me some information?",
+    "rank": "2299"
+  },
+  {
+    "id": "1493040132930",
+    "number": 59,
+    "german": "die Operation",
+    "forms": "die Operationen",
+    "sentenceDe": "1. Die Operation dauerte vier Stunden.",
+    "english": "operation",
+    "sentenceEn": "1. The operation lasted four hours.",
+    "rank": "2366"
+  },
+  {
+    "id": "1493040132957",
+    "number": 60,
+    "german": "ärgern (sich), ärgert, hat geärgert",
+    "forms": "",
+    "sentenceDe": "1. Über Kritik sollte man sich nicht ärgern.",
+    "english": "to annoy",
+    "sentenceEn": "1. One should not be annoyed by criticism.",
+    "rank": "2393"
+  },
+  {
+    "id": "1493040133027",
+    "number": 61,
+    "german": "der Fan",
+    "forms": "die Fans",
+    "sentenceDe": "1. Alex ist Fan von Bayern München.",
+    "english": "fan, supporter",
+    "sentenceEn": "1. Alex is a fan of Bayern Munich.",
+    "rank": "2463"
+  },
+  {
+    "id": "1493040133063",
+    "number": 62,
+    "german": "aufmachen, macht auf, hat aufgemacht",
+    "forms": "",
+    "sentenceDe": "1. Zum Putzen muss ich das Fenster aufmachen.",
+    "english": "to open",
+    "sentenceEn": "1. I need to open the window in order to clean it.",
+    "rank": "2499"
+  },
+  {
+    "id": "1493040133278",
+    "number": 63,
+    "german": "transportieren",
+    "forms": "transportiert - transportierte - hat transportiert",
+    "sentenceDe": "1. Mit Schiffen kann man große Mengen billig transportieren.",
+    "english": "to transport",
+    "sentenceEn": "1. With ships large quantities can be transported very cheap.",
+    "rank": "2714"
+  },
+  {
+    "id": "1493040133309",
+    "number": 64,
+    "german": "beantragen",
+    "forms": "beantragt · beantragte · hat beantragt",
+    "sentenceDe": "1. Nach zehn Jahren muss man einen neuen Pass beantragen.",
+    "english": "to apply for",
+    "sentenceEn": "1. After ten years you have to apply for a new passport.",
+    "rank": "2745"
+  },
+  {
+    "id": "1493040133370",
+    "number": 65,
+    "german": "aussteigen, steigt aus, ist ausgestiegen",
+    "forms": "",
+    "sentenceDe": "1. Während der Fahrt darf man nicht aussteigen.",
+    "english": "to get off",
+    "sentenceEn": "1. During the trip one may not get off.",
+    "rank": "2806"
+  },
+  {
+    "id": "1493040133373",
+    "number": 66,
+    "german": "das Baby, -s",
+    "forms": "",
+    "sentenceDe": "1. Maria bekam ihr Baby in Bethlehem.",
+    "english": "baby",
+    "sentenceEn": "1. Mary got her baby in Bethlehem.",
+    "rank": "2809"
+  },
+  {
+    "id": "1493040133427",
+    "number": 67,
+    "german": "sperren",
+    "forms": "sperrt · sperrte · hat gesperrt",
+    "sentenceDe": "1. Die Straße ist gesperrt.",
+    "english": "to cut off, block, close",
+    "sentenceEn": "1. The road is closed.",
+    "rank": "2863"
+  },
+  {
+    "id": "1493040133509",
+    "number": 68,
+    "german": "spontan",
+    "forms": "",
+    "sentenceDe": "1. Das können wir heute Abend spontan entscheiden.",
+    "english": "spontaneous",
+    "sentenceEn": "1. We can decide tonight spontaneously.",
+    "rank": "2945"
+  },
+  {
+    "id": "1493040133539",
+    "number": 69,
+    "german": "die Anzeige",
+    "forms": "",
+    "sentenceDe": "1. Wenn man der Anzeige glaubt, ist der Tank leer.",
+    "english": "display, advertisement",
+    "sentenceEn": "1. If you believe the display, the tank is empty.",
+    "rank": "2975"
+  },
+  {
+    "id": "1493040133542",
+    "number": 70,
+    "german": "ausfüllen, füllt aus, hat ausgefüllt",
+    "forms": "",
+    "sentenceDe": "1. An der Rezeption muss man ein Formular ausfüllen.",
+    "english": "to fill out, complete",
+    "sentenceEn": "1. At the reception, you must fill out a form.",
+    "rank": "2978"
+  },
+  {
+    "id": "1493040133656",
+    "number": 71,
+    "german": "gültig",
+    "forms": "",
+    "sentenceDe": "1. Der Fahrschein ist eine Stunde lang gültig.",
+    "english": "valid",
+    "sentenceEn": "1.The ticket is valid for one hour.",
+    "rank": "3092"
+  },
+  {
+    "id": "1493040133671",
+    "number": 72,
+    "german": "der Lohn",
+    "forms": "die Löhne",
+    "sentenceDe": "1. Der Lohn wird am Zehnten des Folgemonats gezahlt.",
+    "english": "wage, pay, reward",
+    "sentenceEn": "1. The wage will be paid on the tenth day of the following month.",
+    "rank": "3107"
+  },
+  {
+    "id": "1493040133738",
+    "number": 73,
+    "german": "das Dokument",
+    "forms": "die Dokumente",
+    "sentenceDe": "1. Ein Zeugnis ist ein wichtiges Dokument.",
+    "english": "document",
+    "sentenceEn": "1. A certificate is an important document.",
+    "rank": "3174"
+  },
+  {
+    "id": "1493040133947",
+    "number": 74,
+    "german": "abheben",
+    "forms": "hebt ab · hob/hub ab · hat abgehoben",
+    "sentenceDe": "1. Das Flugzeug hebt pünktlich ab.",
+    "english": "lift off, withdraw",
+    "sentenceEn": "1. The plane will lift off on time.",
+    "rank": "3383"
+  },
+  {
+    "id": "1493040134103",
+    "number": 75,
+    "german": "der Anzug, die Anzüge",
+    "forms": "",
+    "sentenceDe": "1. Ich passe nicht mehr in meinen Anzug.",
+    "english": "suit",
+    "sentenceEn": "1. I do not fit into my suit anymore.",
+    "rank": "3539"
+  },
+  {
+    "id": "1493040134111",
+    "number": 76,
+    "german": "der Ausflug, ̈-e",
+    "forms": "",
+    "sentenceDe": "1. Am Sonntag machen wir einen Ausflug mit dem Fahrrad.",
+    "english": "outing, trip",
+    "sentenceEn": "1. On Sunday we take a trip by bicycle.",
+    "rank": "3547"
+  },
+  {
+    "id": "1493040134112",
+    "number": 77,
+    "german": "der Ausgang, ̈-e",
+    "forms": "",
+    "sentenceDe": "1. Der Ausgang des Hauses war versperrt.",
+    "english": "exit, outcome, starting point",
+    "sentenceEn": "1. The exit of the house was locked.",
+    "rank": "3548"
+  },
+  {
+    "id": "1493040134143",
+    "number": 78,
+    "german": "die Feuerwehr",
+    "forms": "die Feuerwehren",
+    "sentenceDe": "1. Martin ist Mitglied in der Feuerwehr.",
+    "english": "fire brigade",
+    "sentenceEn": "1. Martin is a member of the fire brigade.",
+    "rank": "3579"
+  },
+  {
+    "id": "1493040134269",
+    "number": 79,
+    "german": "die Autobahn, -en",
+    "forms": "",
+    "sentenceDe": "1. Schon wieder Stau auf der Autobahn zwischen Apolda und Weimar.",
+    "english": "expressway, motorway",
+    "sentenceEn": "1. Once again a traffic jam on the motorway between Apolda and Weimar.",
+    "rank": "3705"
+  },
+  {
+    "id": "1493040134353",
+    "number": 80,
+    "german": "servieren",
+    "forms": "serviert · servierte · hat serviert",
+    "sentenceDe": "1. Der Tee wird in flachen Schalen serviert.",
+    "english": "to serve",
+    "sentenceEn": "1. The tea is served in shallow bowls.",
+    "rank": "3789"
+  },
+  {
+    "id": "1493040134401",
+    "number": 81,
+    "german": "der Apfel, die Äpfel",
+    "forms": "",
+    "sentenceDe": "1. Äpfel sind gesund.",
+    "english": "apple",
+    "sentenceEn": "1. Apples are healthy.",
+    "rank": "3837"
+  },
+  {
+    "id": "1493040134522",
+    "number": 82,
+    "german": "aufräumen",
+    "forms": "räumt auf, hat aufgeräumt",
+    "sentenceDe": "1. Am Wochenende müssen die Kinder ihr Zimmer aufräumen.",
+    "english": "to tidy up, clear (up)",
+    "sentenceEn": "1/ In the weekend, the children have to clean their room.",
+    "rank": "3958"
+  },
+  {
+    "id": "1493040134526",
+    "number": 83,
+    "german": "der Ausweis, die Ausweise",
+    "forms": "",
+    "sentenceDe": "1. Dieser Ausweis ist zehn Jahre gültig.",
+    "english": "identity card",
+    "sentenceEn": "1. This identity card is valid for ten years.",
+    "rank": "3962"
+  },
+  {
+    "id": "1656846054383",
+    "number": 84,
+    "german": "abholen, holt ab, hat abgeholt",
+    "forms": "",
+    "sentenceDe": "Wann kann ich die Sachen bei dir abholen?",
+    "english": "collect, pick up, claim",
+    "sentenceEn": "When can I pick up the things from you?",
+    "rank": ""
+  },
+  {
+    "id": "1656846258318",
+    "number": 85,
+    "german": "abschließen, schließt ab, hat abgeschlossen",
+    "forms": "",
+    "sentenceDe": "1. Hast du die Tür abgeschlossen?",
+    "english": "lock, complete, close",
+    "sentenceEn": "1. Did you lock the door?",
+    "rank": ""
+  },
+  {
+    "id": "1656846611612",
+    "number": 86,
+    "german": "die Achtung, die Achtungen",
+    "forms": "",
+    "sentenceDe": "1. Wir müssen Achtung haben vor jedem der Geschöpfe Gottes und vor der Umwelt, in der wir leben.",
+    "english": "esteem, respect, look out, danger, careful, caution, regard, warning",
+    "sentenceEn": "1. We must have respect for each of God's creatures and for the environment in which we live.",
+    "rank": ""
+  },
+  {
+    "id": "1656846672521",
+    "number": 87,
+    "german": "die Adresse, -n",
+    "forms": "",
+    "sentenceDe": "Können Sie mir Ihre Adresse geben?",
+    "english": "address",
+    "sentenceEn": "Can you give me your address?",
+    "rank": ""
+  },
+  {
+    "id": "1656846782827",
+    "number": 88,
+    "german": "die Ahnung, -en",
+    "forms": "",
+    "sentenceDe": "Ich hatte keine Ahnung, dass du heute Geburtstag hast.",
+    "english": "idea, clue",
+    "sentenceEn": "I had no idea, that you have a birthday today.",
+    "rank": ""
+  },
+  {
+    "id": "1656846889769",
+    "number": 89,
+    "german": "aktiv · aktiver · am aktivsten",
+    "forms": "",
+    "sentenceDe": "Peter ist sehr aktiv und macht viel Sport.",
+    "english": "active",
+    "sentenceEn": "Peter is very active and does a lot of sports.",
+    "rank": ""
+  },
+  {
+    "id": "1656847217188",
+    "number": 90,
+    "german": "allein",
+    "forms": "",
+    "sentenceDe": "1. Kommt seine Freundin mit? - Nein, er kommt allein.",
+    "english": "alone",
+    "sentenceEn": "1. Is his girlfriend coming? - No, he comes alone.",
+    "rank": ""
+  },
+  {
+    "id": "1656847284729",
+    "number": 91,
+    "german": "als",
+    "forms": "",
+    "sentenceDe": "1. Hector ist jünger als seine Schwester.",
+    "english": "as, than",
+    "sentenceEn": "1. Hector is younger than his sister.",
+    "rank": ""
+  },
+  {
+    "id": "1656847379124",
+    "number": 92,
+    "german": "alt",
+    "forms": "",
+    "sentenceDe": "1. Wie alt sind Sie?",
+    "english": "old",
+    "sentenceEn": "1. How old are you?",
+    "rank": ""
+  },
+  {
+    "id": "1656847441167",
+    "number": 93,
+    "german": "das Alter, die Alter",
+    "forms": "",
+    "sentenceDe": "Alter: 18 Jahre.",
+    "english": "age",
+    "sentenceEn": "Age: 18 years.",
+    "rank": ""
+  },
+  {
+    "id": "1656847558921",
+    "number": 94,
+    "german": "die Ampel, die Ampeln",
+    "forms": "",
+    "sentenceDe": "1. Du kannst fahren, die Ampel ist grün.",
+    "english": "traffic light",
+    "sentenceEn": "1. You can go, the traffic light is green.",
+    "rank": ""
+  },
+  {
+    "id": "1656847662328",
+    "number": 95,
+    "german": "anbieten - bietet an - hat angeboten",
+    "forms": "",
+    "sentenceDe": "1. Darf ich Ihnen/dir ein Stück Kuchen anbieten?",
+    "english": "offer, propose, advertise, present, run, supply, volunteer, proffer, provide, offer to",
+    "sentenceEn": "1. May I offer you a piece of cake?",
+    "rank": ""
+  },
+  {
+    "id": "1656847756042",
+    "number": 96,
+    "german": "das Angebot, die Angebote",
+    "forms": "",
+    "sentenceDe": "1. Heute sind Bananen im Angebot.",
+    "english": "offer (noun), proposal, bidding",
+    "sentenceEn": "1. Bananas are on sale today.",
+    "rank": ""
+  },
+  {
+    "id": "1656847815136",
+    "number": 97,
+    "german": "ändern, ändert, hat geändert",
+    "forms": "",
+    "sentenceDe": "1. Das Wetter hat sich geändert.",
+    "english": "change (verb)",
+    "sentenceEn": "1. The weather changed",
+    "rank": ""
+  },
+  {
+    "id": "1656848891892",
+    "number": 99,
+    "german": "die Angst, -e",
+    "forms": "",
+    "sentenceDe": "1. Hab keine Angst!",
+    "english": "fear, anxiety, worry, trepidation",
+    "sentenceEn": "1. Don't be afraid!",
+    "rank": ""
+  },
+  {
+    "id": "1656849035118",
+    "number": 100,
+    "german": "ankommen, kommt an, ist angekommen",
+    "forms": "",
+    "sentenceDe": "1. Wann kommt dieser Zug in Hamburg an?",
+    "english": "arrive",
+    "sentenceEn": "1. When does this train arrive in Hamburg?",
+    "rank": ""
+  },
+  {
+    "id": "1656849088546",
+    "number": 101,
+    "german": "die Ankuft, -e",
+    "forms": "",
+    "sentenceDe": "1. Auf diesem Fahrplan steht nur die Ankunft der Züge.",
+    "english": "arrival",
+    "sentenceEn": "1. This timetable only shows the arrival of the trains.",
+    "rank": ""
+  },
+  {
+    "id": "1656849164551",
+    "number": 102,
+    "german": "anmachen",
+    "forms": "macht an, hat angemacht",
+    "sentenceDe": "1. Mach bitte das Licht an!",
+    "english": "turn on",
+    "sentenceEn": "1. 1. Please turn on the light!",
+    "rank": ""
+  },
+  {
+    "id": "1656849239370",
+    "number": 103,
+    "german": "anmelden (sich)",
+    "forms": "meldet an, hat angemeldet",
+    "sentenceDe": "1. Wo kann ich mich anmelden?",
+    "english": "sign up (verb)",
+    "sentenceEn": "1. Where can I sign in?",
+    "rank": ""
+  },
+  {
+    "id": "1656849301362",
+    "number": 104,
+    "german": "die Anmeldung, -en",
+    "forms": "",
+    "sentenceDe": "1. Wo bekomme ich das Formular für die Anmeldung?",
+    "english": "registration (noun)",
+    "sentenceEn": "1. Where can I get the registration form?",
+    "rank": ""
+  },
+  {
+    "id": "1656849447356",
+    "number": 105,
+    "german": "der Anrufbeantworter, -",
+    "forms": "",
+    "sentenceDe": "1. Wir sind im Moment nicht da. Sprechen Sie bitte auf den Anrufbeantworter.",
+    "english": "Answering machine",
+    "sentenceEn": "1. We are not there at the moment. Please speak to the answering machine.",
+    "rank": ""
+  },
+  {
+    "id": "1656849532471",
+    "number": 106,
+    "german": "anrufen",
+    "forms": "ruft an, hat angerufen",
+    "sentenceDe": "1. Kann ich Sie heute Abend anrufen?",
+    "english": "1. call, challenge, appeal, invoke, give a bell, give a call, give a ring, call up, ring up, ring",
+    "sentenceEn": "1. Can I call you tonight?",
+    "rank": ""
+  },
+  {
+    "id": "1656849590514",
+    "number": 107,
+    "german": "der Anruf, -e",
+    "forms": "",
+    "sentenceDe": "1. Eva bekommt viele Anrufe von ihrem Freund Juan.",
+    "english": "phone call (noun)",
+    "sentenceEn": "1. Eva gets a lot of calls from her boyfriend Juan.",
+    "rank": ""
+  },
+  {
+    "id": "1656849726845",
+    "number": 108,
+    "german": "ansehen",
+    "forms": "sieht an, hat angesehen",
+    "sentenceDe": "1. Darf ich eure Urlaubsfotos ansehen?",
+    "english": "see, view",
+    "sentenceEn": "1. May I see your vacation photos?",
+    "rank": ""
+  },
+  {
+    "id": "1656850339668",
+    "number": 109,
+    "german": "die Apotheke, -n",
+    "forms": "",
+    "sentenceDe": "1. Das Medikament bekommen Sie in der Apotheke.",
+    "english": "Pharmacy",
+    "sentenceEn": "1. You can get the medication at the pharmacy.",
+    "rank": ""
+  },
+  {
+    "id": "1656850394931",
+    "number": 110,
+    "german": "der Apparat, -e",
+    "forms": "",
+    "sentenceDe": "1. Was machen wir mit deinem alten Apparat?",
+    "english": "aparatus, device",
+    "sentenceEn": "1. What do we do with your old device?",
+    "rank": ""
+  },
+  {
+    "id": "1656850446043",
+    "number": 111,
+    "german": "arbeiten",
+    "forms": "arbeitet, hat gearbeitet",
+    "sentenceDe": "1. Wo arbeiten Sie?",
+    "english": "work (verb)",
+    "sentenceEn": "1. Where do you work?",
+    "rank": ""
+  },
+  {
+    "id": "1656850484677",
+    "number": 112,
+    "german": "die Arbeit, -en",
+    "forms": "",
+    "sentenceDe": "1. Mein Bruder sucht Arbeit.",
+    "english": "job, work (noun)",
+    "sentenceEn": "1. My brother is looking for a job.",
+    "rank": ""
+  },
+  {
+    "id": "1656851515302",
+    "number": 113,
+    "german": "auf jeden/keinen Fall",
+    "forms": "",
+    "sentenceDe": "1. Ich möchte auf jeden Fall den neuen James-Bond-Film sehen. - Wirklich? Ich finde James-Bond-Filme langweilig. Ich sehe ihn auf keinen Fall an!",
+    "english": "1. definitely / in any case or no way / by no means",
+    "sentenceEn": "1. I definitely want to see the new James Bond movie! - Really? I find James Bond films boring. I will not watch it under no circumstance.",
+    "rank": ""
+  },
+  {
+    "id": "1656853199067",
+    "number": 114,
+    "german": "aufregend",
+    "forms": "",
+    "sentenceDe": "1. Die letzte Woche war sehr aufregend.",
+    "english": "exciting (adj)",
+    "sentenceEn": "1. The last week has been very exciting.",
+    "rank": ""
+  },
+  {
+    "id": "1656853438689",
+    "number": 115,
+    "german": "der Aufzug, ̈-e",
+    "forms": "",
+    "sentenceDe": "1. In diesem Haus gibt es keinen Aufzug.",
+    "english": "elevator",
+    "sentenceEn": "1.There is no elevator in this house.",
+    "rank": ""
+  },
+  {
+    "id": "1656853507278",
+    "number": 116,
+    "german": "das Auge, -n",
+    "forms": "",
+    "sentenceDe": "1. Er hat blaue Augen.",
+    "english": "eye",
+    "sentenceEn": "1. He has blue eyes.",
+    "rank": ""
+  },
+  {
+    "id": "1656854311927",
+    "number": 117,
+    "german": "auspacken",
+    "forms": "packt aus, hat ausgepackt",
+    "sentenceDe": "1. Packst du bitte den Koffer aus?",
+    "english": "unpack",
+    "sentenceEn": "1. Can you unpack your suitcase, please?",
+    "rank": ""
+  },
+  {
+    "id": "1656854424383",
+    "number": 118,
+    "german": "ausruhen (sich)",
+    "forms": "ruht aus, hat ausgeruht",
+    "sentenceDe": "1. Ruh dich erst mal aus! Du bist sicher müde.",
+    "english": "rest, cotch, roost, rest oneself, have a rest, take a rest, repose, relax",
+    "sentenceEn": "1. Rest first! You must be tired.",
+    "rank": ""
+  },
+  {
+    "id": "1656854719581",
+    "number": 119,
+    "german": "außerdem",
+    "forms": "",
+    "sentenceDe": "1. Vier Brötchen, möchten Sie außerdem noch etwas?",
+    "english": "moreover, also, furthermore, , in addition",
+    "sentenceEn": "1. Four rolls, would you like something else?",
+    "rank": ""
+  },
+  {
+    "id": "1656855169437",
+    "number": 120,
+    "german": "austragen",
+    "forms": "trägt aus, hat ausgetragen",
+    "sentenceDe": "1. Er trägt jeden Morgen die Zeitung aus.",
+    "english": "deliver, carry to",
+    "sentenceEn": "1. He delivers the newspaper every morning.",
+    "rank": ""
+  },
+  {
+    "id": "1656855471333",
+    "number": 121,
+    "german": "der Automat, -en",
+    "forms": "",
+    "sentenceDe": "1. Fahrkarten gibt es nur am Automaten.",
+    "english": "vending machine",
+    "sentenceEn": "1. Tickets are only available from machines.",
+    "rank": ""
+  },
+  {
+    "id": "1656932166164",
+    "number": 123,
+    "german": "die Behörde - Behörden",
+    "forms": "",
+    "sentenceDe": "1. Die italienischen Behörden erklärten, dass für den Notfall ein Evakuierungsplan bereitliegt.",
+    "english": "authority",
+    "sentenceEn": "1. The Italian authorities said that an evacuation plan is in place in case of an emergency.",
+    "rank": ""
+  },
+  {
+    "id": "1656932266942",
+    "number": 124,
+    "german": "der Gast - die Gäste",
+    "forms": "",
+    "sentenceDe": "1. Sie achtet darauf, wie sie sich auf die Gäste einstimmt.",
+    "english": "guest",
+    "sentenceEn": "1. She pays attention to how she attunes to the guests.",
+    "rank": ""
+  },
+  {
+    "id": "1656932361269",
+    "number": 125,
+    "german": "die öffentliches Verkehrsmittel",
+    "forms": "",
+    "sentenceDe": "1. Die öffentliches Verkehrsmittel ist heute frei.",
+    "english": "public transport",
+    "sentenceEn": "1. Public transport is free today.",
+    "rank": ""
+  },
+  {
+    "id": "1656932543282",
+    "number": 126,
+    "german": "die Müllabfuhr - die Müllabfuhren",
+    "forms": "",
+    "sentenceDe": "1. Heute leert die Müllabfuhr die Tonnen.",
+    "english": "waste collection, garbage disposal",
+    "sentenceEn": "1.Today the garbage collector empties the bins.",
+    "rank": ""
+  },
+  {
+    "id": "1656933003582",
+    "number": 127,
+    "german": "der Müll",
+    "forms": "",
+    "sentenceDe": "1. Die Straßenkehrer sammeln jeden Morgen den Müll ein.",
+    "english": "trash, waste",
+    "sentenceEn": "1. The street sweepers collect the garbage every morning.",
+    "rank": ""
+  },
+  {
+    "id": "1656933075856",
+    "number": 128,
+    "german": "die Straßenreinigung - die Straßenreinigungen",
+    "forms": "",
+    "sentenceDe": "1. Die Straßenreinigung kommt jeden Mittwochvormittag.",
+    "english": "street cleaning",
+    "sentenceEn": "1. Street cleaning comes every Wednesday morning.",
+    "rank": ""
+  },
+  {
+    "id": "1656952669350",
+    "number": 129,
+    "german": "das Verkehrsmittel/Verkehrmittel - dieVerkehrsmittel/Verkehrmittel",
+    "forms": "",
+    "sentenceDe": "1. Wissen Sie, wie man dort mit öffentlichen Verkehrsmitteln hinkommt?",
+    "english": "means of transport, vehicle, transportation means, means of travel",
+    "sentenceEn": "1. Do you know how to get there by public transport?",
+    "rank": ""
+  },
+  {
+    "id": "1656953035590",
+    "number": 130,
+    "german": "beschützen",
+    "forms": "beschützt · beschützte · hat beschützt",
+    "sentenceDe": "1. Die Soldaten beschützten die Brücke.",
+    "english": "protect",
+    "sentenceEn": "1. The soldiers protected the bridge.",
+    "rank": ""
+  },
+  {
+    "id": "1656953302969",
+    "number": 131,
+    "german": "kümmern",
+    "forms": "kümmert · kümmerte · hat gekümmert\nreflexive: sich kümmern",
+    "sentenceDe": "1. Die Rechte und das Wohlergehen der einheimischen Bevölkerung haben sie nie gekümmert",
+    "english": "take care of, look after, worry about, pay attention to, care (about), be/become stunted, see (about), become stunted, see about, look to",
+    "sentenceEn": "1. They have never cared about the rights and welfare of the native population",
+    "rank": ""
+  },
+  {
+    "id": "1656953459458",
+    "number": 132,
+    "german": "die Straßenreinigung",
+    "forms": "die Straßenreinigungen",
+    "sentenceDe": "1. Die Straßenreinigung kommt jeden Mittwochvormittag",
+    "english": "street cleaning, scavengery, street-cleaning",
+    "sentenceEn": "1. Street cleaning comes every Wednesday morning",
+    "rank": ""
+  },
+  {
+    "id": "1656953670775",
+    "number": 133,
+    "german": "die Müllabfuhr",
+    "forms": "die Müllabfuhren",
+    "sentenceDe": "1. Durch den Ausfall der Müllabfuhr war die Anhäufung von Müll vor den Häusern ein gewohnter Anblick.",
+    "english": "waste collection, garbage collection, garbage disposal, refuse collection, garbage removal",
+    "sentenceEn": "1. Due to the failure of the garbage collection, the accumulation of garbage in front of the houses was a common sight.",
+    "rank": ""
+  },
+  {
+    "id": "1656954341959",
+    "number": 134,
+    "german": "die Mülltonne",
+    "forms": "die Mülltonnen",
+    "sentenceDe": "1. Hast du die Mülltonne nach draußen gestellt?",
+    "english": "garbage bin",
+    "sentenceEn": "1. Did you put the garbage can outside?",
+    "rank": ""
+  },
+  {
+    "id": "1656954400137",
+    "number": 135,
+    "german": "leeren",
+    "forms": "leert · leerte · hat geleert",
+    "sentenceDe": "1. Das Zimmer leerte sich, als der Gong zum Essen erscholl.",
+    "english": "empty, drink off, empty out, deplete, drain, clean out, discharge, evacuate, clear, flush",
+    "sentenceEn": "1. The room emptied as the gong sounded for dinner.",
+    "rank": ""
+  },
+  {
+    "id": "1656954469227",
+    "number": 136,
+    "german": "die Stellenanzeige",
+    "forms": "die Stellenanzeigen",
+    "sentenceDe": "",
+    "english": "job advertisement",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656954541881",
+    "number": 137,
+    "german": "bewerben",
+    "forms": "bewirbt · bewarb · hat beworben \nreflexive: sich bewerben",
+    "sentenceDe": "1. Bestimmte Waren werden oft in gezielten Kampagnen beworben.",
+    "english": "apply, stand for, apply (to) (for), compete (for), apply (for), advertise, solicit, apply for, make an application, make a bid",
+    "sentenceEn": "1. Specific goods are often advertised in targeted campaigns.",
+    "rank": ""
+  },
+  {
+    "id": "1656954620899",
+    "number": 138,
+    "german": "das Vorstellungsgespräch",
+    "forms": "die Vorstellungsgespräche",
+    "sentenceDe": "1. Beim Vorstellungsgespräch kam der Flattermann und die Konzentration war weg.",
+    "english": "job interview, interview",
+    "sentenceEn": "1. 1. During the interview, the flutter man came and the concentration was gone.",
+    "rank": ""
+  },
+  {
+    "id": "1656954753615",
+    "number": 139,
+    "german": "die Unterlage",
+    "forms": "die Unterlagen",
+    "sentenceDe": "1. Der Zettel liegt bei meinen Unterlagen.",
+    "english": "pad, base, underlay, paper, document, root-stock, substratum, underlayment, component",
+    "sentenceEn": "1. The note is with my documents.",
+    "rank": ""
+  },
+  {
+    "id": "1656954848560",
+    "number": 140,
+    "german": "die Teilzeit",
+    "forms": "",
+    "sentenceDe": "1. Arbeiten Sie jetzt Teilzeit oder Vollzeit?",
+    "english": "part-time, part time, job sharing, part-time work",
+    "sentenceEn": "1. Are you now working part-time or full-time?",
+    "rank": ""
+  },
+  {
+    "id": "1656954910420",
+    "number": 141,
+    "german": "in Teilzeit arbeiten",
+    "forms": "",
+    "sentenceDe": "1. Viele Menschen in Deutschland arbeiten in Teilzeit.",
+    "english": "work part-time",
+    "sentenceEn": "1. Many people in Germany work part-time.",
+    "rank": ""
+  },
+  {
+    "id": "1656954991921",
+    "number": 142,
+    "german": "die Bezahlung",
+    "forms": "die Bezahlungen",
+    "sentenceDe": "1. Sie wollen den Beruf von Erzieherinnen und Erziehern attraktiver machen, zum Beispiel mit einer besseren Bezahlung.",
+    "english": "wage, payment, pay, remuneration, settlement, clearing",
+    "sentenceEn": "1. They want to make the profession of educator more attractive, for example with better pay.",
+    "rank": ""
+  },
+  {
+    "id": "1656955154408",
+    "number": 143,
+    "german": "der Beschied",
+    "forms": "die Bescheide",
+    "sentenceDe": "1. Der Bescheid hat eine Prägung mit dem Wappen der Schule.",
+    "english": "answer, information, reply, communication, note, order, ruling, verdict, decision, office action",
+    "sentenceEn": "1. The notification is embossed with the school's coat of arms.",
+    "rank": ""
+  },
+  {
+    "id": "1656955227562",
+    "number": 144,
+    "german": "die Aushilfe",
+    "forms": "die Aushilfen",
+    "sentenceDe": "1. Wenn wir die Anzahl Aushilfen verringern, werden wir unflexibler.",
+    "english": "help, temporary help, temporary personnel, temporary helper, temp, temporary job",
+    "sentenceEn": "1. If we reduce the number of temporary workers, we become less flexible.",
+    "rank": ""
+  },
+  {
+    "id": "1656955357527",
+    "number": 145,
+    "german": "die Zutat",
+    "forms": "die Zutaten",
+    "sentenceDe": "1. Mit einer einzigen Zutat wird sie sogar zur Wunderwaffe gegen Erkältungen.",
+    "english": "ingredient, accessory, addition, condiment",
+    "sentenceEn": "1. With a single ingredient, it even becomes a miracle cure for colds.",
+    "rank": ""
+  },
+  {
+    "id": "1656955589270",
+    "number": 146,
+    "german": "die Beamtin",
+    "forms": "die Beamtinnen",
+    "sentenceDe": "1. Die Beamtin schüttelte nur den Kopf und gab ihr einen Termin.",
+    "english": "civil servant, official, officer, clerk, functionary, public official, appointee, magistrate, public servant, executive",
+    "sentenceEn": "1. The officer just shook her head and gave her an appointment.",
+    "rank": ""
+  },
+  {
+    "id": "1656955716555",
+    "number": 147,
+    "german": "ausfüllen",
+    "forms": "füllt aus · füllte aus · hat ausgefüllt",
+    "sentenceDe": "1. Füllen Sie es bitte aus.",
+    "english": "fill in, fill out, complete, fill up, fill, infill, absorb",
+    "sentenceEn": "1. Please fill it out.",
+    "rank": ""
+  },
+  {
+    "id": "1656955761503",
+    "number": 148,
+    "german": "der Antrag",
+    "forms": "die Anträge",
+    "sentenceDe": "1. Wir bekommen viele Anträge.",
+    "english": "request, petition, application, proposal, offer, claim, proposition, motion",
+    "sentenceEn": "1. We get a lot of applications.",
+    "rank": ""
+  },
+  {
+    "id": "1656955877691",
+    "number": 149,
+    "german": "genehmigen",
+    "forms": "genehmigt · genehmigte · hat genehmigt",
+    "sentenceDe": "1. Da das Umspannwerk nicht weit entfernt war, wurde uns eine Elektroheizung genehmigt",
+    "english": "allow, permit, appropriate, assent, authorise, authorize, give sanction to, homologate, accredit, agree to",
+    "sentenceEn": "1. Since the substation was not far away, we were approved for electric heating",
+    "rank": ""
+  },
+  {
+    "id": "1656955968956",
+    "number": 150,
+    "german": "die Einbürgerung",
+    "forms": "die Einbürgerungen",
+    "sentenceDe": "1. Ich wollte meine Einbürgerung in 2 Jahre bekommen.",
+    "english": "naturalization",
+    "sentenceEn": "1. I wanted to get my naturalization in 2 years.",
+    "rank": ""
+  },
+  {
+    "id": "1656956058436",
+    "number": 151,
+    "german": "Angaben prüfen",
+    "forms": "",
+    "sentenceDe": "1. Ich muss meine Angaben prüfen",
+    "english": "verify information",
+    "sentenceEn": "1. I need to verify my information",
+    "rank": ""
+  },
+  {
+    "id": "1656956110699",
+    "number": 152,
+    "german": "der Personalausweis",
+    "forms": "die Personalausweise",
+    "sentenceDe": "1. Ich habe vergessen, meinen Personalausweis mitzubringen.",
+    "english": "identity card, identification card",
+    "sentenceEn": "1. I forgot to bring my ID card.",
+    "rank": ""
+  },
+  {
+    "id": "1656957064442",
+    "number": 153,
+    "german": "das Visum",
+    "forms": "die Visa/Visen",
+    "sentenceDe": "1. Ich werde mich heute um ein Visum bewerben.",
+    "english": "visa, initials",
+    "sentenceEn": "1. I will apply for a visa today.",
+    "rank": ""
+  },
+  {
+    "id": "1656957185510",
+    "number": 154,
+    "german": "der Angestellte",
+    "forms": "die Angestellten",
+    "sentenceDe": "",
+    "english": "employe",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656957255483",
+    "number": 155,
+    "german": "vom Konto Geld abheben",
+    "forms": "",
+    "sentenceDe": "",
+    "english": "withdraw money from the account",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656957308628",
+    "number": 156,
+    "german": "einen Betrag überweisen",
+    "forms": "",
+    "sentenceDe": "",
+    "english": "transfer an amount",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656957359292",
+    "number": 157,
+    "german": "ausgeben",
+    "forms": "gibt aus · gab aus · hat ausgegeben",
+    "sentenceDe": "1. Wir haben ziemlich viel Geld ausgegeben, um unser Haus einzurichten.",
+    "english": "spend, issue, administer, dispense, emit, give out, hand out, lay out, output, put",
+    "sentenceEn": "1. We spent quite a bit of money decorating our house.",
+    "rank": ""
+  },
+  {
+    "id": "1656957381566",
+    "number": 158,
+    "german": "ein Konto eröffnen",
+    "forms": "",
+    "sentenceDe": "",
+    "english": "open a bank account",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656957450940",
+    "number": 159,
+    "german": "die Bankkarte",
+    "forms": "die Bankkarten",
+    "sentenceDe": "1.Ich habe meine Bankkarte verloren.",
+    "english": "bank card",
+    "sentenceEn": "1.Ich habe meine Bankkarte verloren.",
+    "rank": ""
+  },
+  {
+    "id": "1656957585103",
+    "number": 160,
+    "german": "die Geldbörse",
+    "forms": "die Geldbörsen",
+    "sentenceDe": "1. Tom wurde seine Geldbörse gestohlen, als er in Boston war.",
+    "english": "wallet, purse",
+    "sentenceEn": "Tom had his wallet stolen while he was in Boston.",
+    "rank": ""
+  },
+  {
+    "id": "1656957658042",
+    "number": 161,
+    "german": "leihen",
+    "forms": "leiht · lieh · hat geliehen",
+    "sentenceDe": "1.Kannst du mir mal dein Ohr leihen?",
+    "english": "borrow, lend, lend out, hire, lend to, loan to, loan",
+    "sentenceEn": "1.Can you lend me your ear?",
+    "rank": ""
+  },
+  {
+    "id": "1656957729214",
+    "number": 162,
+    "german": "der Diebstahl",
+    "forms": "die Diebstähle",
+    "sentenceDe": "1. Mein Vater sagt immer, dass Diebstahl sich nie auszahlt.",
+    "english": "theft, larceny, burglary, steal, thievery, theft and pilferage",
+    "sentenceEn": "1. My father always says that stealing never pays.",
+    "rank": ""
+  },
+  {
+    "id": "1656957808700",
+    "number": 163,
+    "german": "weg sein",
+    "forms": "",
+    "sentenceDe": "1. Das Handy war weg.",
+    "english": "is gone",
+    "sentenceEn": "1. The cell phone was gone",
+    "rank": ""
+  },
+  {
+    "id": "1656957846635",
+    "number": 164,
+    "german": "der Stadtplan",
+    "forms": "die Stadtpläne",
+    "sentenceDe": "1. Ich kann nicht den ganzen Stadtplan im Kopf haben.",
+    "english": "city map, map, street-map",
+    "sentenceEn": "1. I can't get the whole map of the city in my head.",
+    "rank": ""
+  },
+  {
+    "id": "1656958070430",
+    "number": 165,
+    "german": "der Dom",
+    "forms": "die Dome",
+    "sentenceDe": "1. Die Kuppel des Berliner Domes wölbt sich seit ihrer Rekonstruktion wieder über den Köpfen der Besucher.",
+    "english": "cathedral, dome, cupola, minster",
+    "sentenceEn": "1. Since its reconstruction, the dome of the Berlin Cathedral has arched over the heads of the visitors again.",
+    "rank": ""
+  },
+  {
+    "id": "1656958106533",
+    "number": 166,
+    "german": "die Disco",
+    "forms": "die Discos",
+    "sentenceDe": "1. In der Disco in der Stadt Santa Maria haben junge Menschen eine Party gefeiert.",
+    "english": "disco club",
+    "sentenceEn": "1. In the disco in the city of Santa Maria, young people celebrated a party.",
+    "rank": ""
+  },
+  {
+    "id": "1656958197747",
+    "number": 167,
+    "german": "der Gefallen",
+    "forms": "die Gefallen",
+    "sentenceDe": "1. Ich möchte um einen kleinen Gefallen bitten.",
+    "english": "favour, favor",
+    "sentenceEn": "1. I would like to ask a small favor.",
+    "rank": ""
+  },
+  {
+    "id": "1656958226387",
+    "number": 168,
+    "german": "um einen Gefallen bitten",
+    "forms": "",
+    "sentenceDe": "",
+    "english": "to ask for a favor",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656958470857",
+    "number": 170,
+    "german": "der Nächste",
+    "forms": "die Nächsten",
+    "sentenceDe": "1. Du bist die Nächste.",
+    "english": "next",
+    "sentenceEn": "1. You are next",
+    "rank": ""
+  },
+  {
+    "id": "1656958541579",
+    "number": 171,
+    "german": "der Daumen",
+    "forms": "die Daumen",
+    "sentenceDe": "1. Föten im Mutterleib lutschen lieber am rechten als am linken Daumen.",
+    "english": "thumb, tappet, cog",
+    "sentenceEn": "1. Fetuses in the womb prefer to suck their right thumb rather than their left.",
+    "rank": ""
+  },
+  {
+    "id": "1656958793064",
+    "number": 172,
+    "german": "die Entspannung",
+    "forms": "die Entspannungen",
+    "sentenceDe": "1. Das heiße Bad brachte ihr Entspannung.",
+    "english": "relaxation, détente, stress relaxation, relief, catharsis, catharses, recreation, stress relief",
+    "sentenceEn": "1. The hot bath brought her relaxation.",
+    "rank": ""
+  },
+  {
+    "id": "1656959450541",
+    "number": 173,
+    "german": "ein Job neben dem Studium",
+    "forms": "",
+    "sentenceDe": "",
+    "english": "a job while studying",
+    "sentenceEn": "",
+    "rank": ""
+  },
+  {
+    "id": "1656959472481",
+    "number": 174,
+    "german": "über die Grenze fahren",
+    "forms": "",
+    "sentenceDe": "",
+    "english": "drive across the border",
+    "sentenceEn": "",
+    "rank": ""
+  }
+]

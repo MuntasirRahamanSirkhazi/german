@@ -1,0 +1,5 @@
+_deck_extract/
+_b1_deck_extract/
+*.pyc
+__pycache__/
+karten-german-a2.tar

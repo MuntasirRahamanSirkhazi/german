@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f1e9" />
+    <meta name="description" content="Karten is a focused German vocabulary practice app." />
+    <title>Karten — German A2 practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">K</div>
+          <div>
+            <div class="brand-name">karten</div>
+            <div class="brand-subtitle" id="brandDeckSubtitle">German A2</div>
+          </div>
+        </div>
+
+        <div class="side-section-label deck-section-label">Decks</div>
+        <div class="deck-options" role="tablist" aria-label="Choose a deck">
+          <button class="deck-option active" data-deck="a2" type="button" role="tab" aria-selected="true">
+            <span class="deck-level">A2</span>
+            <span class="deck-option-copy"><strong>German A2</strong><small>Vocabulary</small></span>
+            <span class="deck-option-count" id="deckA2Count">171</span>
+          </button>
+          <button class="deck-option" data-deck="b1" type="button" role="tab" aria-selected="false">
+            <span class="deck-level b1">B1</span>
+            <span class="deck-option-copy"><strong>German B1</strong><small>Goethe word list</small></span>
+            <span class="deck-option-count" id="deckB1Count">2,632</span>
+          </button>
+        </div>
+
+        <div class="side-section-label workspace-label">Workspace</div>
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="study" type="button">
+            <span class="nav-icon">✦</span>
+            <span>Study</span>
+            <span class="nav-count" id="navStudyCount">171</span>
+          </button>
+          <button class="nav-item" data-view="browse" type="button">
+            <span class="nav-icon">▤</span>
+            <span>Browse cards</span>
+            <span class="nav-count muted" id="navBrowseCount">171</span>
+          </button>
+          <button class="nav-item" data-view="stats" type="button">
+            <span class="nav-icon">◒</span>
+            <span>Progress</span>
+          </button>
+        </nav>
+
+        <div class="side-footer">
+          <div class="deck-mini-card">
+            <div class="deck-mini-topline"><span class="live-dot"></span> Active deck</div>
+            <div class="deck-mini-title" id="activeDeckTitle">German A2 vocabulary</div>
+            <div class="deck-mini-meta"><span id="miniLearned">0</span> learned <span class="bullet">·</span> <span id="miniAccuracy">—</span> accuracy</div>
+          </div>
+          <button class="side-link" id="resetProgressButton" type="button"><span>↺</span> Reset progress</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="mobile-brand"><span class="brand-mark small">K</span><span>karten</span></div>
+          <div class="breadcrumbs"><span>Decks</span><span class="crumb-dot">/</span><strong id="deckBreadcrumb">German A2</strong></div>
+          <div class="topbar-deck-picker"><span>Deck</span><select id="deckSelect" aria-label="Choose a deck"><option value="a2">German A2</option><option value="b1">German B1</option></select></div>
+          <div class="topbar-actions">
+            <div class="streak-pill" title="Cards answered this session"><span class="flame">◒</span><span id="sessionCount">0</span> today</div>
+            <button class="icon-button" id="soundToggle" type="button" aria-label="Toggle sound" title="Toggle pronunciation"><span>◖</span></button>
+            <div class="avatar" aria-label="Learner profile">M</div>
+          </div>
+        </header>
+
+        <div class="content-wrap">
+          <section class="view study-view" data-panel="study">
+            <div class="page-heading">
+              <div>
+                <div class="eyebrow">Daily practice <span class="eyebrow-line"></span> <span id="dateLabel">Monday, November 23</span></div>
+                <h1>Make a little<br /><em>progress.</em></h1>
+              </div>
+              <div class="heading-note"><span class="note-dot"></span><span id="reviewModeLabel">171 cards in this session</span></div>
+            </div>
+
+            <div class="study-grid">
+              <div class="study-main">
+                <div class="progress-row">
+                  <div class="progress-copy"><span class="progress-kicker">Session progress</span><strong><span id="progressCurrent">1</span> <span class="progress-slash">/</span> <span id="progressTotal">171</span></strong></div>
+                  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                  <div class="progress-percent" id="progressPercent">0%</div>
+                </div>
+
+                <article class="flashcard" id="flashcard">
+                  <div class="card-topline"><span class="tag">GERMAN → ENGLISH</span><button class="card-menu" type="button" aria-label="Card options">•••</button></div>
+                  <div class="card-body">
+                    <div class="card-number" id="cardNumber">CARD 001</div>
+                    <div class="prompt-label">Choose the meaning</div>
+                    <h2 id="germanWord">vorstellen</h2>
+                    <div class="word-forms" id="wordForms">stellt vor · stellte vor · hat vorgestellt</div>
+                    <div class="example-block">
+                      <div class="example-label">IN CONTEXT <span class="example-rule"></span></div>
+                      <p id="germanSentence">Der Manager stellt das neue Konzept vor.</p>
+                      <button class="speak-button" id="speakButton" type="button"><span class="speaker-icon">◉</span> Hear it</button>
+                    </div>
+                  </div>
+                  <div class="answer-area">
+                    <div class="answer-heading"><span>Select one answer</span><span class="keyboard-hint"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd></span></div>
+                    <div class="options" id="options" role="radiogroup" aria-label="Answer choices"></div>
+                    <div class="answer-feedback" id="answerFeedback" aria-live="polite"></div>
+                  </div>
+                  <div class="review-controls" id="reviewControls">
+                    <div class="review-heading"><span>How did that feel?</span><span id="reviewHint">Choose an answer first</span></div>
+                    <div class="review-buttons" role="group" aria-label="Rate this card">
+                      <button class="review-button again" type="button" data-rating="again" disabled><span class="review-time">next</span><strong>Again</strong></button>
+                      <button class="review-button hard" type="button" data-rating="hard" disabled><span class="review-time">3 cards</span><strong>Hard</strong></button>
+                      <button class="review-button good" type="button" data-rating="good" disabled><span class="review-time">7 cards</span><strong>Good</strong></button>
+                      <button class="review-button easy" type="button" data-rating="easy" disabled><span class="review-time">13 cards</span><strong>Easy</strong></button>
+                    </div>
+                  </div>
+                </article>
+
+                <div class="study-footer">
+                  <div class="tip"><span class="tip-icon">✧</span><span><strong>Keep going.</strong> You’re building the recall that sticks.</span></div>
+                  <button class="skip-button" id="skipButton" type="button">Skip card</button>
+                </div>
+              </div>
+
+              <aside class="session-rail">
+                <div class="rail-card goal-card">
+                  <div class="rail-label">Today’s goal</div>
+                  <div class="goal-ring" id="goalRing"><div><strong id="goalPercent">0%</strong><span>complete</span></div></div>
+                  <div class="goal-meta"><span><strong id="goalDone">0</strong> reviewed</span><span><strong id="goalLeft">171</strong> left</span></div>
+                </div>
+                <div class="rail-card rhythm-card">
+                  <div class="rail-label">Your rhythm</div>
+                  <div class="rhythm-big"><span id="rhythmStreak">0</span><span class="rhythm-unit">day streak</span></div>
+                  <div class="week-dots" aria-label="Weekly activity"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                  <div class="week-labels"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+                </div>
+                <div class="rail-quote"><span class="quote-mark">“</span><p>Every word is a door. Keep opening them.</p><span class="quote-byline">— Karten practice note</span></div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="view browse-view" data-panel="browse" hidden>
+            <div class="page-heading compact-heading">
+              <div><div class="eyebrow">Your vocabulary <span class="eyebrow-line"></span> <span id="libraryCountLabel">171 cards</span></div><h1>Browse your<br /><em>word bank.</em></h1></div>
+              <div class="browse-search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search German or English" aria-label="Search cards" /></div>
+            </div>
+            <div class="browse-toolbar"><span id="browseResultLabel">171 words</span><button class="sort-button" id="sortButton" type="button">Sort: original order <span>⌄</span></button></div>
+            <div class="card-library" id="cardLibrary"></div>
+          </section>
+
+          <section class="view stats-view" data-panel="stats" hidden>
+            <div class="page-heading compact-heading">
+              <div><div class="eyebrow">A small look back <span class="eyebrow-line"></span> Your local stats</div><h1>See your<br /><em>momentum.</em></h1></div>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-feature"><div class="rail-label">Cards learned</div><div class="stat-feature-number" id="statsLearned">0</div><p>Keep showing up and this number will take care of itself.</p></div>
+              <div class="stat-tile"><span class="stat-icon coral">◒</span><span class="rail-label">Accuracy</span><strong id="statsAccuracy">—</strong><small>across answered cards</small></div>
+              <div class="stat-tile"><span class="stat-icon blue">✦</span><span class="rail-label">Best streak</span><strong id="statsStreak">0</strong><small>days in a row</small></div>
+              <div class="stats-history"><div class="history-header"><span class="rail-label">Recent activity</span><span class="history-caption">This session</span></div><div id="historyBars" class="history-bars"></div></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
