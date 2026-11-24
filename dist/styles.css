@@ -81,6 +81,8 @@ button { cursor: pointer; }
 .nav-item.active .nav-icon { color: var(--coral); }
 .nav-count { padding: 3px 7px; border-radius: 20px; color: #fff5eb; background: rgba(238,118,91,.25); font-family: var(--mono); font-size: 10px; }
 .nav-count.muted { color: #aeb3ba; background: #303540; }
+.practice-tab-label { margin-top: 22px; margin-bottom: 8px; }
+.practice-tab { min-height: 40px; }
 .side-footer { margin-top: auto; }
 .deck-mini-card { padding: 17px 15px; border: 1px solid #414652; border-radius: 11px; background: #2d323e; }
 .deck-mini-topline { display: flex; align-items: center; gap: 7px; color: #adb1b8; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }

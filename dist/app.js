@@ -23,6 +23,7 @@ const state = {
   soundOn: true,
   repeatScheduled: new Set(),
   selectedCardIds: new Set(),
+  focusedTest: null,
   progress: {},
 };
 
@@ -51,6 +52,7 @@ function saveSessionState() {
       sessionIndex: state.sessionIndex,
       sessionAnswered: state.sessionAnswered,
       repeatScheduled: [...state.repeatScheduled],
+      focusedTestCardIds: state.focusedTest?.cardIds || [],
     }));
   } catch {
     // The app can still be used if browser storage is unavailable.
@@ -66,15 +68,21 @@ function restoreSessionState() {
     if (!restored.length) return false;
     state.sessionScope = saved.sessionScope === "selected" ? "selected" : "all";
     const restoredIds = new Set(restored.map((card) => card.id));
+    const savedFocusedIds = Array.isArray(saved.focusedTestCardIds)
+      ? saved.focusedTestCardIds
+      : state.sessionScope === "selected" ? [...restoredIds] : [];
+    const focusedIds = state.cards.filter((card) => savedFocusedIds.includes(card.id)).map((card) => card.id);
+    state.focusedTest = focusedIds.length ? { cardIds: focusedIds } : null;
     state.session = state.sessionScope === "selected"
       ? restored
       : [...restored, ...state.cards.filter((card) => !restoredIds.has(card.id))];
-    if (state.sessionScope === "selected") state.selectedCardIds = new Set(restoredIds);
+    state.selectedCardIds.clear();
     state.sessionIndex = Math.min(Math.max(Number(saved.sessionIndex) || 0, 0), state.session.length);
     state.sessionAnswered = Math.max(Number(saved.sessionAnswered) || 0, 0);
     state.repeatScheduled = new Set(saved.repeatScheduled || []);
     state.answered = false;
     renderCard();
+    renderPracticeTab();
     return true;
   } catch {
     return false;
@@ -103,11 +111,13 @@ async function loadDeck(deckKey, notify = false) {
   state.deckKey = deckKey;
   state.cards = await response.json();
   state.selectedCardIds = new Set();
+  state.focusedTest = null;
   state.progress = loadProgress();
   updateDeckUi();
   const restored = restoreSessionState();
   if (!restored) startSession();
   else showToast("Progress restored");
+  renderPracticeTab();
   refreshStats();
   if (notify) {
     showView("study");
@@ -153,14 +163,46 @@ function startSelectedTest() {
   }
   state.session = shuffle(selectedCards);
   state.sessionScope = "selected";
+  state.focusedTest = { cardIds: selectedCards.map((card) => card.id) };
   state.sessionIndex = 0;
   state.sessionAnswered = 0;
   state.answered = false;
   state.repeatScheduled = new Set();
+  state.selectedCardIds.clear();
   renderCard();
   saveSessionState();
-  showView("study");
+  renderLibrary();
+  renderPracticeTab();
+  showView("focused");
   showToast(`Test started with ${selectedCards.length} cards`);
+}
+
+function openFocusedTest() {
+  const focusedIds = new Set(state.focusedTest?.cardIds || []);
+  const focusedCards = state.cards.filter((card) => focusedIds.has(card.id));
+  if (!focusedCards.length) {
+    showToast("Select cards in Browse first");
+    showView("browse");
+    return;
+  }
+
+  const currentIds = new Set(state.session.map((card) => card.id));
+  const sameSession = state.sessionScope === "selected"
+    && state.sessionIndex < state.session.length
+    && currentIds.size === focusedIds.size
+    && [...focusedIds].every((id) => currentIds.has(id));
+  if (!sameSession) {
+    state.session = shuffle(focusedCards);
+    state.sessionScope = "selected";
+    state.sessionIndex = 0;
+    state.sessionAnswered = 0;
+    state.answered = false;
+    state.repeatScheduled = new Set();
+    renderCard();
+    saveSessionState();
+  }
+  renderPracticeTab();
+  showView("focused");
 }
 
 function buildOptions(card) {
@@ -296,9 +338,10 @@ function renderCompletion() {
   $("#answerFeedback").textContent = `${state.sessionAnswered} cards answered. Your progress is saved on this device.`;
   $("#answerFeedback").className = "answer-feedback success";
   setReviewControls(false);
-  $("#reviewHint").textContent = "Start another full deck review";
-  $("#options").innerHTML = `<button class="option-button correct" id="newSessionButton" type="button"><span class="option-number">↻</span><span>Start a new session</span></button>`;
-  $("#newSessionButton").addEventListener("click", startSession);
+  const isFocused = state.sessionScope === "selected" && state.focusedTest?.cardIds?.length;
+  $("#reviewHint").textContent = isFocused ? "Repeat this focused test" : "Start another full deck review";
+  $("#options").innerHTML = `<button class="option-button correct" id="newSessionButton" type="button"><span class="option-number">↻</span><span>${isFocused ? "Repeat selected test" : "Start a new session"}</span></button>`;
+  $("#newSessionButton").addEventListener("click", isFocused ? openFocusedTest : startSession);
   $("#skipButton").textContent = "Review again";
   $("#reviewModeLabel").textContent = "Session complete";
   $("#goalRing").style.background = "conic-gradient(var(--coral) 0deg, var(--coral) 360deg, #efd5cc 360deg)";
@@ -315,7 +358,8 @@ function updateGoal() {
   $("#goalPercent").textContent = `${percent}%`;
   $("#goalDone").textContent = String(current);
   $("#goalLeft").textContent = String(Math.max(state.session.length - current, 0));
-  $("#reviewModeLabel").textContent = `${Math.max(state.session.length - current, 0)} cards in this session`;
+  const scopeLabel = state.sessionScope === "selected" ? "Selected test · " : "";
+  $("#reviewModeLabel").textContent = `${scopeLabel}${Math.max(state.session.length - current, 0)} cards in this session`;
 }
 
 function getStats() {
@@ -385,6 +429,14 @@ function renderLibrary() {
   updateSelectionSummary();
 }
 
+function renderPracticeTab() {
+  const wrap = $("#practiceTabWrap");
+  const count = state.focusedTest?.cardIds?.length || 0;
+  if (!wrap) return;
+  wrap.hidden = count === 0;
+  $("#focusedTestCount").textContent = count.toLocaleString();
+}
+
 function selectVisibleCards() {
   getVisibleLibraryCards().forEach((card) => state.selectedCardIds.add(card.id));
   renderLibrary();
@@ -401,7 +453,8 @@ function escapeHtml(value) {
 
 function showView(viewName) {
   $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === viewName));
-  $$(".view").forEach((view) => { view.hidden = view.dataset.panel !== viewName; });
+  const panelName = viewName === "focused" ? "study" : viewName;
+  $$(".view").forEach((view) => { view.hidden = view.dataset.panel !== panelName; });
   if (viewName === "browse") renderLibrary();
   if (viewName === "stats") refreshStats();
 }
@@ -450,7 +503,11 @@ async function init() {
   $("#sidebarBackdrop").addEventListener("click", () => toggleSidebar(false));
   $$(".deck-option").forEach((button) => button.addEventListener("click", () => { toggleSidebar(false); selectDeck(button.dataset.deck); }));
   $("#deckSelect").addEventListener("change", (event) => selectDeck(event.target.value));
-  $$(".nav-item").forEach((button) => button.addEventListener("click", () => { toggleSidebar(false); showView(button.dataset.view); }));
+  $$(".nav-item").forEach((button) => button.addEventListener("click", () => {
+    toggleSidebar(false);
+    if (button.dataset.view === "focused") openFocusedTest();
+    else showView(button.dataset.view);
+  }));
   $("#skipButton").addEventListener("click", () => {
     if (state.sessionIndex >= state.session.length) { startSession(); return; }
     if (state.answered) advanceCard();
