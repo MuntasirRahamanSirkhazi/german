@@ -383,9 +383,6 @@ function refreshStats() {
   $("#miniAccuracy").textContent = stats.accuracy === null ? "—" : `${stats.accuracy}%`;
   $("#statsLearned").textContent = String(stats.learned);
   $("#statsAccuracy").textContent = stats.accuracy === null ? "—" : `${stats.accuracy}%`;
-  $("#statsStreak").textContent = String(stats.learned > 0 ? 1 : 0);
-  $("#rhythmStreak").textContent = String(stats.learned > 0 ? 1 : 0);
-  $("#sessionCount").textContent = String(state.sessionAnswered);
   $("#navStudyCount").textContent = String(Math.max(state.session.length - Math.min(state.sessionIndex, state.session.length), 0));
   renderHistory(stats);
 }

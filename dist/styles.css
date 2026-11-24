@@ -106,8 +106,6 @@ body.menu-open { overflow: hidden; }
 .topbar-deck-picker { display: none; align-items: center; gap: 7px; margin-left: auto; margin-right: 16px; color: #918b82; font-family: var(--mono); font-size: 9px; text-transform: uppercase; }
 .topbar-deck-picker select { max-width: 132px; padding: 7px 24px 7px 9px; border: 1px solid #ded6ca; border-radius: 6px; color: var(--ink); background: rgba(255,253,250,.62); font-family: var(--sans); font-size: 11px; }
 .topbar-actions { display: flex; align-items: center; gap: 14px; }
-.streak-pill { display: flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid #dfd6c9; border-radius: 20px; color: #716b62; background: rgba(255,253,250,.45); font-family: var(--mono); font-size: 10px; }
-.streak-pill .flame { color: var(--coral); font-size: 14px; }
 .icon-button { display: grid; place-items: center; width: 33px; height: 33px; border: 1px solid #ded6ca; border-radius: 50%; color: #777167; background: transparent; font-size: 15px; }
 .icon-button:hover { color: var(--coral-dark); border-color: var(--coral); }
 .avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; background: var(--blue); font-family: var(--display); font-size: 15px; }
@@ -212,14 +210,6 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
 .goal-ring span { margin-top: 3px; color: #a67d70; font-family: var(--mono); font-size: 8px; letter-spacing: .04em; text-transform: uppercase; }
 .goal-meta { display: flex; justify-content: space-between; color: #9d8378; font-family: var(--mono); font-size: 9px; }
 .goal-meta strong { color: var(--coral-dark); font-size: 11px; font-weight: 500; }
-.rhythm-card { background: rgba(255,253,250,.7); }
-.rhythm-big { display: flex; align-items: baseline; gap: 7px; margin-top: 20px; }
-.rhythm-big > span:first-child { color: var(--ink); font-family: var(--display); font-size: 40px; line-height: 1; }
-.rhythm-unit { color: #938c82; font-family: var(--mono); font-size: 9px; }
-.week-dots { display: flex; justify-content: space-between; margin-top: 18px; }
-.week-dots span { width: 13px; height: 13px; border: 1px solid #d6cec1; border-radius: 50%; background: #faf8f2; }
-.week-dots span:last-child { border-color: #f2b09f; background: var(--coral-soft); }
-.week-labels { display: flex; justify-content: space-between; margin-top: 7px; color: #aaa297; font-family: var(--mono); font-size: 8px; }
 .rail-quote { padding: 5px 13px 3px; color: #827a70; }
 .quote-mark { color: var(--coral); font-family: Georgia, serif; font-size: 44px; line-height: .55; }
 .rail-quote p { margin: 8px 0 10px; font-family: var(--display); font-size: 17px; line-height: 1.28; }
@@ -252,7 +242,7 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
 .library-meaning { margin-top: 5px; color: #898177; font-family: var(--mono); font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; word-break: break-word; }
 .library-rank { color: #a79f94; font-family: var(--mono); font-size: 9px; }
 
-.stats-grid { display: grid; grid-template-columns: 1.25fr .8fr .8fr; gap: 14px; margin-top: 56px; }
+.stats-grid { display: grid; grid-template-columns: 1.25fr .8fr; gap: 14px; margin-top: 56px; }
 .stat-feature, .stat-tile, .stats-history { min-height: 195px; padding: 24px; border: 1px solid #ded7ca; border-radius: 13px; background: rgba(255,253,250,.62); }
 .stat-feature { color: #fff8f1; border-color: #cc5c47; background: var(--coral); }
 .stat-feature .rail-label { color: #f8d6cc; }
@@ -295,7 +285,6 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
   .breadcrumbs { display: none; }
   .topbar-deck-picker { display: flex; }
   .topbar-actions { gap: 8px; margin-left: auto; }
-  .streak-pill { display: none; }
   .content-wrap { padding: 37px 20px 50px; }
   .page-heading, .compact-heading { align-items: flex-start; flex-direction: column; gap: 24px; }
   h1 { font-size: 50px; }
@@ -316,13 +305,13 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
   .card-library { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .stat-feature { grid-column: 1 / -1; }
+  .stats-grid .stat-tile { grid-column: 1 / -1; }
   .stats-history { grid-column: 1 / -1; }
 }
 
 @media (max-width: 420px) {
   .session-rail { grid-template-columns: 1fr; }
   .goal-ring { margin: 15px auto; }
-  .rhythm-card { min-height: 145px; }
   .tip { align-items: flex-start; }
   .study-footer { align-items: flex-start; }
   .stats-grid { grid-template-columns: 1fr; }
