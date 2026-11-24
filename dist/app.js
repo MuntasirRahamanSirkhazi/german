@@ -50,7 +50,8 @@ function createMainTab() {
 }
 
 function getActiveTab() {
-  return state.practiceTabs.find((tab) => tab.id === state.activeTabId) || state.practiceTabs[0] || null;
+  if (!state.practiceTabs.length) state.practiceTabs = [createMainTab()];
+  return state.practiceTabs.find((tab) => tab.id === state.activeTabId) || state.practiceTabs[0];
 }
 
 function getTabCards(tab) {
@@ -609,8 +610,6 @@ function showToast(message) {
 
 async function init() {
   $("#dateLabel").textContent = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" }).format(new Date());
-  await loadDeck(state.deckKey);
-
   if (window.matchMedia("(max-width: 720px)").matches) $("#sidebar").setAttribute("aria-hidden", "true");
   $("#mobileMenuButton").addEventListener("click", () => toggleSidebar());
   $("#sidebarBackdrop").addEventListener("click", () => toggleSidebar(false));
@@ -657,6 +656,7 @@ async function init() {
     if (/^[1-4]$/.test(event.key)) answer(Number(event.key) - 1);
     if (event.key.toLowerCase() === "n" && state.answered) advanceCard();
   });
+  await loadDeck(state.deckKey);
 }
 
 init().catch((error) => {
