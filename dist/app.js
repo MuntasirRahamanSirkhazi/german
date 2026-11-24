@@ -608,7 +608,21 @@ function showToast(message) {
   showToast.timeout = window.setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
+function bindBrowseControls() {
+  $("#searchInput")?.addEventListener("input", renderLibrary);
+  $("#selectVisibleButton")?.addEventListener("click", selectVisibleCards);
+  $("#clearSelectionButton")?.addEventListener("click", clearSelectedCards);
+  $("#testSelectedButton")?.addEventListener("click", startSelectedTest);
+  $("#sortButton")?.addEventListener("click", () => {
+    state.sortAscending = !state.sortAscending;
+    $("#sortButton").innerHTML = `Sort: ${state.sortAscending ? "original order" : "reverse order"} <span>⌄</span>`;
+    renderLibrary();
+  });
+}
+
 async function init() {
+  // Bind Browse first so a deck-loading or restore error cannot leave visible controls inert.
+  bindBrowseControls();
   $("#dateLabel").textContent = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" }).format(new Date());
   if (window.matchMedia("(max-width: 720px)").matches) $("#sidebar").setAttribute("aria-hidden", "true");
   $("#mobileMenuButton").addEventListener("click", () => toggleSidebar());
@@ -632,15 +646,6 @@ async function init() {
     state.soundOn = !state.soundOn;
     $("#soundToggle").style.color = state.soundOn ? "var(--blue)" : "#b5aea4";
     showToast(state.soundOn ? "Pronunciation on" : "Pronunciation muted");
-  });
-  $("#searchInput").addEventListener("input", renderLibrary);
-  $("#selectVisibleButton").addEventListener("click", selectVisibleCards);
-  $("#clearSelectionButton").addEventListener("click", clearSelectedCards);
-  $("#testSelectedButton").addEventListener("click", startSelectedTest);
-  $("#sortButton").addEventListener("click", () => {
-    state.sortAscending = !state.sortAscending;
-    $("#sortButton").innerHTML = `Sort: ${state.sortAscending ? "original order" : "reverse order"} <span>⌄</span>`;
-    renderLibrary();
   });
   $("#resetProgressButton").addEventListener("click", () => {
     if (!Object.keys(state.progress).length || window.confirm("Reset all saved progress on this device?")) {
