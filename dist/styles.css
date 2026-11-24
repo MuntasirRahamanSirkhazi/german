@@ -81,8 +81,6 @@ button { cursor: pointer; }
 .nav-item.active .nav-icon { color: var(--coral); }
 .nav-count { padding: 3px 7px; border-radius: 20px; color: #fff5eb; background: rgba(238,118,91,.25); font-family: var(--mono); font-size: 10px; }
 .nav-count.muted { color: #aeb3ba; background: #303540; }
-.practice-tab-label { margin-top: 22px; margin-bottom: 8px; }
-.practice-tab { min-height: 40px; }
 .side-footer { margin-top: auto; }
 .deck-mini-card { padding: 17px 15px; border: 1px solid #414652; border-radius: 11px; background: #2d323e; }
 .deck-mini-topline { display: flex; align-items: center; gap: 7px; color: #adb1b8; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
@@ -123,6 +121,15 @@ h1 { margin: 16px 0 0; color: var(--ink); font-family: var(--display); font-size
 h1 em { color: var(--coral); font-style: normal; }
 .heading-note { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; color: #817b72; font-family: var(--mono); font-size: 11px; }
 .note-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
+
+.study-tab-strip { display: flex; align-items: end; gap: 3px; margin: -24px 0 38px; overflow-x: auto; border-bottom: 1px solid #d8d1c5; scrollbar-width: none; }
+.study-tab-strip::-webkit-scrollbar { display: none; }
+.study-tab { display: inline-flex; align-items: center; gap: 11px; min-height: 42px; padding: 10px 17px 9px; border: 1px solid transparent; border-bottom: 0; border-radius: 9px 9px 0 0; color: #938b80; background: transparent; font-family: var(--mono); font-size: 10px; white-space: nowrap; }
+.study-tab:hover { color: var(--ink); background: rgba(255,253,250,.65); }
+.study-tab.active { color: var(--ink); border-color: #d8d1c5; background: var(--white); box-shadow: 0 1px 0 var(--white); }
+.study-tab-count { display: inline-grid; place-items: center; min-width: 20px; height: 18px; padding: 0 5px; border-radius: 10px; color: var(--coral-dark); background: var(--coral-soft); font-size: 9px; }
+.study-tab-close { color: #aaa196; font-family: var(--sans); font-size: 16px; line-height: .7; }
+.study-tab.active .study-tab-close { color: var(--coral); }
 
 .study-grid { display: grid; grid-template-columns: minmax(0, 1fr) 212px; gap: clamp(28px, 4vw, 62px); margin-top: 57px; }
 .study-main { min-width: 0; }
@@ -293,6 +300,7 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
   .page-heading, .compact-heading { align-items: flex-start; flex-direction: column; gap: 24px; }
   h1 { font-size: 50px; }
   .heading-note { margin-bottom: 0; }
+  .study-tab-strip { margin-top: -16px; margin-bottom: 30px; }
   .study-grid { margin-top: 38px; }
   .progress-row { grid-template-columns: 118px 1fr 32px; gap: 10px; }
   .card-body, .answer-area { padding-left: 22px; padding-right: 22px; }

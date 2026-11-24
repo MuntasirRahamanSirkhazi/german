@@ -153,6 +153,7 @@ function startSession() {
   state.repeatScheduled = new Set();
   renderCard();
   saveSessionState();
+  renderPracticeTab();
 }
 
 function startSelectedTest() {
@@ -203,6 +204,11 @@ function openFocusedTest() {
   }
   renderPracticeTab();
   showView("focused");
+}
+
+function openStudyTab() {
+  if (state.sessionScope !== "all") startSession();
+  showView("study");
 }
 
 function buildOptions(card) {
@@ -430,10 +436,15 @@ function renderLibrary() {
 }
 
 function renderPracticeTab() {
-  const wrap = $("#practiceTabWrap");
   const count = state.focusedTest?.cardIds?.length || 0;
-  if (!wrap) return;
-  wrap.hidden = count === 0;
+  const focusedTab = $("#focusedTestTab");
+  const studyTab = $("#studyTab");
+  if (!focusedTab || !studyTab) return;
+  focusedTab.hidden = count === 0;
+  focusedTab.classList.toggle("active", state.sessionScope === "selected");
+  focusedTab.setAttribute("aria-selected", String(state.sessionScope === "selected"));
+  studyTab.classList.toggle("active", state.sessionScope !== "selected");
+  studyTab.setAttribute("aria-selected", String(state.sessionScope !== "selected"));
   $("#focusedTestCount").textContent = count.toLocaleString();
 }
 
@@ -452,11 +463,13 @@ function escapeHtml(value) {
 }
 
 function showView(viewName) {
-  $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === viewName));
+  const activeNavView = viewName === "focused" ? "study" : viewName;
+  $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === activeNavView));
   const panelName = viewName === "focused" ? "study" : viewName;
   $$(".view").forEach((view) => { view.hidden = view.dataset.panel !== panelName; });
   if (viewName === "browse") renderLibrary();
   if (viewName === "stats") refreshStats();
+  if (panelName === "study") renderPracticeTab();
 }
 
 function toggleSidebar(open) {
@@ -505,9 +518,11 @@ async function init() {
   $("#deckSelect").addEventListener("change", (event) => selectDeck(event.target.value));
   $$(".nav-item").forEach((button) => button.addEventListener("click", () => {
     toggleSidebar(false);
-    if (button.dataset.view === "focused") openFocusedTest();
+    if (button.dataset.view === "study") openStudyTab();
     else showView(button.dataset.view);
   }));
+  $("#studyTab").addEventListener("click", openStudyTab);
+  $("#focusedTestTab").addEventListener("click", openFocusedTest);
   $("#skipButton").addEventListener("click", () => {
     if (state.sessionIndex >= state.session.length) { startSession(); return; }
     if (state.answered) advanceCard();

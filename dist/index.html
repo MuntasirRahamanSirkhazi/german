@@ -54,15 +54,6 @@
           </button>
         </nav>
 
-        <div class="practice-tab-wrap" id="practiceTabWrap" hidden>
-          <div class="side-section-label practice-tab-label">Practice tabs</div>
-          <button class="nav-item practice-tab" id="focusedTestTab" data-view="focused" type="button">
-            <span class="nav-icon">✦</span>
-            <span>Selected test</span>
-            <span class="nav-count" id="focusedTestCount">0</span>
-          </button>
-        </div>
-
         <div class="side-footer">
           <div class="deck-mini-card">
             <div class="deck-mini-topline"><span class="live-dot"></span> Active deck</div>
@@ -89,6 +80,16 @@
 
         <div class="content-wrap">
           <section class="view study-view" data-panel="study">
+            <div class="study-tab-strip" id="studyTabStrip" role="tablist" aria-label="Study sessions">
+              <button class="study-tab active" id="studyTab" data-study-tab="study" type="button" role="tab" aria-selected="true">
+                <span>Study</span>
+              </button>
+              <button class="study-tab" id="focusedTestTab" data-study-tab="focused" type="button" role="tab" aria-selected="false" hidden>
+                <span>Selected test</span>
+                <span class="study-tab-count" id="focusedTestCount">0</span>
+                <span class="study-tab-close" aria-hidden="true">×</span>
+              </button>
+            </div>
             <div class="page-heading">
               <div>
                 <div class="eyebrow">Daily practice <span class="eyebrow-line"></span> <span id="dateLabel">Monday, November 23</span></div>
