@@ -23,7 +23,9 @@ const state = {
   soundOn: true,
   repeatScheduled: new Set(),
   selectedCardIds: new Set(),
-  focusedTest: null,
+  activeTabId: "main",
+  practiceTabs: [],
+  tabSessions: {},
   progress: {},
 };
 
@@ -43,48 +45,115 @@ function saveProgress() {
   refreshStats();
 }
 
+function createMainTab() {
+  return { id: "main", label: "Study", type: "main", cardIds: null };
+}
+
+function getActiveTab() {
+  return state.practiceTabs.find((tab) => tab.id === state.activeTabId) || state.practiceTabs[0] || null;
+}
+
+function getTabCards(tab) {
+  if (!tab || tab.type === "main") return state.cards;
+  const cardIds = new Set(tab.cardIds || []);
+  return state.cards.filter((card) => cardIds.has(card.id));
+}
+
+function getSessionSnapshot() {
+  return {
+    sessionIds: state.session.map((card) => card.id),
+    sessionIndex: state.sessionIndex,
+    sessionAnswered: state.sessionAnswered,
+    repeatScheduled: [...state.repeatScheduled],
+  };
+}
+
+function persistActiveTabSession() {
+  if (!state.activeTabId || !state.session.length) return;
+  state.tabSessions[state.activeTabId] = getSessionSnapshot();
+}
+
 function saveSessionState() {
-  if (!state.session.length) return;
   try {
-    localStorage.setItem(`karten-german-${state.deckKey}-session`, JSON.stringify({
-      sessionIds: state.session.map((card) => card.id),
-      sessionScope: state.sessionScope,
-      sessionIndex: state.sessionIndex,
-      sessionAnswered: state.sessionAnswered,
-      repeatScheduled: [...state.repeatScheduled],
-      focusedTestCardIds: state.focusedTest?.cardIds || [],
+    persistActiveTabSession();
+    localStorage.setItem(`karten-german-${state.deckKey}-tabs`, JSON.stringify({
+      activeTabId: state.activeTabId,
+      tabs: state.practiceTabs,
+      sessions: state.tabSessions,
     }));
   } catch {
     // The app can still be used if browser storage is unavailable.
   }
 }
 
+function restoreTabSession(tab, saved) {
+  if (!tab || !saved?.sessionIds?.length) return false;
+  const cardsById = new Map(state.cards.map((card) => [card.id, card]));
+  const restored = saved.sessionIds.map((id) => cardsById.get(id)).filter(Boolean);
+  if (!restored.length) return false;
+  const restoredIds = new Set(restored.map((card) => card.id));
+  state.sessionScope = tab.type === "selected" ? "selected" : "all";
+  state.session = state.sessionScope === "selected"
+    ? restored
+    : [...restored, ...state.cards.filter((card) => !restoredIds.has(card.id))];
+  state.selectedCardIds.clear();
+  state.sessionIndex = Math.min(Math.max(Number(saved.sessionIndex) || 0, 0), state.session.length);
+  state.sessionAnswered = Math.max(Number(saved.sessionAnswered) || 0, 0);
+  state.repeatScheduled = new Set(saved.repeatScheduled || []);
+  state.answered = false;
+  renderCard();
+  return true;
+}
+
 function restoreSessionState() {
   try {
-    const saved = JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-session`) || "null");
-    if (!saved?.sessionIds?.length) return false;
-    const cardsById = new Map(state.cards.map((card) => [card.id, card]));
-    const restored = saved.sessionIds.map((id) => cardsById.get(id)).filter(Boolean);
-    if (!restored.length) return false;
-    state.sessionScope = saved.sessionScope === "selected" ? "selected" : "all";
-    const restoredIds = new Set(restored.map((card) => card.id));
-    const savedFocusedIds = Array.isArray(saved.focusedTestCardIds)
-      ? saved.focusedTestCardIds
-      : state.sessionScope === "selected" ? [...restoredIds] : [];
-    const focusedIds = state.cards.filter((card) => savedFocusedIds.includes(card.id)).map((card) => card.id);
-    state.focusedTest = focusedIds.length ? { cardIds: focusedIds } : null;
-    state.session = state.sessionScope === "selected"
-      ? restored
-      : [...restored, ...state.cards.filter((card) => !restoredIds.has(card.id))];
-    state.selectedCardIds.clear();
-    state.sessionIndex = Math.min(Math.max(Number(saved.sessionIndex) || 0, 0), state.session.length);
-    state.sessionAnswered = Math.max(Number(saved.sessionAnswered) || 0, 0);
-    state.repeatScheduled = new Set(saved.repeatScheduled || []);
-    state.answered = false;
-    renderCard();
-    renderPracticeTab();
-    return true;
+    const savedTabs = JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-tabs`) || "null");
+    if (savedTabs?.tabs?.length) {
+      const savedMain = savedTabs.tabs.find((tab) => tab.id === "main") || createMainTab();
+      const savedSelected = savedTabs.tabs
+        .filter((tab) => tab.id !== "main" && tab.type === "selected")
+        .map((tab, index) => ({
+          id: String(tab.id),
+          label: String(tab.label || `Selected test ${index + 1}`),
+          type: "selected",
+          cardIds: state.cards.filter((card) => (tab.cardIds || []).includes(card.id)).map((card) => card.id),
+        }))
+        .filter((tab) => tab.cardIds.length);
+      state.practiceTabs = [createMainTab(), ...savedSelected];
+      state.tabSessions = savedTabs.sessions && typeof savedTabs.sessions === "object" ? savedTabs.sessions : {};
+      state.activeTabId = state.practiceTabs.some((tab) => tab.id === savedTabs.activeTabId)
+        ? savedTabs.activeTabId
+        : "main";
+      const activeTab = getActiveTab();
+      if (restoreTabSession(activeTab, state.tabSessions[state.activeTabId])) return true;
+      return false;
+    }
+
+    const legacy = JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-session`) || "null");
+    state.practiceTabs = [createMainTab()];
+    state.tabSessions = {};
+    state.activeTabId = "main";
+    if (!legacy?.sessionIds?.length) return false;
+
+    const legacyScope = legacy.sessionScope === "selected" ? "selected" : "all";
+    const legacyIds = Array.isArray(legacy.focusedTestCardIds) && legacy.focusedTestCardIds.length
+      ? legacy.focusedTestCardIds
+      : legacyScope === "selected" ? legacy.sessionIds : [];
+    const selectedIds = state.cards.filter((card) => legacyIds.includes(card.id)).map((card) => card.id);
+    if (selectedIds.length) {
+      const migratedTab = { id: `test-migrated-${Date.now()}`, label: "Selected test 1", type: "selected", cardIds: selectedIds };
+      state.practiceTabs.push(migratedTab);
+      if (legacyScope === "selected") {
+        state.activeTabId = migratedTab.id;
+        state.tabSessions[migratedTab.id] = legacy;
+      }
+    }
+    if (legacyScope === "all") state.tabSessions.main = legacy;
+    return restoreTabSession(getActiveTab(), state.tabSessions[state.activeTabId]);
   } catch {
+    state.practiceTabs = [createMainTab()];
+    state.tabSessions = {};
+    state.activeTabId = "main";
     return false;
   }
 }
@@ -111,7 +180,9 @@ async function loadDeck(deckKey, notify = false) {
   state.deckKey = deckKey;
   state.cards = await response.json();
   state.selectedCardIds = new Set();
-  state.focusedTest = null;
+  state.practiceTabs = [];
+  state.tabSessions = {};
+  state.activeTabId = "main";
   state.progress = loadProgress();
   updateDeckUi();
   const restored = restoreSessionState();
@@ -145,8 +216,10 @@ function shuffle(items) {
 }
 
 function startSession() {
-  state.session = shuffle(state.cards);
-  state.sessionScope = "all";
+  const tab = getActiveTab() || createMainTab();
+  if (!state.practiceTabs.length) state.practiceTabs = [tab];
+  state.session = shuffle(getTabCards(tab));
+  state.sessionScope = tab.type === "selected" ? "selected" : "all";
   state.sessionIndex = 0;
   state.sessionAnswered = 0;
   state.answered = false;
@@ -157,77 +230,63 @@ function startSession() {
 }
 
 function startSelectedTest() {
+  if (getActiveTab()?.type !== "main") {
+    showToast("Open the Study tab to create a new tab");
+    return;
+  }
   const selectedCards = state.cards.filter((card) => state.selectedCardIds.has(card.id));
   if (!selectedCards.length) {
     showToast("Select at least one card first");
     return;
   }
-  state.session = shuffle(selectedCards);
-  state.sessionScope = "selected";
-  state.focusedTest = { cardIds: selectedCards.map((card) => card.id) };
-  state.sessionIndex = 0;
-  state.sessionAnswered = 0;
-  state.answered = false;
-  state.repeatScheduled = new Set();
-  state.selectedCardIds.clear();
-  renderCard();
   saveSessionState();
+  const testNumber = state.practiceTabs.filter((tab) => tab.type === "selected").length + 1;
+  const tab = {
+    id: `test-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    label: `Selected test ${testNumber}`,
+    type: "selected",
+    cardIds: selectedCards.map((card) => card.id),
+  };
+  state.practiceTabs.push(tab);
+  state.activeTabId = tab.id;
+  state.selectedCardIds.clear();
+  startSession();
   renderLibrary();
   renderPracticeTab();
-  showView("focused");
+  showView("study");
   showToast(`Test started with ${selectedCards.length} cards`);
 }
 
-function openFocusedTest() {
-  const focusedIds = new Set(state.focusedTest?.cardIds || []);
-  const focusedCards = state.cards.filter((card) => focusedIds.has(card.id));
-  if (!focusedCards.length) {
-    showToast("Select cards in Browse first");
-    showView("browse");
-    return;
-  }
-
-  const currentIds = new Set(state.session.map((card) => card.id));
-  const sameSession = state.sessionScope === "selected"
-    && state.sessionIndex < state.session.length
-    && currentIds.size === focusedIds.size
-    && [...focusedIds].every((id) => currentIds.has(id));
-  if (!sameSession) {
-    state.session = shuffle(focusedCards);
-    state.sessionScope = "selected";
-    state.sessionIndex = 0;
-    state.sessionAnswered = 0;
-    state.answered = false;
-    state.repeatScheduled = new Set();
-    renderCard();
+function activateTab(tabId) {
+  const tab = state.practiceTabs.find((item) => item.id === tabId);
+  if (!tab) return;
+  if (state.activeTabId !== tab.id) {
     saveSessionState();
+    state.activeTabId = tab.id;
+    state.selectedCardIds.clear();
+    if (!restoreTabSession(tab, state.tabSessions[tab.id])) startSession();
   }
   renderPracticeTab();
-  showView("focused");
+  showView("study");
 }
 
-function closeFocusedTest() {
-  if (!state.focusedTest?.cardIds?.length) return;
-  state.focusedTest = null;
-  state.selectedCardIds.clear();
-  if (state.sessionScope === "selected") {
-    state.session = shuffle(state.cards);
-    state.sessionScope = "all";
-    state.sessionIndex = 0;
-    state.sessionAnswered = 0;
-    state.answered = false;
-    state.repeatScheduled = new Set();
-    renderCard();
-    saveSessionState();
+function closeTab(tabId) {
+  const tab = state.practiceTabs.find((item) => item.id === tabId);
+  if (!tab || tab.type === "main") return;
+  const wasActive = state.activeTabId === tabId;
+  if (wasActive) saveSessionState();
+  state.practiceTabs = state.practiceTabs.filter((item) => item.id !== tabId);
+  delete state.tabSessions[tabId];
+  if (wasActive) {
+    state.activeTabId = "main";
+    state.selectedCardIds.clear();
+    if (!restoreTabSession(getActiveTab(), state.tabSessions.main)) startSession();
   }
+  saveSessionState();
   renderPracticeTab();
+  renderLibrary();
   showView("study");
   showToast("Selected test tab closed");
-}
-
-function openStudyTab() {
-  if (state.sessionScope !== "all") startSession();
-  showView("study");
 }
 
 function buildOptions(card) {
@@ -363,10 +422,10 @@ function renderCompletion() {
   $("#answerFeedback").textContent = `${state.sessionAnswered} cards answered. Your progress is saved on this device.`;
   $("#answerFeedback").className = "answer-feedback success";
   setReviewControls(false);
-  const isFocused = state.sessionScope === "selected" && state.focusedTest?.cardIds?.length;
-  $("#reviewHint").textContent = isFocused ? "Repeat this focused test" : "Start another full deck review";
-  $("#options").innerHTML = `<button class="option-button correct" id="newSessionButton" type="button"><span class="option-number">↻</span><span>${isFocused ? "Repeat selected test" : "Start a new session"}</span></button>`;
-  $("#newSessionButton").addEventListener("click", isFocused ? openFocusedTest : startSession);
+  const isSelectedTab = state.sessionScope === "selected";
+  $("#reviewHint").textContent = isSelectedTab ? "Repeat this selected test" : "Start another full deck review";
+  $("#options").innerHTML = `<button class="option-button correct" id="newSessionButton" type="button"><span class="option-number">↻</span><span>${isSelectedTab ? "Repeat selected test" : "Start a new session"}</span></button>`;
+  $("#newSessionButton").addEventListener("click", startSession);
   $("#skipButton").textContent = "Review again";
   $("#reviewModeLabel").textContent = "Session complete";
   $("#goalRing").style.background = "conic-gradient(var(--coral) 0deg, var(--coral) 360deg, #efd5cc 360deg)";
@@ -415,26 +474,34 @@ function renderHistory(stats) {
 
 function getVisibleLibraryCards() {
   const query = $("#searchInput").value.trim().toLowerCase();
-  return state.cards
+  return getTabCards(getActiveTab())
     .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
     .sort((a, b) => state.sortAscending ? a.number - b.number : b.number - a.number);
 }
 
 function updateSelectionSummary() {
-  const selectedCount = state.selectedCardIds.size;
+  const canCreateTab = getActiveTab()?.type === "main";
+  const selectedCount = canCreateTab ? state.selectedCardIds.size : 0;
+  const visibleCount = getTabCards(getActiveTab()).length;
   $("#selectedCount").textContent = String(selectedCount);
-  $("#testSelectedButton").disabled = selectedCount === 0;
+  $("#selectVisibleButton").disabled = !canCreateTab;
+  $("#testSelectedButton").disabled = !canCreateTab || selectedCount === 0;
   $("#clearSelectionButton").disabled = selectedCount === 0;
-  $("#selectionSummary").textContent = selectedCount ? `${selectedCount} selected` : "Select cards to make a focused test";
+  $("#selectionSummary").textContent = canCreateTab
+    ? selectedCount ? `${selectedCount} selected` : "Select cards to make a focused test"
+    : `${visibleCount} cards in ${getActiveTab()?.label || "this tab"}`;
 }
 
 function renderLibrary() {
   const visible = getVisibleLibraryCards();
   $("#browseResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
+  const canCreateTab = getActiveTab()?.type === "main";
+  $("#libraryCountLabel").textContent = `${getTabCards(getActiveTab()).length.toLocaleString()} cards`;
+  $("#navBrowseCount").textContent = getTabCards(getActiveTab()).length.toLocaleString();
   $("#cardLibrary").innerHTML = visible.map((card) => `
-    <article class="library-card ${state.selectedCardIds.has(card.id) ? "selected" : ""}">
+    <article class="library-card ${canCreateTab && state.selectedCardIds.has(card.id) ? "selected" : ""}">
       <label class="library-select" title="Select ${escapeHtml(card.german)}">
-        <input class="card-select" type="checkbox" data-card-id="${escapeHtml(card.id)}" ${state.selectedCardIds.has(card.id) ? "checked" : ""} aria-label="Select ${escapeHtml(card.german)}" />
+        <input class="card-select" type="checkbox" data-card-id="${escapeHtml(card.id)}" ${canCreateTab && state.selectedCardIds.has(card.id) ? "checked" : ""} ${canCreateTab ? "" : "disabled"} aria-label="Select ${escapeHtml(card.german)}" />
         <span class="library-index">${String(card.number).padStart(3, "0")}</span>
       </label>
       <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
@@ -452,19 +519,27 @@ function renderLibrary() {
 }
 
 function renderPracticeTab() {
-  const count = state.focusedTest?.cardIds?.length || 0;
-  const focusedTab = $("#focusedTestTab");
-  const studyTab = $("#studyTab");
-  if (!focusedTab || !studyTab) return;
-  focusedTab.hidden = count === 0;
-  focusedTab.classList.toggle("active", state.sessionScope === "selected");
-  focusedTab.setAttribute("aria-selected", String(state.sessionScope === "selected"));
-  studyTab.classList.toggle("active", state.sessionScope !== "selected");
-  studyTab.setAttribute("aria-selected", String(state.sessionScope !== "selected"));
-  $("#focusedTestCount").textContent = count.toLocaleString();
+  const strip = $("#studyTabStrip");
+  if (!strip) return;
+  if (!state.practiceTabs.length) state.practiceTabs = [createMainTab()];
+  strip.innerHTML = state.practiceTabs.map((tab) => {
+    const active = tab.id === state.activeTabId;
+    if (tab.type === "main") {
+      return `<button class="study-tab${active ? " active" : ""}" data-open-tab="${escapeHtml(tab.id)}" type="button" role="tab" aria-selected="${active}"><span>${escapeHtml(tab.label)}</span></button>`;
+    }
+    return `<div class="study-tab${active ? " active" : ""}" role="tab" aria-selected="${active}">
+      <button class="study-tab-main" data-open-tab="${escapeHtml(tab.id)}" type="button">
+        <span>${escapeHtml(tab.label)}</span><span class="study-tab-count">${tab.cardIds.length.toLocaleString()}</span>
+      </button>
+      <button class="study-tab-close" data-close-tab="${escapeHtml(tab.id)}" type="button" aria-label="Close ${escapeHtml(tab.label)}">×</button>
+    </div>`;
+  }).join("");
+  strip.querySelectorAll("[data-open-tab]").forEach((button) => button.addEventListener("click", () => activateTab(button.dataset.openTab)));
+  strip.querySelectorAll("[data-close-tab]").forEach((button) => button.addEventListener("click", () => closeTab(button.dataset.closeTab)));
 }
 
 function selectVisibleCards() {
+  if (getActiveTab()?.type !== "main") return;
   getVisibleLibraryCards().forEach((card) => state.selectedCardIds.add(card.id));
   renderLibrary();
 }
@@ -534,12 +609,9 @@ async function init() {
   $("#deckSelect").addEventListener("change", (event) => selectDeck(event.target.value));
   $$(".nav-item").forEach((button) => button.addEventListener("click", () => {
     toggleSidebar(false);
-    if (button.dataset.view === "study") openStudyTab();
+    if (button.dataset.view === "study") activateTab("main");
     else showView(button.dataset.view);
   }));
-  $("#studyTab").addEventListener("click", openStudyTab);
-  $("#openFocusedTestButton").addEventListener("click", openFocusedTest);
-  $("#closeFocusedTestButton").addEventListener("click", closeFocusedTest);
   $("#skipButton").addEventListener("click", () => {
     if (state.sessionIndex >= state.session.length) { startSession(); return; }
     if (state.answered) advanceCard();
