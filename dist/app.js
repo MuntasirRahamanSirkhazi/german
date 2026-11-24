@@ -108,7 +108,7 @@ function restoreTabSession(tab, saved) {
 function restoreSessionState() {
   try {
     const savedTabs = JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-tabs`) || "null");
-    if (savedTabs?.tabs?.length) {
+    if (Array.isArray(savedTabs?.tabs) && savedTabs.tabs.length) {
       const savedMain = savedTabs.tabs.find((tab) => tab.id === "main") || createMainTab();
       const savedSelected = savedTabs.tabs
         .filter((tab) => tab.id !== "main" && tab.type === "selected")
@@ -522,6 +522,15 @@ function renderPracticeTab() {
   const strip = $("#studyTabStrip");
   if (!strip) return;
   if (!state.practiceTabs.length) state.practiceTabs = [createMainTab()];
+  state.practiceTabs = state.practiceTabs
+    .map((tab, index) => ({
+      id: String(tab.id || (index === 0 ? "main" : `test-${index}`)),
+      label: String(tab.label || (index === 0 ? "Study" : `Selected test ${index}`)),
+      type: index === 0 || tab.type !== "selected" ? "main" : "selected",
+      cardIds: Array.isArray(tab.cardIds) ? tab.cardIds : null,
+    }))
+    .filter((tab, index) => index === 0 || tab.type === "selected");
+  if (!state.practiceTabs.some((tab) => tab.id === state.activeTabId)) state.activeTabId = "main";
   strip.innerHTML = state.practiceTabs.map((tab) => {
     const active = tab.id === state.activeTabId;
     if (tab.type === "main") {
@@ -550,7 +559,7 @@ function clearSelectedCards() {
 }
 
 function escapeHtml(value) {
-  return value.replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character]));
+  return String(value ?? "").replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character]));
 }
 
 function showView(viewName) {
