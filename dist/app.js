@@ -346,6 +346,23 @@ function showView(viewName) {
   if (viewName === "stats") refreshStats();
 }
 
+function toggleSidebar(open) {
+  const sidebar = $("#sidebar");
+  const menuButton = $("#mobileMenuButton");
+  const backdrop = $("#sidebarBackdrop");
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
+  const nextOpen = typeof open === "boolean" ? open : !sidebar.classList.contains("open");
+  sidebar.classList.toggle("open", nextOpen);
+  sidebar.setAttribute("aria-hidden", isMobile ? String(!nextOpen) : "false");
+  backdrop.classList.toggle("visible", nextOpen);
+  backdrop.setAttribute("aria-hidden", String(!nextOpen));
+  menuButton.setAttribute("aria-expanded", String(nextOpen));
+  menuButton.setAttribute("aria-label", nextOpen ? "Close navigation menu" : "Open navigation menu");
+  document.body.classList.toggle("menu-open", nextOpen);
+  if (nextOpen) sidebar.querySelector("button")?.focus();
+  else if (isMobile) menuButton.focus();
+}
+
 function speakCurrent() {
   const card = state.session[state.sessionIndex];
   if (!card || !state.soundOn || !("speechSynthesis" in window)) return;
@@ -368,9 +385,12 @@ async function init() {
   $("#dateLabel").textContent = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" }).format(new Date());
   await loadDeck(state.deckKey);
 
-  $$(".deck-option").forEach((button) => button.addEventListener("click", () => selectDeck(button.dataset.deck)));
+  if (window.matchMedia("(max-width: 720px)").matches) $("#sidebar").setAttribute("aria-hidden", "true");
+  $("#mobileMenuButton").addEventListener("click", () => toggleSidebar());
+  $("#sidebarBackdrop").addEventListener("click", () => toggleSidebar(false));
+  $$(".deck-option").forEach((button) => button.addEventListener("click", () => { toggleSidebar(false); selectDeck(button.dataset.deck); }));
   $("#deckSelect").addEventListener("change", (event) => selectDeck(event.target.value));
-  $$(".nav-item").forEach((button) => button.addEventListener("click", () => showView(button.dataset.view)));
+  $$(".nav-item").forEach((button) => button.addEventListener("click", () => { toggleSidebar(false); showView(button.dataset.view); }));
   $("#skipButton").addEventListener("click", () => {
     if (state.sessionIndex >= state.session.length) { startSession(); return; }
     if (state.answered) advanceCard();
@@ -399,6 +419,7 @@ async function init() {
     }
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") { toggleSidebar(false); return; }
     if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
     if (/^[1-4]$/.test(event.key)) answer(Number(event.key) - 1);
     if (event.key.toLowerCase() === "n" && state.answered) advanceCard();

@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar" aria-label="Main navigation">
+      <aside class="sidebar" id="sidebar" aria-label="Main navigation">
         <div class="brand-lockup">
           <div class="brand-mark" aria-hidden="true">K</div>
           <div>
@@ -63,9 +63,11 @@
           <button class="side-link" id="resetProgressButton" type="button"><span>↺</span> Reset progress</button>
         </div>
       </aside>
+      <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
       <main class="main-content">
         <header class="topbar">
+          <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation menu" aria-controls="sidebar" aria-expanded="false"><span aria-hidden="true">☰</span></button>
           <div class="mobile-brand"><span class="brand-mark small">K</span><span>karten</span></div>
           <div class="breadcrumbs"><span>Decks</span><span class="crumb-dot">/</span><strong id="deckBreadcrumb">German A2</strong></div>
           <div class="topbar-deck-picker"><span>Deck</span><select id="deckSelect" aria-label="Choose a deck"><option value="a2">German A2</option><option value="b1">German B1</option></select></div>
