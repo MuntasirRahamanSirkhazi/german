@@ -153,7 +153,18 @@
               <div><div class="eyebrow">Your vocabulary <span class="eyebrow-line"></span> <span id="libraryCountLabel">171 cards</span></div><h1>Browse your<br /><em>word bank.</em></h1></div>
               <div class="browse-search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search German or English" aria-label="Search cards" /></div>
             </div>
-            <div class="browse-toolbar"><span id="browseResultLabel">171 words</span><button class="sort-button" id="sortButton" type="button">Sort: original order <span>⌄</span></button></div>
+            <div class="browse-toolbar">
+              <div class="browse-selection-tools">
+                <span id="browseResultLabel">171 words</span>
+                <span class="selection-summary" id="selectionSummary">Select cards to make a focused test</span>
+                <button class="toolbar-button" id="selectVisibleButton" type="button">Select visible</button>
+                <button class="toolbar-button" id="clearSelectionButton" type="button" disabled>Clear</button>
+              </div>
+              <div class="browse-actions">
+                <button class="toolbar-button primary" id="testSelectedButton" type="button" disabled>Test selected <span class="selected-count" id="selectedCount">0</span></button>
+                <button class="sort-button" id="sortButton" type="button">Sort: original order <span>⌄</span></button>
+              </div>
+            </div>
             <div class="card-library" id="cardLibrary"></div>
           </section>
 

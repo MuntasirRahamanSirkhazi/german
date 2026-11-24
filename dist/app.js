@@ -14,6 +14,7 @@ const state = {
   deckKey: initialDeckKey,
   cards: [],
   session: [],
+  sessionScope: "all",
   sessionIndex: 0,
   sessionAnswered: 0,
   currentOptions: [],
@@ -21,6 +22,7 @@ const state = {
   sortAscending: true,
   soundOn: true,
   repeatScheduled: new Set(),
+  selectedCardIds: new Set(),
   progress: {},
 };
 
@@ -45,6 +47,7 @@ function saveSessionState() {
   try {
     localStorage.setItem(`karten-german-${state.deckKey}-session`, JSON.stringify({
       sessionIds: state.session.map((card) => card.id),
+      sessionScope: state.sessionScope,
       sessionIndex: state.sessionIndex,
       sessionAnswered: state.sessionAnswered,
       repeatScheduled: [...state.repeatScheduled],
@@ -61,8 +64,12 @@ function restoreSessionState() {
     const cardsById = new Map(state.cards.map((card) => [card.id, card]));
     const restored = saved.sessionIds.map((id) => cardsById.get(id)).filter(Boolean);
     if (!restored.length) return false;
+    state.sessionScope = saved.sessionScope === "selected" ? "selected" : "all";
     const restoredIds = new Set(restored.map((card) => card.id));
-    state.session = [...restored, ...state.cards.filter((card) => !restoredIds.has(card.id))];
+    state.session = state.sessionScope === "selected"
+      ? restored
+      : [...restored, ...state.cards.filter((card) => !restoredIds.has(card.id))];
+    if (state.sessionScope === "selected") state.selectedCardIds = new Set(restoredIds);
     state.sessionIndex = Math.min(Math.max(Number(saved.sessionIndex) || 0, 0), state.session.length);
     state.sessionAnswered = Math.max(Number(saved.sessionAnswered) || 0, 0);
     state.repeatScheduled = new Set(saved.repeatScheduled || []);
@@ -95,6 +102,7 @@ async function loadDeck(deckKey, notify = false) {
   const response = await fetch(deck.data);
   state.deckKey = deckKey;
   state.cards = await response.json();
+  state.selectedCardIds = new Set();
   state.progress = loadProgress();
   updateDeckUi();
   const restored = restoreSessionState();
@@ -128,12 +136,31 @@ function shuffle(items) {
 
 function startSession() {
   state.session = shuffle(state.cards);
+  state.sessionScope = "all";
   state.sessionIndex = 0;
   state.sessionAnswered = 0;
   state.answered = false;
   state.repeatScheduled = new Set();
   renderCard();
   saveSessionState();
+}
+
+function startSelectedTest() {
+  const selectedCards = state.cards.filter((card) => state.selectedCardIds.has(card.id));
+  if (!selectedCards.length) {
+    showToast("Select at least one card first");
+    return;
+  }
+  state.session = shuffle(selectedCards);
+  state.sessionScope = "selected";
+  state.sessionIndex = 0;
+  state.sessionAnswered = 0;
+  state.answered = false;
+  state.repeatScheduled = new Set();
+  renderCard();
+  saveSessionState();
+  showView("study");
+  showToast(`Test started with ${selectedCards.length} cards`);
 }
 
 function buildOptions(card) {
@@ -320,19 +347,52 @@ function renderHistory(stats) {
   bars.innerHTML = values.map((value, index) => `<div class="history-bar ${index === values.length - 1 ? "active" : ""}" style="height:${Math.max(value * 10, 8)}px" title="${value} answered"></div>`).join("");
 }
 
-function renderLibrary() {
+function getVisibleLibraryCards() {
   const query = $("#searchInput").value.trim().toLowerCase();
-  const visible = state.cards
+  return state.cards
     .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
     .sort((a, b) => state.sortAscending ? a.number - b.number : b.number - a.number);
+}
+
+function updateSelectionSummary() {
+  const selectedCount = state.selectedCardIds.size;
+  $("#selectedCount").textContent = String(selectedCount);
+  $("#testSelectedButton").disabled = selectedCount === 0;
+  $("#clearSelectionButton").disabled = selectedCount === 0;
+  $("#selectionSummary").textContent = selectedCount ? `${selectedCount} selected` : "Select cards to make a focused test";
+}
+
+function renderLibrary() {
+  const visible = getVisibleLibraryCards();
   $("#browseResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
   $("#cardLibrary").innerHTML = visible.map((card) => `
-    <article class="library-card">
-      <div class="library-index">${String(card.number).padStart(3, "0")}</div>
+    <article class="library-card ${state.selectedCardIds.has(card.id) ? "selected" : ""}">
+      <label class="library-select" title="Select ${escapeHtml(card.german)}">
+        <input class="card-select" type="checkbox" data-card-id="${escapeHtml(card.id)}" ${state.selectedCardIds.has(card.id) ? "checked" : ""} aria-label="Select ${escapeHtml(card.german)}" />
+        <span class="library-index">${String(card.number).padStart(3, "0")}</span>
+      </label>
       <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
       <div class="library-rank">${card.rank ? `#${escapeHtml(card.rank)}` : "A2"}</div>
     </article>
   `).join("") || `<div class="empty-library">No cards match that search.</div>`;
+  $$(".card-select").forEach((input) => input.addEventListener("change", (event) => {
+    const cardId = event.target.dataset.cardId;
+    if (event.target.checked) state.selectedCardIds.add(cardId);
+    else state.selectedCardIds.delete(cardId);
+    event.target.closest(".library-card")?.classList.toggle("selected", event.target.checked);
+    updateSelectionSummary();
+  }));
+  updateSelectionSummary();
+}
+
+function selectVisibleCards() {
+  getVisibleLibraryCards().forEach((card) => state.selectedCardIds.add(card.id));
+  renderLibrary();
+}
+
+function clearSelectedCards() {
+  state.selectedCardIds.clear();
+  renderLibrary();
 }
 
 function escapeHtml(value) {
@@ -405,6 +465,9 @@ async function init() {
     showToast(state.soundOn ? "Pronunciation on" : "Pronunciation muted");
   });
   $("#searchInput").addEventListener("input", renderLibrary);
+  $("#selectVisibleButton").addEventListener("click", selectVisibleCards);
+  $("#clearSelectionButton").addEventListener("click", clearSelectedCards);
+  $("#testSelectedButton").addEventListener("click", startSelectedTest);
   $("#sortButton").addEventListener("click", () => {
     state.sortAscending = !state.sortAscending;
     $("#sortButton").innerHTML = `Sort: ${state.sortAscending ? "original order" : "reverse order"} <span>⌄</span>`;
