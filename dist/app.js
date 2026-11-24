@@ -206,6 +206,25 @@ function openFocusedTest() {
   showView("focused");
 }
 
+function closeFocusedTest() {
+  if (!state.focusedTest?.cardIds?.length) return;
+  state.focusedTest = null;
+  state.selectedCardIds.clear();
+  if (state.sessionScope === "selected") {
+    state.session = shuffle(state.cards);
+    state.sessionScope = "all";
+    state.sessionIndex = 0;
+    state.sessionAnswered = 0;
+    state.answered = false;
+    state.repeatScheduled = new Set();
+    renderCard();
+    saveSessionState();
+  }
+  renderPracticeTab();
+  showView("study");
+  showToast("Selected test tab closed");
+}
+
 function openStudyTab() {
   if (state.sessionScope !== "all") startSession();
   showView("study");
@@ -519,7 +538,8 @@ async function init() {
     else showView(button.dataset.view);
   }));
   $("#studyTab").addEventListener("click", openStudyTab);
-  $("#focusedTestTab").addEventListener("click", openFocusedTest);
+  $("#openFocusedTestButton").addEventListener("click", openFocusedTest);
+  $("#closeFocusedTestButton").addEventListener("click", closeFocusedTest);
   $("#skipButton").addEventListener("click", () => {
     if (state.sessionIndex >= state.session.length) { startSession(); return; }
     if (state.answered) advanceCard();

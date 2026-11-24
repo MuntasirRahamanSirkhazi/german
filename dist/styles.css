@@ -122,11 +122,14 @@ h1 em { color: var(--coral); font-style: normal; }
 
 .study-tab-strip { display: flex; align-items: end; gap: 3px; margin: -24px 0 38px; overflow-x: auto; border-bottom: 1px solid #d8d1c5; scrollbar-width: none; }
 .study-tab-strip::-webkit-scrollbar { display: none; }
-.study-tab { display: inline-flex; align-items: center; gap: 11px; min-height: 42px; padding: 10px 17px 9px; border: 1px solid transparent; border-bottom: 0; border-radius: 9px 9px 0 0; color: #938b80; background: transparent; font-family: var(--mono); font-size: 10px; white-space: nowrap; }
+.study-tab { display: inline-flex; align-items: center; min-height: 42px; border: 1px solid transparent; border-bottom: 0; border-radius: 9px 9px 0 0; color: #938b80; background: transparent; font-family: var(--mono); font-size: 10px; white-space: nowrap; }
 .study-tab:hover { color: var(--ink); background: rgba(255,253,250,.65); }
 .study-tab.active { color: var(--ink); border-color: #d8d1c5; background: var(--white); box-shadow: 0 1px 0 var(--white); }
+.study-tab-main { display: inline-flex; align-items: center; gap: 11px; min-height: 41px; padding: 10px 6px 9px 17px; border: 0; color: inherit; background: transparent; font-family: inherit; font-size: inherit; }
+.study-tab-main:hover { color: inherit; }
 .study-tab-count { display: inline-grid; place-items: center; min-width: 20px; height: 18px; padding: 0 5px; border-radius: 10px; color: var(--coral-dark); background: var(--coral-soft); font-size: 9px; }
-.study-tab-close { color: #aaa196; font-family: var(--sans); font-size: 16px; line-height: .7; }
+.study-tab-close { display: grid; place-items: center; width: 30px; height: 30px; margin-right: 5px; padding: 0; border: 0; border-radius: 50%; color: #aaa196; background: transparent; font-family: var(--sans); font-size: 16px; line-height: 1; }
+.study-tab-close:hover { color: var(--coral-dark); background: var(--coral-soft); }
 .study-tab.active .study-tab-close { color: var(--coral); }
 
 .study-grid { display: grid; grid-template-columns: minmax(0, 1fr) 212px; gap: clamp(28px, 4vw, 62px); margin-top: 57px; }

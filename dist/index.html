@@ -83,11 +83,13 @@
               <button class="study-tab active" id="studyTab" data-study-tab="study" type="button" role="tab" aria-selected="true">
                 <span>Study</span>
               </button>
-              <button class="study-tab" id="focusedTestTab" data-study-tab="focused" type="button" role="tab" aria-selected="false" hidden>
-                <span>Selected test</span>
-                <span class="study-tab-count" id="focusedTestCount">0</span>
-                <span class="study-tab-close" aria-hidden="true">×</span>
-              </button>
+              <div class="study-tab" id="focusedTestTab" data-study-tab="focused" role="tab" aria-selected="false" hidden>
+                <button class="study-tab-main" id="openFocusedTestButton" type="button">
+                  <span>Selected test</span>
+                  <span class="study-tab-count" id="focusedTestCount">0</span>
+                </button>
+                <button class="study-tab-close" id="closeFocusedTestButton" type="button" aria-label="Close selected test">×</button>
+              </div>
             </div>
             <div class="page-heading">
               <div>
