@@ -70,7 +70,7 @@ function getSessionSnapshot() {
 }
 
 function persistActiveTabSession() {
-  if (!state.activeTabId || !state.session.length) return;
+  if (!state.activeTabId) return;
   state.tabSessions[state.activeTabId] = getSessionSnapshot();
 }
 
@@ -496,7 +496,9 @@ function updateSelectionSummary() {
 function renderLibrary() {
   const visible = getVisibleLibraryCards();
   $("#browseResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
-  const canCreateTab = getActiveTab()?.type === "main";
+  const activeTab = getActiveTab();
+  const canCreateTab = activeTab?.type === "main";
+  const canRemoveFromTab = activeTab?.type === "selected";
   $("#libraryCountLabel").textContent = `${getTabCards(getActiveTab()).length.toLocaleString()} cards`;
   $("#navBrowseCount").textContent = getTabCards(getActiveTab()).length.toLocaleString();
   $("#cardLibrary").innerHTML = visible.map((card) => `
@@ -506,7 +508,10 @@ function renderLibrary() {
         <span class="library-index">${String(card.number).padStart(3, "0")}</span>
       </label>
       <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
-      <div class="library-rank">${card.rank ? `#${escapeHtml(card.rank)}` : "A2"}</div>
+      <div class="library-card-meta">
+        <div class="library-rank">${card.rank ? `#${escapeHtml(card.rank)}` : "A2"}</div>
+        ${canRemoveFromTab ? `<button class="remove-card-button" data-remove-card="${escapeHtml(card.id)}" type="button" aria-label="Remove ${escapeHtml(card.german)} from this test">Remove</button>` : ""}
+      </div>
     </article>
   `).join("") || `<div class="empty-library">No cards match that search.</div>`;
   $$(".card-select").forEach((input) => input.addEventListener("change", (event) => {
@@ -516,6 +521,7 @@ function renderLibrary() {
     event.target.closest(".library-card")?.classList.toggle("selected", event.target.checked);
     updateSelectionSummary();
   }));
+  $$(".remove-card-button").forEach((button) => button.addEventListener("click", () => removeCardFromSelectedTab(button.dataset.removeCard)));
   updateSelectionSummary();
 }
 
@@ -557,6 +563,30 @@ function selectVisibleCards() {
 function clearSelectedCards() {
   state.selectedCardIds.clear();
   renderLibrary();
+}
+
+function removeCardFromSelectedTab(cardId) {
+  const tab = getActiveTab();
+  if (!tab || tab.type !== "selected") return;
+  const card = state.cards.find((item) => item.id === cardId);
+  if (!card) return;
+
+  tab.cardIds = (tab.cardIds || []).filter((id) => id !== cardId);
+  state.selectedCardIds.delete(cardId);
+  const removedBeforeCurrent = state.session
+    .slice(0, state.sessionIndex)
+    .filter((item) => item.id === cardId).length;
+  const removedCurrent = state.session[state.sessionIndex]?.id === cardId;
+  state.session = state.session.filter((item) => item.id !== cardId);
+  state.sessionIndex = Math.max(0, state.sessionIndex - removedBeforeCurrent);
+  state.sessionIndex = Math.min(state.sessionIndex, state.session.length);
+  state.repeatScheduled.delete(cardId);
+  state.sessionAnswered = Math.min(state.sessionAnswered, state.session.length);
+  if (removedCurrent) renderCard();
+  saveSessionState();
+  renderLibrary();
+  renderPracticeTab();
+  showToast(`Removed ${card.german} from this test`);
 }
 
 function escapeHtml(value) {
