@@ -310,6 +310,7 @@ function renderCard() {
   $("#germanSentence").textContent = card.sentenceDe || "Practice this word in a sentence.";
   $("#answerFeedback").textContent = "";
   $("#answerFeedback").className = "answer-feedback";
+  $("#previousButton").disabled = state.sessionIndex <= 0;
   $("#skipButton").textContent = "Skip card";
   setReviewControls(false);
   $("#progressCurrent").textContent = String(state.sessionIndex + 1);
@@ -411,6 +412,14 @@ function advanceCard() {
   saveSessionState();
 }
 
+function previousCard() {
+  if (state.sessionIndex <= 0) return;
+  state.sessionIndex -= 1;
+  renderCard();
+  saveSessionState();
+  refreshStats();
+}
+
 function renderCompletion() {
   $("#progressCurrent").textContent = String(state.session.length);
   $("#progressTotal").textContent = String(state.session.length);
@@ -427,6 +436,7 @@ function renderCompletion() {
   $("#reviewHint").textContent = isSelectedTab ? "Repeat this selected test" : "Start another full deck review";
   $("#options").innerHTML = `<button class="option-button correct" id="newSessionButton" type="button"><span class="option-number">↻</span><span>${isSelectedTab ? "Repeat selected test" : "Start a new session"}</span></button>`;
   $("#newSessionButton").addEventListener("click", startSession);
+  $("#previousButton").disabled = true;
   $("#skipButton").textContent = "Review again";
   $("#reviewModeLabel").textContent = "Session complete";
   $("#goalRing").style.background = "conic-gradient(var(--coral) 0deg, var(--coral) 360deg, #efd5cc 360deg)";
@@ -664,6 +674,7 @@ async function init() {
     if (button.dataset.view === "study") activateTab("main");
     else showView(button.dataset.view);
   }));
+  $("#previousButton").addEventListener("click", previousCard);
   $("#skipButton").addEventListener("click", () => {
     if (state.sessionIndex >= state.session.length) { startSession(); return; }
     if (state.answered) advanceCard();
