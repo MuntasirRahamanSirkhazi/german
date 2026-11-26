@@ -1067,26 +1067,28 @@ function renderAudio() {
   if (!state.audioTasks.length) return;
 
   const tasks = getAudioTasksForLevel();
-  const task = getCurrentAudioTask() || tasks[0];
+  const currentTask = getCurrentAudioTask();
+  const task = tasks.some((item) => item.id === currentTask?.id) ? currentTask : tasks[0];
   if (!task) return;
   if (state.audioTaskId !== task.id) resetAudioTask(task.id);
   const completed = tasks.filter((item) => state.audioProgress[item.id]?.completed).length;
   const levelCount = tasks.length;
-  $("#navAudioCount").textContent = String(state.audioTasks.length);
+  $("#navAudioCount").textContent = String(levelCount);
   $("#audioA2Count").textContent = String(getAudioTasksForLevel("A2").length);
   $("#audioB1Count").textContent = String(getAudioTasksForLevel("B1").length);
   $("#audioTaskCountLabel").textContent = `${levelCount} ${state.audioLevel} recordings`;
   $("#audioResultLabel").textContent = `${completed}/${levelCount} completed`;
   $("#audioLevelLabel").textContent = `${state.audioLevel} listening practice`;
-  $("#audioTaskNumber").textContent = `TASK ${String(tasks.findIndex((item) => item.id === task.id) + 1).padStart(2, "0")}`;
-  $("#audioTaskTitle").textContent = task.title;
-  $("#audioTaskTopic").textContent = `${task.topic} · ${task.speaker}`;
+  const taskIndex = tasks.findIndex((item) => item.id === task.id) + 1;
+  $("#audioTaskNumber").textContent = `AUDIO ${String(taskIndex).padStart(2, "0")}`;
+  $("#audioTaskTitle").textContent = `Track ${taskIndex}`;
+  $("#audioTaskTopic").textContent = `${state.audioLevel} listening task`;
   $("#audioDifficulty").textContent = task.level === "B1" ? "Goethe-style B1 · demanding" : "Goethe-style A2 · demanding";
   $("#audioTaskList").innerHTML = tasks.map((item, index) => {
     const result = state.audioProgress[item.id];
     return `<button class="audio-task-button${item.id === task.id ? " active" : ""}" type="button" data-audio-task-id="${escapeHtml(item.id)}">
       <span class="audio-task-number">${String(index + 1).padStart(2, "0")}</span>
-      <span class="audio-task-copy"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.topic)}</small></span>
+      <span class="audio-task-copy"><strong>Track ${index + 1}</strong><small>${item.level} listening</small></span>
       <span class="audio-task-status">${result?.completed ? `${result.score}%` : ""}</span>
     </button>`;
   }).join("");
