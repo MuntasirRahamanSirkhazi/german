@@ -31,6 +31,18 @@ const state = {
   importantLoadPromise: null,
   importantFilter: "A2",
   selectedImportantIds: new Set(),
+  audioTasks: [],
+  audioLoading: false,
+  audioLoadPromise: null,
+  audioLevel: initialDeckKey === "b1" ? "B1" : "A2",
+  audioTaskId: null,
+  audioDictationInput: "",
+  audioDictationChecked: false,
+  audioDictationCorrect: false,
+  audioAnswers: {},
+  audioQuestionsChecked: false,
+  audioTranscriptRevealed: false,
+  audioProgress: {},
   activeTabId: "main",
   practiceTabs: [],
   tabSessions: {},
@@ -85,6 +97,138 @@ function saveImportantBookmarks() {
     // Important bookmarks still work for the current visit if storage is unavailable.
   }
   updateBookmarkCount();
+}
+
+function loadAudioProgress() {
+  try {
+    return JSON.parse(localStorage.getItem("karten-german-audio-progress") || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveAudioProgress() {
+  try {
+    localStorage.setItem("karten-german-audio-progress", JSON.stringify(state.audioProgress));
+  } catch {
+    // Audio results still work for the current visit if storage is unavailable.
+  }
+}
+
+function getAudioTasksForLevel(level = state.audioLevel) {
+  return state.audioTasks.filter((task) => task.level === level);
+}
+
+function getCurrentAudioTask() {
+  return state.audioTasks.find((task) => task.id === state.audioTaskId) || null;
+}
+
+function resetAudioTask(taskId) {
+  state.audioTaskId = taskId;
+  state.audioDictationInput = "";
+  state.audioDictationChecked = false;
+  state.audioDictationCorrect = false;
+  state.audioAnswers = {};
+  state.audioQuestionsChecked = false;
+  state.audioTranscriptRevealed = false;
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+function chooseAudioLevel(level) {
+  if (!["A2", "B1"].includes(level)) return;
+  state.audioLevel = level;
+  const tasks = getAudioTasksForLevel(level);
+  const unfinished = tasks.find((task) => !state.audioProgress[task.id]?.completed);
+  resetAudioTask((unfinished || tasks[0])?.id || null);
+  renderAudio();
+}
+
+function selectAudioTask(taskId) {
+  const task = state.audioTasks.find((item) => item.id === taskId);
+  if (!task) return;
+  state.audioLevel = task.level;
+  resetAudioTask(task.id);
+  renderAudio();
+}
+
+function normalizeAudioText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/ß/g, "ss")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function finishAudioTaskIfReady() {
+  const task = getCurrentAudioTask();
+  if (!task || !state.audioDictationChecked || !state.audioQuestionsChecked) return;
+  const correctQuestions = task.questions.reduce((total, question, index) => total + (state.audioAnswers[index] === question.answer ? 1 : 0), 0);
+  state.audioProgress[task.id] = {
+    completed: true,
+    dictationCorrect: state.audioDictationCorrect,
+    correctQuestions,
+    totalQuestions: task.questions.length,
+    score: Number(((Number(state.audioDictationCorrect) + correctQuestions) / (task.questions.length + 1) * 100).toFixed(0)),
+    completedAt: new Date().toISOString(),
+  };
+  saveAudioProgress();
+}
+
+function checkAudioDictation() {
+  const task = getCurrentAudioTask();
+  if (!task) return;
+  if (!state.audioDictationInput.trim()) {
+    showToast("Write what you heard first");
+    return;
+  }
+  state.audioDictationCorrect = normalizeAudioText(state.audioDictationInput) === normalizeAudioText(task.dictation);
+  state.audioDictationChecked = true;
+  renderAudio();
+  finishAudioTaskIfReady();
+  renderAudio();
+}
+
+function checkAudioQuestions() {
+  const task = getCurrentAudioTask();
+  if (!task) return;
+  if (task.questions.some((_, index) => state.audioAnswers[index] === undefined)) {
+    showToast("Answer every question first");
+    return;
+  }
+  state.audioQuestionsChecked = true;
+  state.audioTranscriptRevealed = true;
+  renderAudio();
+  finishAudioTaskIfReady();
+  renderAudio();
+}
+
+function playCurrentAudio() {
+  const task = getCurrentAudioTask();
+  const status = $("#audioPlaybackStatus");
+  if (!task) return;
+  if (!("speechSynthesis" in window)) {
+    if (status) status.textContent = "Audio generation is not supported in this browser.";
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(task.transcript);
+  utterance.lang = "de-DE";
+  utterance.rate = Number($("#audioSpeedSelect")?.value || (task.level === "B1" ? 0.82 : 0.88));
+  utterance.pitch = 1;
+  utterance.onstart = () => { if (status) status.textContent = "Playing… listen for the details."; };
+  utterance.onend = () => { if (status) status.textContent = "Audio ended. Replay it if you need one more listen."; };
+  window.speechSynthesis.speak(utterance);
+  if (status) status.textContent = "Playing… listen for the details.";
+}
+
+function nextAudioTask() {
+  const tasks = getAudioTasksForLevel();
+  if (!tasks.length) return;
+  const currentIndex = Math.max(0, tasks.findIndex((task) => task.id === state.audioTaskId));
+  selectAudioTask(tasks[(currentIndex + 1) % tasks.length].id);
 }
 
 function updateBookmarkCount() {
@@ -885,6 +1029,112 @@ function loadImportantData() {
   return state.importantLoadPromise;
 }
 
+function loadAudioData() {
+  if (state.audioTasks.length) return Promise.resolve(state.audioTasks);
+  if (state.audioLoadPromise) return state.audioLoadPromise;
+  state.audioLoading = true;
+  state.audioLoadPromise = fetch("./data/audio-tasks.json?v=20261126-1")
+    .then((response) => {
+      if (!response.ok) throw new Error("Could not load audio practice");
+      return response.json();
+    })
+    .then((tasks) => {
+      state.audioTasks = tasks;
+      return tasks;
+    })
+    .finally(() => { state.audioLoading = false; });
+  return state.audioLoadPromise;
+}
+
+function renderAudio() {
+  const taskList = $("#audioTaskList");
+  if (!taskList) return;
+  if (!state.audioProgress || typeof state.audioProgress !== "object") state.audioProgress = {};
+  if (!state.audioTasks.length && !state.audioLoading) {
+    taskList.innerHTML = `<div class="empty-library">Loading listening tasks…</div>`;
+    loadAudioData()
+      .then(() => {
+        const tasks = getAudioTasksForLevel();
+        if (!state.audioTaskId || !state.audioTasks.some((task) => task.id === state.audioTaskId)) {
+          const next = tasks.find((task) => !state.audioProgress[task.id]?.completed) || tasks[0];
+          resetAudioTask(next?.id || null);
+        }
+        renderAudio();
+      })
+      .catch(() => { taskList.innerHTML = `<div class="empty-library">Audio practice could not be loaded. Please reload the page.</div>`; });
+    return;
+  }
+  if (!state.audioTasks.length) return;
+
+  const tasks = getAudioTasksForLevel();
+  const task = getCurrentAudioTask() || tasks[0];
+  if (!task) return;
+  if (state.audioTaskId !== task.id) resetAudioTask(task.id);
+  const completed = tasks.filter((item) => state.audioProgress[item.id]?.completed).length;
+  const levelCount = tasks.length;
+  $("#navAudioCount").textContent = String(state.audioTasks.length);
+  $("#audioA2Count").textContent = String(getAudioTasksForLevel("A2").length);
+  $("#audioB1Count").textContent = String(getAudioTasksForLevel("B1").length);
+  $("#audioTaskCountLabel").textContent = `${levelCount} ${state.audioLevel} recordings`;
+  $("#audioResultLabel").textContent = `${completed}/${levelCount} completed`;
+  $("#audioLevelLabel").textContent = `${state.audioLevel} listening practice`;
+  $("#audioTaskNumber").textContent = `TASK ${String(tasks.findIndex((item) => item.id === task.id) + 1).padStart(2, "0")}`;
+  $("#audioTaskTitle").textContent = task.title;
+  $("#audioTaskTopic").textContent = `${task.topic} · ${task.speaker}`;
+  $("#audioDifficulty").textContent = task.level === "B1" ? "Goethe-style B1 · demanding" : "Goethe-style A2 · demanding";
+  $("#audioTaskList").innerHTML = tasks.map((item, index) => {
+    const result = state.audioProgress[item.id];
+    return `<button class="audio-task-button${item.id === task.id ? " active" : ""}" type="button" data-audio-task-id="${escapeHtml(item.id)}">
+      <span class="audio-task-number">${String(index + 1).padStart(2, "0")}</span>
+      <span class="audio-task-copy"><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.topic)}</small></span>
+      <span class="audio-task-status">${result?.completed ? `${result.score}%` : ""}</span>
+    </button>`;
+  }).join("");
+  taskList.querySelectorAll("[data-audio-task-id]").forEach((button) => button.addEventListener("click", () => selectAudioTask(button.dataset.audioTaskId)));
+
+  $("#audioPlaybackStatus").textContent = "Press play, listen twice at most, then write what you heard.";
+  $("#audioPlayButton").disabled = !("speechSynthesis" in window);
+  $("#audioSpeedSelect").value = task.level === "B1" ? "0.82" : "0.88";
+  const dictationInput = $("#audioDictationInput");
+  if (document.activeElement !== dictationInput) dictationInput.value = state.audioDictationInput;
+  $("#audioDictationFeedback").innerHTML = state.audioDictationChecked
+    ? `<div class="audio-feedback ${state.audioDictationCorrect ? "correct" : "wrong"}">${state.audioDictationCorrect ? "Correct dictation." : `Not quite. The sentence was: <strong>${escapeHtml(task.dictation)}</strong>`}</div>`
+    : "";
+  $("#checkAudioDictationButton").disabled = state.audioDictationChecked;
+
+  $("#audioQuestions").innerHTML = task.questions.map((question, questionIndex) => {
+    const selected = state.audioAnswers[questionIndex];
+    const answerLabel = state.audioQuestionsChecked
+      ? `<div class="audio-question-result ${selected === question.answer ? "correct" : "wrong"}">${selected === question.answer ? "Correct." : `Correct answer: ${escapeHtml(question.options[question.answer])}`} <small>${escapeHtml(question.explanation)}</small></div>`
+      : "";
+    return `<fieldset class="audio-question">
+      <legend><span>${questionIndex + 1}</span>${escapeHtml(question.prompt)}</legend>
+      <div class="audio-options">${question.options.map((option, optionIndex) => {
+        const isSelected = selected === optionIndex;
+        const isCorrect = state.audioQuestionsChecked && optionIndex === question.answer;
+        const isWrong = state.audioQuestionsChecked && isSelected && !isCorrect;
+        return `<button class="audio-option${isSelected ? " selected" : ""}${isCorrect ? " correct" : ""}${isWrong ? " wrong" : ""}" type="button" data-audio-question="${questionIndex}" data-audio-option="${optionIndex}" aria-pressed="${isSelected}" ${state.audioQuestionsChecked ? "disabled" : ""}><span>${String.fromCharCode(65 + optionIndex)}</span>${escapeHtml(option)}</button>`;
+      }).join("")}</div>${answerLabel}
+    </fieldset>`;
+  }).join("");
+  $("#audioQuestions").querySelectorAll("[data-audio-question]").forEach((button) => button.addEventListener("click", () => {
+    state.audioAnswers[Number(button.dataset.audioQuestion)] = Number(button.dataset.audioOption);
+    renderAudio();
+  }));
+  $("#checkAudioQuestionsButton").disabled = state.audioQuestionsChecked;
+  $("#checkAudioQuestionsButton").textContent = state.audioQuestionsChecked ? "Answers checked" : "Check answers";
+  $("#audioTranscript").hidden = !state.audioTranscriptRevealed;
+  $("#audioTranscriptText").textContent = task.transcript;
+  $("#audioNextButton").disabled = !(state.audioDictationChecked && state.audioQuestionsChecked);
+  $("#audioNextButton").textContent = state.audioProgress[task.id]?.completed ? "Next audio" : "Finish and next";
+  $("#audioCompletedLabel").textContent = `${completed} of ${levelCount} completed`;
+  $$(".audio-level").forEach((button) => {
+    const active = button.dataset.audioLevel === state.audioLevel;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function renderImportant() {
   const library = $("#importantLibrary");
   if (!library) return;
@@ -1001,6 +1251,7 @@ function showView(viewName) {
   if (viewName === "browse") renderLibrary();
   if (viewName === "bookmarks") renderBookmarks();
   if (viewName === "important") renderImportant();
+  if (viewName === "audio") renderAudio();
   if (viewName === "stats") refreshStats();
   if (panelName === "study") renderPracticeTab();
 }
@@ -1053,6 +1304,15 @@ function bindBrowseControls() {
   $("#selectVisibleImportantButton")?.addEventListener("click", selectVisibleImportant);
   $("#clearImportantSelectionButton")?.addEventListener("click", clearSelectedImportant);
   $("#testImportantButton")?.addEventListener("click", startImportantTest);
+  $("#audioPlayButton")?.addEventListener("click", playCurrentAudio);
+  $("#audioReplayButton")?.addEventListener("click", playCurrentAudio);
+  $("#audioNewTaskButton")?.addEventListener("click", nextAudioTask);
+  $("#checkAudioDictationButton")?.addEventListener("click", checkAudioDictation);
+  $("#checkAudioQuestionsButton")?.addEventListener("click", checkAudioQuestions);
+  $("#audioRevealButton")?.addEventListener("click", () => { state.audioTranscriptRevealed = !state.audioTranscriptRevealed; renderAudio(); });
+  $("#audioNextButton")?.addEventListener("click", nextAudioTask);
+  $("#audioDictationInput")?.addEventListener("input", (event) => { state.audioDictationInput = event.target.value; });
+  $$(".audio-level").forEach((button) => button.addEventListener("click", () => chooseAudioLevel(button.dataset.audioLevel)));
   $$(".important-filter").forEach((button) => button.addEventListener("click", async () => {
     const deckKey = button.dataset.importantFilter.toLowerCase();
     if (deckKey === state.deckKey) {
@@ -1073,6 +1333,7 @@ async function init() {
   // Bind Browse first so a deck-loading or restore error cannot leave visible controls inert.
   bindBrowseControls();
   $("#dateLabel").textContent = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" }).format(new Date());
+  state.audioProgress = loadAudioProgress();
   if (window.matchMedia("(max-width: 720px)").matches) $("#sidebar").setAttribute("aria-hidden", "true");
   $("#mobileMenuButton").addEventListener("click", () => toggleSidebar());
   $("#sidebarBackdrop").addEventListener("click", () => toggleSidebar(false));

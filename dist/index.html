@@ -58,6 +58,11 @@
             <span>Important vocabulary</span>
             <span class="nav-count muted" id="navImportantCount">100</span>
           </button>
+          <button class="nav-item" data-view="audio" type="button">
+            <span class="nav-icon">♫</span>
+            <span>Audio practice</span>
+            <span class="nav-count muted" id="navAudioCount">20</span>
+          </button>
           <button class="nav-item" data-view="stats" type="button">
             <span class="nav-icon">◒</span>
             <span>Progress</span>
@@ -217,6 +222,51 @@
             </div>
             <p class="important-note">The top 100 words for each level, ordered by frequency and selected as a focused core set.</p>
             <div class="card-library important-library" id="importantLibrary"></div>
+          </section>
+
+          <section class="view audio-view" id="audioView" data-panel="audio" hidden>
+            <div class="page-heading compact-heading">
+              <div><div class="eyebrow">Listening lab <span class="eyebrow-line"></span> <span id="audioTaskCountLabel">10 A2 recordings</span></div><h1>Train your<br /><em>listening.</em></h1></div>
+              <div class="audio-header-stat"><span class="note-dot"></span><span id="audioResultLabel">0/10 completed</span></div>
+            </div>
+            <div class="audio-level-toolbar">
+              <div class="audio-levels" role="group" aria-label="Choose listening level">
+                <button class="audio-level active" data-audio-level="A2" type="button" aria-pressed="true">A2 <span id="audioA2Count">10</span></button>
+                <button class="audio-level" data-audio-level="B1" type="button" aria-pressed="false">B1 <span id="audioB1Count">10</span></button>
+              </div>
+              <button class="toolbar-button" id="audioNewTaskButton" type="button">Next audio</button>
+            </div>
+            <div class="audio-layout">
+              <aside class="audio-task-list-panel">
+                <div class="audio-list-heading"><span class="rail-label">Audio bank</span><span id="audioCompletedLabel">0 of 10 completed</span></div>
+                <div class="audio-task-list" id="audioTaskList"></div>
+              </aside>
+              <article class="audio-card" id="audioCard">
+                <div class="audio-card-topline"><span class="tag" id="audioLevelLabel">A2 listening practice</span><span class="audio-task-number" id="audioTaskNumber">TASK 01</span></div>
+                <div class="audio-card-heading"><h2 id="audioTaskTitle">Loading audio task</h2><p id="audioTaskTopic">Listening task</p><span class="audio-difficulty" id="audioDifficulty">Goethe-style · demanding</span></div>
+                <div class="audio-player">
+                  <div class="audio-player-icon" aria-hidden="true">♫</div>
+                  <div class="audio-player-copy"><strong>Listen carefully</strong><span id="audioPlaybackStatus">Press play to generate the German audio.</span></div>
+                  <button class="audio-play-button" id="audioPlayButton" type="button">Play audio</button>
+                  <button class="audio-replay-button" id="audioReplayButton" type="button" aria-label="Replay audio">↻</button>
+                  <label class="audio-speed-label">Speed<select id="audioSpeedSelect" aria-label="Audio speed"><option value="0.82">0.82×</option><option value="0.88" selected>0.88×</option><option value="1">1×</option></select></label>
+                </div>
+                <section class="audio-dictation-section">
+                  <div class="audio-section-heading"><div><span class="rail-label">Part 1 · Dictation</span><h3>Write what you hear</h3></div><span class="audio-points">1 point</span></div>
+                  <p class="audio-instruction">Listen for exact words, endings and word order. Punctuation and capitalization are not scored.</p>
+                  <textarea id="audioDictationInput" rows="3" placeholder="Type the sentence you heard…" aria-label="Write what you hear"></textarea>
+                  <div class="audio-action-row"><button class="toolbar-button primary" id="checkAudioDictationButton" type="button">Check dictation</button><div id="audioDictationFeedback" aria-live="polite"></div></div>
+                </section>
+                <section class="audio-questions-section">
+                  <div class="audio-section-heading"><div><span class="rail-label">Part 2 · Comprehension</span><h3>Choose the correct answer</h3></div><span class="audio-points" id="audioQuestionPoints">2 points</span></div>
+                  <p class="audio-instruction">The questions test details, intention and information that is easy to miss.</p>
+                  <div id="audioQuestions"></div>
+                  <div class="audio-action-row"><button class="toolbar-button primary" id="checkAudioQuestionsButton" type="button">Check answers</button></div>
+                </section>
+                <div class="audio-card-footer"><button class="toolbar-button" id="audioRevealButton" type="button">Show transcript</button><button class="toolbar-button primary" id="audioNextButton" type="button" disabled>Finish and next</button></div>
+                <div class="audio-transcript" id="audioTranscript" hidden><span class="rail-label">Transcript</span><p id="audioTranscriptText"></p></div>
+              </article>
+            </div>
           </section>
 
           <section class="view stats-view" data-panel="stats" hidden>

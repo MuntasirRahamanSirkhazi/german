@@ -1,0 +1,262 @@
+[
+  {
+    "id": "a2-audio-01",
+    "level": "A2",
+    "title": "A delayed train",
+    "topic": "Travel",
+    "speaker": "Station announcement",
+    "transcript": "Achtung am Gleis drei: Der Regionalzug nach Köln fährt heute nicht um 14 Uhr 20, sondern erst um 14 Uhr 35 ab. Der Grund ist eine technische Störung. Fahrgäste nach Bonn können trotzdem einsteigen; dieser Zug hält dort.",
+    "dictation": "Der Regionalzug nach Köln fährt heute erst um 14 Uhr 35 ab.",
+    "questions": [
+      {"prompt": "Warum fährt der Zug später ab?", "options": ["Wegen einer technischen Störung.", "Wegen eines Streiks.", "Wegen des Wetters."], "answer": 0, "explanation": "Die Ansage nennt eine technische Störung als Grund."},
+      {"prompt": "Was können Fahrgäste nach Bonn tun?", "options": ["Sie müssen ein Taxi nehmen.", "Sie können in diesen Zug einsteigen.", "Sie müssen bis morgen warten."], "answer": 1, "explanation": "Der Zug hält in Bonn, deshalb können sie einsteigen."}
+    ]
+  },
+  {
+    "id": "a2-audio-02",
+    "level": "A2",
+    "title": "A changed doctor appointment",
+    "topic": "Health",
+    "speaker": "Receptionist",
+    "transcript": "Praxis Dr. Weber, guten Morgen. Ihr Termin am Donnerstag muss leider verschoben werden, weil die Ärztin an diesem Tag nicht da ist. Wir können Ihnen Freitag um neun Uhr oder Montag um halb elf anbieten. Bitte rufen Sie bis heute Abend zurück.",
+    "dictation": "Ihr Termin am Donnerstag muss leider verschoben werden.",
+    "questions": [
+      {"prompt": "Warum wird der Termin verschoben?", "options": ["Der Patient ist krank.", "Die Praxis ist zu teuer.", "Die Ärztin ist nicht da."], "answer": 2, "explanation": "Die Ärztin ist am Donnerstag nicht in der Praxis."},
+      {"prompt": "Bis wann soll der Patient zurückrufen?", "options": ["Bis heute Abend.", "Bis Freitagmorgen.", "Bis nächste Woche."], "answer": 0, "explanation": "Die Rezeption bittet um einen Rückruf bis heute Abend."}
+    ]
+  },
+  {
+    "id": "a2-audio-03",
+    "level": "A2",
+    "title": "Water shut off",
+    "topic": "Home",
+    "speaker": "Building notice",
+    "transcript": "Liebe Hausbewohner, am Dienstag wird das Wasser im ganzen Haus von acht bis ungefähr zwölf Uhr abgestellt. Die Handwerker reparieren eine Leitung im Keller. Bitte füllen Sie vorher genug Wasser ab und benutzen Sie in dieser Zeit nicht die Waschmaschine.",
+    "dictation": "Am Dienstag wird das Wasser im ganzen Haus abgestellt.",
+    "questions": [
+      {"prompt": "Wann gibt es kein Wasser?", "options": ["Am Montagabend.", "Am Dienstagvormittag.", "Am Mittwochmittag."], "answer": 1, "explanation": "Die Arbeiten finden am Dienstag von acht bis ungefähr zwölf Uhr statt."},
+      {"prompt": "Was sollen die Bewohner nicht benutzen?", "options": ["Den Aufzug.", "Die Heizung.", "Die Waschmaschine."], "answer": 2, "explanation": "Die Waschmaschine soll während der Reparatur nicht laufen."}
+    ]
+  },
+  {
+    "id": "a2-audio-04",
+    "level": "A2",
+    "title": "A birthday plan",
+    "topic": "Free time",
+    "speaker": "Telephone message",
+    "transcript": "Hallo Sara, ich habe für Samstag einen Tisch im Café am Park reserviert. Wir treffen uns schon um halb sieben, weil der Film um acht beginnt. Bring bitte keine Blumen mit; Jonas kümmert sich um die Dekoration.",
+    "dictation": "Wir treffen uns schon um halb sieben.",
+    "questions": [
+      {"prompt": "Wo treffen sich die Freunde?", "options": ["Im Café am Park.", "Im Kino am Bahnhof.", "Bei Jonas zu Hause."], "answer": 0, "explanation": "Der Tisch ist im Café am Park reserviert."},
+      {"prompt": "Was soll Sara nicht mitbringen?", "options": ["Einen Film.", "Blumen.", "Essen."], "answer": 1, "explanation": "Jonas kümmert sich um die Dekoration, deshalb soll sie keine Blumen bringen."}
+    ]
+  },
+  {
+    "id": "a2-audio-05",
+    "level": "A2",
+    "title": "A course exception",
+    "topic": "Learning",
+    "speaker": "Course information",
+    "transcript": "Im nächsten Monat beginnt der Deutschkurs im Büro immer mittwochs um 18 Uhr. Am ersten Mittwoch findet jedoch eine Besprechung statt, deshalb startet der Kurs ausnahmsweise um 18 Uhr 30. Die Teilnehmer sollen ihr Lehrbuch und einen Stift mitbringen.",
+    "dictation": "Am ersten Mittwoch startet der Deutschkurs ausnahmsweise um 18 Uhr 30.",
+    "questions": [
+      {"prompt": "Wann beginnt der Kurs normalerweise?", "options": ["Um 17 Uhr.", "Um 18 Uhr.", "Um 18 Uhr 30."], "answer": 1, "explanation": "Nur am ersten Mittwoch beginnt der Kurs später."},
+      {"prompt": "Was sollen die Teilnehmer mitbringen?", "options": ["Ein Lehrbuch und einen Stift.", "Einen Computer und Kopfhörer.", "Eine Präsentation und Fotos."], "answer": 0, "explanation": "Diese beiden Dinge werden ausdrücklich genannt."}
+    ]
+  },
+  {
+    "id": "a2-audio-06",
+    "level": "A2",
+    "title": "The picnic weather",
+    "topic": "Weather",
+    "speaker": "Club message",
+    "transcript": "Der Wetterdienst meldet für Samstagvormittag Sonne, aber am Nachmittag starke Gewitter. Unser Picknick im Stadtpark findet deshalb nur bis 13 Uhr statt. Wenn es früher regnet, treffen wir uns im Jugendzentrum neben dem Park.",
+    "dictation": "Unser Picknick im Stadtpark findet deshalb nur bis 13 Uhr statt.",
+    "questions": [
+      {"prompt": "Wie wird das Wetter am Nachmittag?", "options": ["Es gibt starke Gewitter.", "Es bleibt den ganzen Tag sonnig.", "Es wird sehr kalt und trocken."], "answer": 0, "explanation": "Für den Nachmittag werden starke Gewitter gemeldet."},
+      {"prompt": "Wo treffen sich die Teilnehmer bei frühem Regen?", "options": ["Im Stadtpark.", "Im Jugendzentrum.", "Im Café am Bahnhof."], "answer": 1, "explanation": "Das Jugendzentrum liegt neben dem Park und ist die Alternative."}
+    ]
+  },
+  {
+    "id": "a2-audio-07",
+    "level": "A2",
+    "title": "Returning a jacket",
+    "topic": "Shopping",
+    "speaker": "Shop assistant",
+    "transcript": "Sie können die Jacke innerhalb von vierzehn Tagen zurückgeben, wenn sie nicht getragen wurde. Bringen Sie bitte den Kassenbon mit. Eine Rückzahlung auf die Karte dauert normalerweise drei bis fünf Werktage.",
+    "dictation": "Sie können die Jacke innerhalb von vierzehn Tagen zurückgeben.",
+    "questions": [
+      {"prompt": "Welche Bedingung gilt für die Rückgabe?", "options": ["Die Jacke muss getragen sein.", "Die Jacke darf nicht getragen worden sein.", "Die Jacke muss gewaschen werden."], "answer": 1, "explanation": "Ungetragene Kleidung kann innerhalb von vierzehn Tagen zurückgegeben werden."},
+      {"prompt": "Wie lange kann die Rückzahlung dauern?", "options": ["Drei bis fünf Werktage.", "Vierzehn Monate.", "Nur einen Tag."], "answer": 0, "explanation": "Die Rückzahlung auf die Karte braucht normalerweise drei bis fünf Werktage."}
+    ]
+  },
+  {
+    "id": "a2-audio-08",
+    "level": "A2",
+    "title": "The cancelled evening class",
+    "topic": "Learning",
+    "speaker": "School announcement",
+    "transcript": "Der Abendkurs fällt heute aus, weil die Lehrerin krank ist. Die Stunde wird nicht nächste Woche nachgeholt, sondern am letzten Kurstag im Juli. Die Schule informiert alle Teilnehmer noch per E-Mail über den Raum.",
+    "dictation": "Der Abendkurs fällt heute aus, weil die Lehrerin krank ist.",
+    "questions": [
+      {"prompt": "Warum findet der Kurs heute nicht statt?", "options": ["Der Raum ist zu klein.", "Die Lehrerin ist krank.", "Die Teilnehmer sind im Urlaub."], "answer": 1, "explanation": "Die Krankheit der Lehrerin ist der Grund für den Ausfall."},
+      {"prompt": "Wann wird die Stunde nachgeholt?", "options": ["Nächste Woche.", "Morgen früh.", "Am letzten Kurstag im Juli."], "answer": 2, "explanation": "Die Nachholstunde findet am letzten Kurstag im Juli statt."}
+    ]
+  },
+  {
+    "id": "a2-audio-09",
+    "level": "A2",
+    "title": "A changed bus stop",
+    "topic": "City transport",
+    "speaker": "Bus announcement",
+    "transcript": "Ab Montag fährt die Buslinie 16 wegen der Baustelle nicht mehr durch die Hauptstraße. Die Haltestelle Rathaus wird für drei Wochen an die Ecke Gartenstraße verlegt. Fahrgäste zum Bahnhof können alternativ die Linie 8 nehmen.",
+    "dictation": "Die Haltestelle Rathaus wird für drei Wochen verlegt.",
+    "questions": [
+      {"prompt": "Wie lange ist die Haltestelle verlegt?", "options": ["Für drei Tage.", "Für drei Wochen.", "Für den ganzen Sommer."], "answer": 1, "explanation": "Die Ansage nennt drei Wochen."},
+      {"prompt": "Welche Linie fährt alternativ zum Bahnhof?", "options": ["Die Linie 6.", "Die Linie 8.", "Die Linie 16."], "answer": 1, "explanation": "Fahrgäste können die Linie 8 nehmen."}
+    ]
+  },
+  {
+    "id": "a2-audio-10",
+    "level": "A2",
+    "title": "A museum visit",
+    "topic": "Culture",
+    "speaker": "Museum information",
+    "transcript": "Das Stadtmuseum öffnet am Sonntag erst um zwölf Uhr, weil am Vormittag eine private Veranstaltung stattfindet. Die Führung durch die Fotoausstellung beginnt um 14 Uhr und kostet drei Euro zusätzlich. Kinder unter sechs Jahren brauchen keine Eintrittskarte.",
+    "dictation": "Das Stadtmuseum öffnet am Sonntag erst um zwölf Uhr.",
+    "questions": [
+      {"prompt": "Warum öffnet das Museum später?", "options": ["Wegen einer privaten Veranstaltung.", "Wegen einer Reparatur am Eingang.", "Wegen eines neuen Films."], "answer": 0, "explanation": "Am Vormittag findet eine private Veranstaltung statt."},
+      {"prompt": "Wie viel kostet die Führung zusätzlich?", "options": ["Zwei Euro.", "Drei Euro.", "Sechs Euro."], "answer": 1, "explanation": "Die Führung kostet drei Euro zusätzlich."}
+    ]
+  },
+  {
+    "id": "b1-audio-01",
+    "level": "B1",
+    "title": "A car-free market square",
+    "topic": "City planning",
+    "speaker": "Local radio",
+    "transcript": "Im Bürgerforum wird heute über die neue Verkehrsregelung am Marktplatz gesprochen. Die Stadt möchte den Platz ab Juni für Autos sperren, damit dort mehr Außenflächen für Cafés entstehen. Lieferwagen dürfen weiterhin zwischen sechs und zehn Uhr morgens einfahren. Anwohner kritisieren allerdings, dass die geplante Umleitung zu lang ist.",
+    "dictation": "Die Stadt möchte den Marktplatz ab Juni für Autos sperren.",
+    "questions": [
+      {"prompt": "Welches Ziel verfolgt die Stadt mit der Sperrung?", "options": ["Sie möchte mehr Platz für Cafés schaffen.", "Sie möchte neue Parkhäuser bauen.", "Sie möchte Lieferungen ganz verbieten."], "answer": 0, "explanation": "Durch die Sperrung sollen mehr Außenflächen für Cafés entstehen."},
+      {"prompt": "Wann dürfen Lieferwagen weiterhin einfahren?", "options": ["Nach zehn Uhr abends.", "Zwischen sechs und zehn Uhr morgens.", "Nur am Wochenende."], "answer": 1, "explanation": "Das Zeitfenster für Lieferwagen bleibt morgens bestehen."}
+    ]
+  },
+  {
+    "id": "b1-audio-02",
+    "level": "B1",
+    "title": "Working partly from home",
+    "topic": "Work",
+    "speaker": "Interview",
+    "transcript": "Viele Beschäftigte arbeiten inzwischen teilweise von zu Hause. In einer aktuellen Umfrage nennen sie die ruhige Arbeitsumgebung als Vorteil, vermissen aber den spontanen Austausch im Team. Das Unternehmen plant deshalb keine vollständige Rückkehr ins Büro, sondern feste Teamtage, an denen alle gemeinsam vor Ort arbeiten.",
+    "dictation": "Das Unternehmen plant keine vollständige Rückkehr ins Büro.",
+    "questions": [
+      {"prompt": "Welchen Vorteil nennen die Beschäftigten?", "options": ["Eine ruhigere Arbeitsumgebung.", "Mehr spontane Treffen im Team.", "Kürzere Arbeitszeiten für alle."], "answer": 0, "explanation": "Die ruhige Arbeitsumgebung wird als Vorteil genannt."},
+      {"prompt": "Welche Lösung plant das Unternehmen?", "options": ["Eine vollständige Rückkehr ins Büro.", "Feste gemeinsame Teamtage.", "Nur noch Nachtarbeit zu Hause."], "answer": 1, "explanation": "Das Unternehmen möchte feste Tage vor Ort einführen."}
+    ]
+  },
+  {
+    "id": "b1-audio-03",
+    "level": "B1",
+    "title": "Saving energy in schools",
+    "topic": "Environment",
+    "speaker": "Community meeting",
+    "transcript": "Die Gemeinde will den Energieverbrauch in öffentlichen Gebäuden senken. In den Schulen sollen zunächst die Heizungen besser gesteuert und alte Fenster ausgetauscht werden. Eine Solaranlage auf dem Rathausdach wäre zwar langfristig sinnvoll, ist aber in diesem Jahr wegen der hohen Kosten nicht vorgesehen.",
+    "dictation": "In den Schulen sollen zuerst die Heizungen besser gesteuert werden.",
+    "questions": [
+      {"prompt": "Welche Maßnahmen beginnen in den Schulen?", "options": ["Neue Dächer und größere Klassenräume.", "Bessere Heizungssteuerung und neue Fenster.", "Eine Solaranlage auf jeder Schule."], "answer": 1, "explanation": "Diese beiden Maßnahmen werden als erste Schritte genannt."},
+      {"prompt": "Warum wird die Solaranlage am Rathaus nicht dieses Jahr gebaut?", "options": ["Sie ist technisch unmöglich.", "Das Rathaus wird geschlossen.", "Die Kosten sind zu hoch."], "answer": 2, "explanation": "Die hohen Kosten verhindern die Umsetzung in diesem Jahr."}
+    ]
+  },
+  {
+    "id": "b1-audio-04",
+    "level": "B1",
+    "title": "New library hours",
+    "topic": "University",
+    "speaker": "University announcement",
+    "transcript": "Die Universitätsbibliothek verlängert ab nächster Woche ihre Öffnungszeiten bis 22 Uhr. Der Lesesaal kann dann auch am Samstag genutzt werden, allerdings nur mit einer vorherigen Reservierung. Die Ausleihe von Büchern endet weiterhin um 18 Uhr, weil danach kein Personal an der Theke ist.",
+    "dictation": "Der Lesesaal kann am Samstag nur mit einer vorherigen Reservierung genutzt werden.",
+    "questions": [
+      {"prompt": "Welche neue Möglichkeit gibt es am Samstag?", "options": ["Man kann den Lesesaal nutzen.", "Man kann bis 22 Uhr Bücher ausleihen.", "Man kann ohne Reservierung arbeiten."], "answer": 0, "explanation": "Der Lesesaal ist am Samstag geöffnet, aber nur mit Reservierung."},
+      {"prompt": "Warum endet die Ausleihe weiterhin um 18 Uhr?", "options": ["Dann wird die Bibliothek geschlossen.", "Danach ist kein Personal an der Theke.", "Die Bücher werden jeden Abend geprüft."], "answer": 1, "explanation": "Die Ansage erklärt die fehlende Betreuung an der Theke."}
+    ]
+  },
+  {
+    "id": "b1-audio-05",
+    "level": "B1",
+    "title": "A reimbursed health course",
+    "topic": "Health",
+    "speaker": "Insurance hotline",
+    "transcript": "Patienten mit einer gesetzlichen Versicherung müssen für den neuen Gesundheitskurs zunächst selbst bezahlen. Die Krankenkasse erstattet später bis zu achtzig Prozent, wenn mindestens zehn Termine besucht wurden. Wer einen Termin versäumt, kann ihn nicht online nachholen, sondern muss direkt mit der Praxis sprechen.",
+    "dictation": "Die Krankenkasse erstattet später bis zu achtzig Prozent.",
+    "questions": [
+      {"prompt": "Welche Bedingung gilt für die Erstattung?", "options": ["Man muss mindestens zehn Termine besuchen.", "Man muss sofort online bezahlen.", "Man muss den Kurs jeden Tag wiederholen."], "answer": 0, "explanation": "Die Erstattung hängt von mindestens zehn besuchten Terminen ab."},
+      {"prompt": "Was soll man bei einem verpassten Termin tun?", "options": ["Eine neue Versicherung wählen.", "Direkt mit der Praxis sprechen.", "Den Termin online selbst nachholen."], "answer": 1, "explanation": "Ein Ersatztermin kann nicht selbst online gebucht werden."}
+    ]
+  },
+  {
+    "id": "b1-audio-06",
+    "level": "B1",
+    "title": "Renovating the building",
+    "topic": "Housing",
+    "speaker": "Property management",
+    "transcript": "Die Hausverwaltung kündigt an, dass die Fassade im Herbst gedämmt wird. Während der Arbeiten kann es an einigen Tagen zu Lärm und eingeschränktem Zugang zu den Balkonen kommen. Die Miete soll deshalb nicht erhöht werden; die Verwaltung rechnet jedoch mit einer längeren Bauzeit als ursprünglich geplant.",
+    "dictation": "Während der Arbeiten kann der Zugang zu den Balkonen eingeschränkt sein.",
+    "questions": [
+      {"prompt": "Welche Einschränkung wird angekündigt?", "options": ["Die Balkone sind zeitweise schwer zugänglich.", "Die Bewohner müssen ausziehen.", "Die Heizung bleibt den ganzen Winter aus."], "answer": 0, "explanation": "Der Zugang zu den Balkonen kann an einigen Tagen eingeschränkt sein."},
+      {"prompt": "Was passiert mit der Miete?", "options": ["Sie wird sofort verdoppelt.", "Sie soll wegen der Arbeiten nicht steigen.", "Sie wird nur im Sommer bezahlt."], "answer": 1, "explanation": "Die Verwaltung plant keine Mieterhöhung wegen der Bauarbeiten."}
+    ]
+  },
+  {
+    "id": "b1-audio-07",
+    "level": "B1",
+    "title": "A streaming price change",
+    "topic": "Consumer information",
+    "speaker": "Service message",
+    "transcript": "Ein Streamingdienst ändert ab dem kommenden Monat seine Preise. Kundinnen und Kunden, die den alten Tarif behalten möchten, müssen nichts unternehmen; ihr Vertrag läuft bis zum Ende der Mindestlaufzeit weiter. Wer sofort kündigt, kann die bereits bezahlte Monatsgebühr nicht zurückfordern.",
+    "dictation": "Der alte Tarif läuft bis zum Ende der Mindestlaufzeit weiter.",
+    "questions": [
+      {"prompt": "Was müssen Kunden tun, die den alten Tarif behalten wollen?", "options": ["Nichts unternehmen.", "Sofort eine neue Karte bestellen.", "Den Vertrag täglich bestätigen."], "answer": 0, "explanation": "Der alte Vertrag läuft bis zum Ende der Mindestlaufzeit weiter."},
+      {"prompt": "Was gilt bei einer sofortigen Kündigung?", "options": ["Die Monatsgebühr wird verdoppelt.", "Die bereits bezahlte Gebühr wird nicht zurückgezahlt.", "Der alte Tarif wird kostenlos verlängert."], "answer": 1, "explanation": "Eine Rückforderung der bezahlten Monatsgebühr ist nicht möglich."}
+    ]
+  },
+  {
+    "id": "b1-audio-08",
+    "level": "B1",
+    "title": "Volunteers at the food bank",
+    "topic": "Volunteering",
+    "speaker": "Volunteer coordinator",
+    "transcript": "Die Tafel sucht für samstags weitere Helferinnen und Helfer. Die Aufgaben beginnen nicht mit der Ausgabe der Lebensmittel, sondern mit dem Sortieren der Lieferungen am Vormittag. Besonders gebraucht werden Personen mit einem Auto, die übrig gebliebene Lebensmittel zu zwei kleineren Ausgabestellen bringen können.",
+    "dictation": "Die Aufgaben beginnen mit dem Sortieren der Lieferungen am Vormittag.",
+    "questions": [
+      {"prompt": "Womit beginnt die Arbeit am Samstag?", "options": ["Mit dem Verkauf im Supermarkt.", "Mit dem Sortieren der Lieferungen.", "Mit dem Kochen eines Mittagessens."], "answer": 1, "explanation": "Die Ausgabe findet erst nach dem Sortieren statt."},
+      {"prompt": "Welche Helfer werden besonders gesucht?", "options": ["Personen mit einem Auto.", "Personen ohne Zeit am Vormittag.", "Nur professionelle Köche."], "answer": 0, "explanation": "Mit einem Auto können Lebensmittel zu anderen Stellen gebracht werden."}
+    ]
+  },
+  {
+    "id": "b1-audio-09",
+    "level": "B1",
+    "title": "A rail strike",
+    "topic": "Travel",
+    "speaker": "Transport news",
+    "transcript": "Die Gewerkschaft hat für Freitag einen ganztägigen Warnstreik angekündigt. Die meisten Regionalzüge fallen aus, während einige Fernzüge mit Verspätung fahren sollen. Reisende können ihr Ticket am Streiktag auch für eine frühere Verbindung verwenden, müssen aber mit sehr vollen Zügen rechnen.",
+    "dictation": "Die Gewerkschaft hat für Freitag einen ganztägigen Warnstreik angekündigt.",
+    "questions": [
+      {"prompt": "Welche Züge fallen meistens aus?", "options": ["Die Regionalzüge.", "Alle Nachtzüge.", "Nur internationale Busse."], "answer": 0, "explanation": "Die meisten Regionalzüge werden nicht fahren."},
+      {"prompt": "Was können Reisende mit ihrem Ticket machen?", "options": ["Es für eine frühere Verbindung verwenden.", "Es gegen Bargeld in jeder Stadt tauschen.", "Es nur am nächsten Monat nutzen."], "answer": 0, "explanation": "Am Streiktag ist auch eine frühere Verbindung möglich."}
+    ]
+  },
+  {
+    "id": "b1-audio-10",
+    "level": "B1",
+    "title": "Feedback after training",
+    "topic": "Workplace learning",
+    "speaker": "Company report",
+    "transcript": "Nach der internen Schulung zur Datensicherheit wurden die Teilnehmer nach ihrer Meinung gefragt. Die meisten fanden die praktischen Beispiele hilfreich, kritisierten aber, dass die Übungen zu spät am Nachmittag stattfanden. Für den nächsten Termin will die Personalabteilung deshalb kürzere Einheiten am Vormittag anbieten.",
+    "dictation": "Die meisten Teilnehmer fanden die praktischen Beispiele hilfreich.",
+    "questions": [
+      {"prompt": "Was fanden die meisten Teilnehmer hilfreich?", "options": ["Die praktischen Beispiele.", "Die langen Pausen.", "Die späten Übungen."], "answer": 0, "explanation": "Die Beispiele wurden positiv bewertet."},
+      {"prompt": "Was soll beim nächsten Termin geändert werden?", "options": ["Längere Einheiten am Abend.", "Kürzere Einheiten am Vormittag.", "Ein Kurs ohne Übungen."], "answer": 1, "explanation": "Die Personalabteilung reagiert auf die Kritik an der späten Zeit."}
+    ]
+  }
+]
