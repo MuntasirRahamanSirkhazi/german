@@ -25,6 +25,9 @@ const state = {
   selectedCardIds: new Set(),
   bookmarkedCardIds: new Set(),
   selectedBookmarkIds: new Set(),
+  importantCards: [],
+  importantLoading: false,
+  importantFilter: "all",
   activeTabId: "main",
   practiceTabs: [],
   tabSessions: {},
@@ -763,6 +766,63 @@ function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character]));
 }
 
+function renderImportant() {
+  const library = $("#importantLibrary");
+  if (!library) return;
+  if (!state.importantCards.length && !state.importantLoading) {
+    state.importantLoading = true;
+    library.innerHTML = `<div class="empty-library">Loading important vocabulary…</div>`;
+    fetch("./data/important-vocabulary.json")
+      .then((response) => {
+        if (!response.ok) throw new Error("Could not load important vocabulary");
+        return response.json();
+      })
+      .then((cards) => {
+        state.importantCards = cards;
+        state.importantLoading = false;
+        renderImportant();
+      })
+      .catch(() => {
+        state.importantLoading = false;
+        library.innerHTML = `<div class="empty-library">Important vocabulary could not be loaded. Please reload the page.</div>`;
+      });
+    return;
+  }
+  if (!state.importantCards.length) return;
+
+  const query = $("#importantSearchInput")?.value.trim().toLowerCase() || "";
+  const visible = state.importantCards.filter((card) => {
+    const matchesLevel = state.importantFilter === "all" || card.level === state.importantFilter;
+    const matchesQuery = `${card.german} ${card.english} ${card.forms} ${card.sentenceDe}`.toLowerCase().includes(query);
+    return matchesLevel && matchesQuery;
+  });
+  const allCount = state.importantCards.length;
+  const a2Count = state.importantCards.filter((card) => card.level === "A2").length;
+  const b1Count = state.importantCards.filter((card) => card.level === "B1").length;
+  $("#importantResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
+  $("#importantCountLabel").textContent = `${allCount} core cards`;
+  $("#importantAllCount").textContent = String(allCount);
+  $("#importantA2Count").textContent = String(a2Count);
+  $("#importantB1Count").textContent = String(b1Count);
+  $("#navImportantCount").textContent = String(allCount);
+  $$(".important-filter").forEach((button) => {
+    const active = button.dataset.importantFilter === state.importantFilter;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  library.innerHTML = visible.map((card) => `
+    <article class="library-card important-card">
+      <div class="important-card-level"><strong>${escapeHtml(card.level)}</strong><span>TOP ${String(card.priority).padStart(2, "0")}</span></div>
+      <div class="important-card-content">
+        <div class="library-word">${escapeHtml(card.german)}</div>
+        <div class="library-meaning">${escapeHtml(card.english)}</div>
+        <div class="important-example"><span>${escapeHtml(card.sentenceDe || "Practice this word in context.")}</span>${card.sentenceEn ? `<small>${escapeHtml(card.sentenceEn)}</small>` : ""}</div>
+      </div>
+      <div class="library-card-meta"><div class="library-rank">${escapeHtml(card.forms.split(" · ")[0] || "Core")}</div></div>
+    </article>
+  `).join("") || `<div class="empty-library">No important words match that search.</div>`;
+}
+
 function showView(viewName) {
   const activeNavView = viewName === "focused" ? "study" : viewName;
   $$(".nav-item").forEach((button) => button.classList.toggle("active", button.dataset.view === activeNavView));
@@ -770,6 +830,7 @@ function showView(viewName) {
   $$(".view").forEach((view) => { view.hidden = view.dataset.panel !== panelName; });
   if (viewName === "browse") renderLibrary();
   if (viewName === "bookmarks") renderBookmarks();
+  if (viewName === "important") renderImportant();
   if (viewName === "stats") refreshStats();
   if (panelName === "study") renderPracticeTab();
 }
@@ -818,6 +879,11 @@ function bindBrowseControls() {
   $("#selectVisibleBookmarksButton")?.addEventListener("click", selectVisibleBookmarks);
   $("#clearBookmarkSelectionButton")?.addEventListener("click", clearSelectedBookmarks);
   $("#testBookmarkedButton")?.addEventListener("click", startSelectedBookmarkTest);
+  $("#importantSearchInput")?.addEventListener("input", renderImportant);
+  $$(".important-filter").forEach((button) => button.addEventListener("click", () => {
+    state.importantFilter = button.dataset.importantFilter;
+    renderImportant();
+  }));
   $("#sortButton")?.addEventListener("click", () => {
     state.sortAscending = !state.sortAscending;
     $("#sortButton").innerHTML = `Sort: ${state.sortAscending ? "original order" : "reverse order"} <span>⌄</span>`;

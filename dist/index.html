@@ -53,6 +53,11 @@
             <span>Bookmarked cards</span>
             <span class="nav-count muted" id="navBookmarkCount">0</span>
           </button>
+          <button class="nav-item" data-view="important" type="button">
+            <span class="nav-icon">✧</span>
+            <span>Important vocabulary</span>
+            <span class="nav-count muted" id="navImportantCount">200</span>
+          </button>
           <button class="nav-item" data-view="stats" type="button">
             <span class="nav-icon">◒</span>
             <span>Progress</span>
@@ -192,6 +197,23 @@
             <div class="card-library" id="bookmarkLibrary"></div>
           </section>
 
+          <section class="view important-view" id="importantView" data-panel="important" hidden>
+            <div class="page-heading compact-heading">
+              <div><div class="eyebrow">Core word bank <span class="eyebrow-line"></span> <span id="importantCountLabel">200 core cards</span></div><h1>The words<br /><em>that matter.</em></h1></div>
+              <div class="browse-search"><span>⌕</span><input id="importantSearchInput" type="search" placeholder="Search important words" aria-label="Search important vocabulary" /></div>
+            </div>
+            <div class="important-toolbar">
+              <div class="important-filters" role="group" aria-label="Filter important vocabulary">
+                <button class="important-filter active" data-important-filter="all" type="button" aria-pressed="true">All <span id="importantAllCount">200</span></button>
+                <button class="important-filter" data-important-filter="A2" type="button" aria-pressed="false">A2 <span id="importantA2Count">100</span></button>
+                <button class="important-filter" data-important-filter="B1" type="button" aria-pressed="false">B1 <span id="importantB1Count">100</span></button>
+              </div>
+              <span class="selection-summary" id="importantResultLabel">200 words</span>
+            </div>
+            <p class="important-note">The top 100 words for each level, ordered by frequency and selected as a focused core set.</p>
+            <div class="card-library important-library" id="importantLibrary"></div>
+          </section>
+
           <section class="view stats-view" data-panel="stats" hidden>
             <div class="page-heading compact-heading">
               <div><div class="eyebrow">A small look back <span class="eyebrow-line"></span> Your local stats</div><h1>See your<br /><em>momentum.</em></h1></div>
@@ -207,6 +229,6 @@
     </div>
 
     <div class="toast" id="toast" role="status"></div>
-    <script src="./app.js?v=20261126-4" type="module"></script>
+    <script src="./app.js?v=20261126-5" type="module"></script>
   </body>
 </html>

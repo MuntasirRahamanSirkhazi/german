@@ -25,3 +25,8 @@ from that dataset and run:
 ```powershell
 python scripts/build_a2_common.py C:\path\to\german_vocab_a1_c2.csv
 ```
+
+The **Important vocabulary** page is a focused reference set containing the
+top 100 A2 and top 100 B1 entries from the same frequency-ordered source. The
+[Goethe B1 word list](https://www.goethe.de/pro/relaunch/prf/id/Goethe-Zertifikat_B1_Wortliste.pdf)
+is used as the B1 level reference.
