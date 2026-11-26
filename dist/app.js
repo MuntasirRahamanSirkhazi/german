@@ -437,6 +437,7 @@ async function loadDeck(deckKey, notify = false) {
   const response = await fetch(deck.data);
   await loadImportantData().catch(() => []);
   state.deckKey = deckKey;
+  state.audioLevel = getImportantLevel();
   state.cards = await response.json();
   state.selectedCardIds = new Set();
   state.selectedBookmarkIds = new Set();
@@ -1074,8 +1075,7 @@ function renderAudio() {
   const completed = tasks.filter((item) => state.audioProgress[item.id]?.completed).length;
   const levelCount = tasks.length;
   $("#navAudioCount").textContent = String(levelCount);
-  $("#audioA2Count").textContent = String(getAudioTasksForLevel("A2").length);
-  $("#audioB1Count").textContent = String(getAudioTasksForLevel("B1").length);
+  $("#audioLevelContext").textContent = `German ${state.audioLevel} · ${levelCount} tracks`;
   $("#audioTaskCountLabel").textContent = `${levelCount} ${state.audioLevel} recordings`;
   $("#audioResultLabel").textContent = `${completed}/${levelCount} completed`;
   $("#audioLevelLabel").textContent = `${state.audioLevel} listening practice`;
@@ -1130,11 +1130,6 @@ function renderAudio() {
   $("#audioNextButton").disabled = !(state.audioDictationChecked && state.audioQuestionsChecked);
   $("#audioNextButton").textContent = state.audioProgress[task.id]?.completed ? "Next audio" : "Finish and next";
   $("#audioCompletedLabel").textContent = `${completed} of ${levelCount} completed`;
-  $$(".audio-level").forEach((button) => {
-    const active = button.dataset.audioLevel === state.audioLevel;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
 }
 
 function renderImportant() {
@@ -1314,7 +1309,6 @@ function bindBrowseControls() {
   $("#audioRevealButton")?.addEventListener("click", () => { state.audioTranscriptRevealed = !state.audioTranscriptRevealed; renderAudio(); });
   $("#audioNextButton")?.addEventListener("click", nextAudioTask);
   $("#audioDictationInput")?.addEventListener("input", (event) => { state.audioDictationInput = event.target.value; });
-  $$(".audio-level").forEach((button) => button.addEventListener("click", () => chooseAudioLevel(button.dataset.audioLevel)));
   $$(".important-filter").forEach((button) => button.addEventListener("click", async () => {
     const deckKey = button.dataset.importantFilter.toLowerCase();
     if (deckKey === state.deckKey) {
