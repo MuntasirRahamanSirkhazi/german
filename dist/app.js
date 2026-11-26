@@ -1,7 +1,7 @@
 const SELECTED_DECK_KEY = "karten-selected-deck";
 const DECKS = {
-  a2: { name: "German A2", data: "./data/cards.json", count: 723 },
-  b1: { name: "German B1", data: "./data/b1-cards.json", count: 2632 },
+  a2: { name: "German A2", data: "./data/cards.json?v=20261126-6", count: 723 },
+  b1: { name: "German B1", data: "./data/b1-cards.json?v=20261126-6", count: 2632 },
 };
 let initialDeckKey = "a2";
 try {
@@ -27,7 +27,9 @@ const state = {
   selectedBookmarkIds: new Set(),
   importantCards: [],
   importantLoading: false,
+  importantLoadPromise: null,
   importantFilter: "all",
+  selectedImportantIds: new Set(),
   activeTabId: "main",
   practiceTabs: [],
   tabSessions: {},
@@ -78,6 +80,13 @@ function updateBookmarkCount() {
 function updateBookmarkButton(card) {
   const button = $("#bookmarkButton");
   if (!button) return;
+  if (getActiveTab()?.type === "important") {
+    button.disabled = true;
+    button.classList.remove("active");
+    button.setAttribute("aria-pressed", "false");
+    button.innerHTML = `<span aria-hidden="true">✦</span><span>Important test</span>`;
+    return;
+  }
   const bookmarked = Boolean(card && state.bookmarkedCardIds.has(card.id));
   button.disabled = !card;
   button.classList.toggle("active", bookmarked);
@@ -106,10 +115,19 @@ function getActiveTab() {
   return state.practiceTabs.find((tab) => tab.id === state.activeTabId) || state.practiceTabs[0];
 }
 
+function getCardNumber(card) {
+  return Number(card?.number ?? card?.priority ?? 0);
+}
+
+function getCardPoolForTab(tab) {
+  return tab?.type === "important" ? state.importantCards : state.cards;
+}
+
 function getTabCards(tab) {
   if (!tab || tab.type === "main") return state.cards;
+  const pool = getCardPoolForTab(tab);
   const cardIds = new Set(tab.cardIds || []);
-  return state.cards.filter((card) => cardIds.has(card.id));
+  return pool.filter((card) => cardIds.has(card.id));
 }
 
 function getSessionSnapshot() {
@@ -141,14 +159,16 @@ function saveSessionState() {
 
 function restoreTabSession(tab, saved) {
   if (!tab || !saved?.sessionIds?.length) return false;
-  const cardsById = new Map(state.cards.map((card) => [card.id, card]));
+  const cardsById = new Map(getCardPoolForTab(tab).map((card) => [card.id, card]));
   const restored = saved.sessionIds.map((id) => cardsById.get(id)).filter(Boolean);
   if (!restored.length) return false;
   const restoredIds = new Set(restored.map((card) => card.id));
-  state.sessionScope = tab.type === "selected" ? "selected" : "all";
+  const isFocusedTab = tab.type !== "main";
+  const pool = getCardPoolForTab(tab);
+  state.sessionScope = isFocusedTab ? "selected" : "all";
   state.session = state.sessionScope === "selected"
     ? restored
-    : [...restored, ...state.cards.filter((card) => !restoredIds.has(card.id))];
+    : [...restored, ...pool.filter((card) => !restoredIds.has(card.id))];
   state.selectedCardIds.clear();
   state.sessionIndex = Math.min(Math.max(Number(saved.sessionIndex) || 0, 0), state.session.length);
   state.sessionAnswered = Math.max(Number(saved.sessionAnswered) || 0, 0);
@@ -162,17 +182,19 @@ function restoreSessionState() {
   try {
     const savedTabs = JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-tabs`) || "null");
     if (Array.isArray(savedTabs?.tabs) && savedTabs.tabs.length) {
-      const savedMain = savedTabs.tabs.find((tab) => tab.id === "main") || createMainTab();
-      const savedSelected = savedTabs.tabs
-        .filter((tab) => tab.id !== "main" && tab.type === "selected")
-        .map((tab, index) => ({
+      const savedFocused = savedTabs.tabs
+        .filter((tab) => tab.id !== "main" && ["selected", "important"].includes(tab.type))
+        .map((tab, index) => {
+          const type = tab.type === "important" ? "important" : "selected";
+          const pool = type === "important" ? state.importantCards : state.cards;
+          return {
           id: String(tab.id),
-          label: String(tab.label || `Selected test ${index + 1}`),
-          type: "selected",
-          cardIds: state.cards.filter((card) => (tab.cardIds || []).includes(card.id)).map((card) => card.id),
-        }))
+          label: String(tab.label || `${type === "important" ? "Important" : "Selected"} test ${index + 1}`),
+          type,
+          cardIds: pool.filter((card) => (tab.cardIds || []).includes(card.id)).map((card) => card.id),
+        }; })
         .filter((tab) => tab.cardIds.length);
-      state.practiceTabs = [createMainTab(), ...savedSelected];
+      state.practiceTabs = [createMainTab(), ...savedFocused];
       state.tabSessions = savedTabs.sessions && typeof savedTabs.sessions === "object" ? savedTabs.sessions : {};
       state.activeTabId = state.practiceTabs.some((tab) => tab.id === savedTabs.activeTabId)
         ? savedTabs.activeTabId
@@ -233,10 +255,12 @@ async function loadDeck(deckKey, notify = false) {
   const deck = DECKS[deckKey];
   if (!deck) return;
   const response = await fetch(deck.data);
+  await loadImportantData().catch(() => []);
   state.deckKey = deckKey;
   state.cards = await response.json();
   state.selectedCardIds = new Set();
   state.selectedBookmarkIds = new Set();
+  state.selectedImportantIds = new Set();
   state.practiceTabs = [];
   state.tabSessions = {};
   state.activeTabId = "main";
@@ -277,7 +301,7 @@ function startSession() {
   const tab = getActiveTab() || createMainTab();
   if (!state.practiceTabs.length) state.practiceTabs = [tab];
   state.session = shuffle(getTabCards(tab));
-  state.sessionScope = tab.type === "selected" ? "selected" : "all";
+  state.sessionScope = tab.type === "main" ? "all" : "selected";
   state.sessionIndex = 0;
   state.sessionAnswered = 0;
   state.answered = false;
@@ -343,6 +367,34 @@ function startSelectedBookmarkTest() {
   showToast(`Bookmarked test started with ${selectedCards.length} cards`);
 }
 
+function startImportantTest() {
+  if (getActiveTab()?.type !== "main") {
+    showToast("Open the Study tab to create a new tab");
+    return;
+  }
+  const selectedCards = state.importantCards.filter((card) => state.selectedImportantIds.has(card.id));
+  if (!selectedCards.length) {
+    showToast("Select at least one important card first");
+    return;
+  }
+  saveSessionState();
+  const testNumber = state.practiceTabs.filter((tab) => ["selected", "important"].includes(tab.type)).length + 1;
+  const tab = {
+    id: `important-test-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    label: `Important test ${testNumber}`,
+    type: "important",
+    cardIds: selectedCards.map((card) => card.id),
+  };
+  state.practiceTabs.push(tab);
+  state.activeTabId = tab.id;
+  state.selectedImportantIds.clear();
+  startSession();
+  renderImportant();
+  renderPracticeTab();
+  showView("study");
+  showToast(`Important test started with ${selectedCards.length} cards`);
+}
+
 function activateTab(tabId) {
   const tab = state.practiceTabs.find((item) => item.id === tabId);
   if (!tab) return;
@@ -366,6 +418,7 @@ function closeTab(tabId) {
   if (wasActive) {
     state.activeTabId = "main";
     state.selectedCardIds.clear();
+    state.selectedImportantIds.clear();
     if (!restoreTabSession(getActiveTab(), state.tabSessions.main)) startSession();
   }
   saveSessionState();
@@ -376,7 +429,8 @@ function closeTab(tabId) {
 }
 
 function buildOptions(card) {
-  const otherMeanings = shuffle(state.cards.filter((item) => item.id !== card.id)).slice(0, 3).map((item) => item.english);
+  const optionPool = getActiveTab()?.type === "important" ? state.importantCards : state.cards;
+  const otherMeanings = shuffle(optionPool.filter((item) => item.id !== card.id)).slice(0, 3).map((item) => item.english);
   return shuffle([card.english, ...otherMeanings]);
 }
 
@@ -389,7 +443,7 @@ function renderCard() {
 
   state.answered = false;
   state.currentOptions = buildOptions(card);
-  $("#cardNumber").textContent = `CARD ${String(card.number).padStart(3, "0")}`;
+  $("#cardNumber").textContent = `CARD ${String(getCardNumber(card)).padStart(3, "0")}`;
   $("#germanWord").textContent = card.german;
   updateBookmarkButton(card);
   $("#wordForms").textContent = card.forms || "A2 vocabulary in context";
@@ -574,7 +628,7 @@ function getVisibleLibraryCards() {
   const query = $("#searchInput").value.trim().toLowerCase();
   return getTabCards(getActiveTab())
     .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
-    .sort((a, b) => state.sortAscending ? a.number - b.number : b.number - a.number);
+    .sort((a, b) => state.sortAscending ? getCardNumber(a) - getCardNumber(b) : getCardNumber(b) - getCardNumber(a));
 }
 
 function updateSelectionSummary() {
@@ -602,7 +656,7 @@ function renderLibrary() {
     <article class="library-card ${canCreateTab && state.selectedCardIds.has(card.id) ? "selected" : ""}">
       <label class="library-select" title="Select ${escapeHtml(card.german)}">
         <input class="card-select" type="checkbox" data-card-id="${escapeHtml(card.id)}" ${canCreateTab && state.selectedCardIds.has(card.id) ? "checked" : ""} ${canCreateTab ? "" : "disabled"} aria-label="Select ${escapeHtml(card.german)}" />
-        <span class="library-index">${String(card.number).padStart(3, "0")}</span>
+        <span class="library-index">${String(getCardNumber(card)).padStart(3, "0")}</span>
       </label>
       <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
       <div class="library-card-meta">
@@ -705,11 +759,11 @@ function renderPracticeTab() {
   state.practiceTabs = state.practiceTabs
     .map((tab, index) => ({
       id: String(tab.id || (index === 0 ? "main" : `test-${index}`)),
-      label: String(tab.label || (index === 0 ? "Study" : `Selected test ${index}`)),
-      type: index === 0 || tab.type !== "selected" ? "main" : "selected",
+      label: String(tab.label || (index === 0 ? "Study" : `${tab.type === "important" ? "Important" : "Selected"} test ${index}`)),
+      type: index === 0 ? "main" : tab.type === "important" ? "important" : "selected",
       cardIds: Array.isArray(tab.cardIds) ? tab.cardIds : null,
     }))
-    .filter((tab, index) => index === 0 || tab.type === "selected");
+    .filter((tab, index) => index === 0 || ["selected", "important"].includes(tab.type));
   if (!state.practiceTabs.some((tab) => tab.id === state.activeTabId)) state.activeTabId = "main";
   strip.innerHTML = state.practiceTabs.map((tab) => {
     const active = tab.id === state.activeTabId;
@@ -766,24 +820,31 @@ function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character]));
 }
 
+function loadImportantData() {
+  if (state.importantCards.length) return Promise.resolve(state.importantCards);
+  if (state.importantLoadPromise) return state.importantLoadPromise;
+  state.importantLoading = true;
+  state.importantLoadPromise = fetch("./data/important-vocabulary.json?v=20261126-6")
+    .then((response) => {
+      if (!response.ok) throw new Error("Could not load important vocabulary");
+      return response.json();
+    })
+    .then((cards) => {
+      state.importantCards = cards;
+      return cards;
+    })
+    .finally(() => { state.importantLoading = false; });
+  return state.importantLoadPromise;
+}
+
 function renderImportant() {
   const library = $("#importantLibrary");
   if (!library) return;
   if (!state.importantCards.length && !state.importantLoading) {
-    state.importantLoading = true;
     library.innerHTML = `<div class="empty-library">Loading important vocabulary…</div>`;
-    fetch("./data/important-vocabulary.json")
-      .then((response) => {
-        if (!response.ok) throw new Error("Could not load important vocabulary");
-        return response.json();
-      })
-      .then((cards) => {
-        state.importantCards = cards;
-        state.importantLoading = false;
-        renderImportant();
-      })
+    loadImportantData()
+      .then(() => renderImportant())
       .catch(() => {
-        state.importantLoading = false;
         library.innerHTML = `<div class="empty-library">Important vocabulary could not be loaded. Please reload the page.</div>`;
       });
     return;
@@ -811,16 +872,64 @@ function renderImportant() {
     button.setAttribute("aria-pressed", String(active));
   });
   library.innerHTML = visible.map((card) => `
-    <article class="library-card important-card">
-      <div class="important-card-level"><strong>${escapeHtml(card.level)}</strong><span>TOP ${String(card.priority).padStart(2, "0")}</span></div>
+    <article class="library-card important-card ${state.selectedImportantIds.has(card.id) ? "selected" : ""}">
+      <label class="important-card-select" title="Select ${escapeHtml(card.german)}">
+        <input class="card-select important-select" type="checkbox" data-important-id="${escapeHtml(card.id)}" ${state.selectedImportantIds.has(card.id) ? "checked" : ""} aria-label="Select ${escapeHtml(card.german)}" />
+        <span class="important-card-level"><strong>${escapeHtml(card.level)}</strong><span>TOP ${String(card.priority).padStart(2, "0")}</span></span>
+      </label>
       <div class="important-card-content">
         <div class="library-word">${escapeHtml(card.german)}</div>
         <div class="library-meaning">${escapeHtml(card.english)}</div>
         <div class="important-example"><span>${escapeHtml(card.sentenceDe || "Practice this word in context.")}</span>${card.sentenceEn ? `<small>${escapeHtml(card.sentenceEn)}</small>` : ""}</div>
       </div>
-      <div class="library-card-meta"><div class="library-rank">${escapeHtml(card.forms.split(" · ")[0] || "Core")}</div></div>
+      <div class="library-card-meta"><div class="library-rank">${escapeHtml((card.forms || "").split(" · ")[0] || "Core")}</div></div>
     </article>
   `).join("") || `<div class="empty-library">No important words match that search.</div>`;
+  library.querySelectorAll(".important-select").forEach((input) => input.addEventListener("change", (event) => {
+    const cardId = event.target.dataset.importantId;
+    if (event.target.checked) state.selectedImportantIds.add(cardId);
+    else state.selectedImportantIds.delete(cardId);
+    event.target.closest(".library-card")?.classList.toggle("selected", event.target.checked);
+    updateImportantSelectionSummary();
+  }));
+  updateImportantSelectionSummary();
+}
+
+function updateImportantSelectionSummary() {
+  const selectedCount = [...state.selectedImportantIds].filter((id) => state.importantCards.some((card) => card.id === id)).length;
+  const canCreateTab = getActiveTab()?.type === "main";
+  const summary = $("#importantSelectionSummary");
+  const selectedLabel = $("#importantSelectedCount");
+  const selectVisibleButton = $("#selectVisibleImportantButton");
+  const clearButton = $("#clearImportantSelectionButton");
+  const testButton = $("#testImportantButton");
+  if (selectedLabel) selectedLabel.textContent = String(selectedCount);
+  if (selectVisibleButton) selectVisibleButton.disabled = !canCreateTab || !state.importantCards.length;
+  if (clearButton) clearButton.disabled = selectedCount === 0;
+  if (testButton) testButton.disabled = !canCreateTab || selectedCount === 0;
+  if (summary) {
+    summary.textContent = !canCreateTab
+      ? "Open the Study tab to create a new test"
+      : selectedCount ? `${selectedCount} selected` : "Select important cards to practice";
+  }
+}
+
+function selectVisibleImportant() {
+  if (getActiveTab()?.type !== "main") {
+    showToast("Open the Study tab to create a new tab");
+    return;
+  }
+  const query = $("#importantSearchInput")?.value.trim().toLowerCase() || "";
+  state.importantCards
+    .filter((card) => state.importantFilter === "all" || card.level === state.importantFilter)
+    .filter((card) => `${card.german} ${card.english} ${card.forms} ${card.sentenceDe}`.toLowerCase().includes(query))
+    .forEach((card) => state.selectedImportantIds.add(card.id));
+  renderImportant();
+}
+
+function clearSelectedImportant() {
+  state.selectedImportantIds.clear();
+  renderImportant();
 }
 
 function showView(viewName) {
@@ -880,6 +989,9 @@ function bindBrowseControls() {
   $("#clearBookmarkSelectionButton")?.addEventListener("click", clearSelectedBookmarks);
   $("#testBookmarkedButton")?.addEventListener("click", startSelectedBookmarkTest);
   $("#importantSearchInput")?.addEventListener("input", renderImportant);
+  $("#selectVisibleImportantButton")?.addEventListener("click", selectVisibleImportant);
+  $("#clearImportantSelectionButton")?.addEventListener("click", clearSelectedImportant);
+  $("#testImportantButton")?.addEventListener("click", startImportantTest);
   $$(".important-filter").forEach((button) => button.addEventListener("click", () => {
     state.importantFilter = button.dataset.importantFilter;
     renderImportant();

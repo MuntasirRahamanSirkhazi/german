@@ -208,7 +208,13 @@
                 <button class="important-filter" data-important-filter="A2" type="button" aria-pressed="false">A2 <span id="importantA2Count">100</span></button>
                 <button class="important-filter" data-important-filter="B1" type="button" aria-pressed="false">B1 <span id="importantB1Count">100</span></button>
               </div>
-              <span class="selection-summary" id="importantResultLabel">200 words</span>
+              <div class="important-selection-tools">
+                <span id="importantResultLabel">200 words</span>
+                <span class="selection-summary" id="importantSelectionSummary">Select important cards to practice</span>
+                <button class="toolbar-button" id="selectVisibleImportantButton" type="button">Select visible</button>
+                <button class="toolbar-button" id="clearImportantSelectionButton" type="button" disabled>Clear</button>
+                <button class="toolbar-button primary" id="testImportantButton" type="button" disabled>Practice selected <span class="selected-count" id="importantSelectedCount">0</span></button>
+              </div>
             </div>
             <p class="important-note">The top 100 words for each level, ordered by frequency and selected as a focused core set.</p>
             <div class="card-library important-library" id="importantLibrary"></div>
@@ -229,6 +235,6 @@
     </div>
 
     <div class="toast" id="toast" role="status"></div>
-    <script src="./app.js?v=20261126-5" type="module"></script>
+    <script src="./app.js?v=20261126-6" type="module"></script>
   </body>
 </html>

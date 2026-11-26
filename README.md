@@ -30,3 +30,6 @@ The **Important vocabulary** page is a focused reference set containing the
 top 100 A2 and top 100 B1 entries from the same frequency-ordered source. The
 [Goethe B1 word list](https://www.goethe.de/pro/relaunch/prf/id/Goethe-Zertifikat_B1_Wortliste.pdf)
 is used as the B1 level reference.
+
+Important cards can be selected from the page and opened as a separate practice
+tab without changing the main deck session.
