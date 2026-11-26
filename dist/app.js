@@ -23,6 +23,7 @@ const state = {
   soundOn: true,
   repeatScheduled: new Set(),
   selectedCardIds: new Set(),
+  bookmarkedCardIds: new Set(),
   activeTabId: "main",
   practiceTabs: [],
   tabSessions: {},
@@ -43,6 +44,53 @@ function loadProgress() {
 function saveProgress() {
   localStorage.setItem(`karten-german-${state.deckKey}-progress`, JSON.stringify(state.progress));
   refreshStats();
+}
+
+function loadBookmarks() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-bookmarks`) || "[]"));
+  } catch {
+    return new Set();
+  }
+}
+
+function saveBookmarks() {
+  try {
+    localStorage.setItem(`karten-german-${state.deckKey}-bookmarks`, JSON.stringify([...state.bookmarkedCardIds]));
+  } catch {
+    // Bookmarks still work for the current visit if storage is unavailable.
+  }
+  updateBookmarkCount();
+}
+
+function updateBookmarkCount() {
+  const count = state.bookmarkedCardIds.size;
+  const navCount = $("#navBookmarkCount");
+  const pageCount = $("#bookmarkCountLabel");
+  if (navCount) navCount.textContent = String(count);
+  if (pageCount) pageCount.textContent = `${count.toLocaleString()} ${count === 1 ? "card" : "cards"}`;
+}
+
+function updateBookmarkButton(card) {
+  const button = $("#bookmarkButton");
+  if (!button) return;
+  const bookmarked = Boolean(card && state.bookmarkedCardIds.has(card.id));
+  button.disabled = !card;
+  button.classList.toggle("active", bookmarked);
+  button.setAttribute("aria-pressed", String(bookmarked));
+  button.innerHTML = `<span aria-hidden="true">${bookmarked ? "★" : "☆"}</span><span>${bookmarked ? "Bookmarked" : "Bookmark"}</span>`;
+}
+
+function toggleBookmark() {
+  const card = state.session[state.sessionIndex];
+  if (!card) return;
+  const bookmarked = state.bookmarkedCardIds.has(card.id);
+  if (bookmarked) state.bookmarkedCardIds.delete(card.id);
+  else state.bookmarkedCardIds.add(card.id);
+  saveBookmarks();
+  updateBookmarkButton(card);
+  if (!$("#bookmarksView")?.hidden) renderBookmarks();
+  showToast(bookmarked ? "Bookmark removed" : "Card bookmarked");
 }
 
 function createMainTab() {
@@ -167,6 +215,7 @@ function updateDeckUi() {
   $("#deckSelect").value = state.deckKey;
   $("#libraryCountLabel").textContent = `${state.cards.length.toLocaleString()} cards`;
   $("#navBrowseCount").textContent = state.cards.length.toLocaleString();
+  updateBookmarkCount();
   $$(".deck-option").forEach((button) => {
     const selected = button.dataset.deck === state.deckKey;
     button.classList.toggle("active", selected);
@@ -185,6 +234,7 @@ async function loadDeck(deckKey, notify = false) {
   state.tabSessions = {};
   state.activeTabId = "main";
   state.progress = loadProgress();
+  state.bookmarkedCardIds = loadBookmarks();
   updateDeckUi();
   const restored = restoreSessionState();
   if (!restored) startSession();
@@ -306,6 +356,7 @@ function renderCard() {
   state.currentOptions = buildOptions(card);
   $("#cardNumber").textContent = `CARD ${String(card.number).padStart(3, "0")}`;
   $("#germanWord").textContent = card.german;
+  updateBookmarkButton(card);
   $("#wordForms").textContent = card.forms || "A2 vocabulary in context";
   $("#germanSentence").textContent = card.sentenceDe || "Practice this word in a sentence.";
   $("#answerFeedback").textContent = "";
@@ -429,6 +480,7 @@ function renderCompletion() {
   $("#wordForms").textContent = "Session complete · you showed up today";
   $("#germanSentence").textContent = "Small, consistent practice is how a language becomes yours.";
   $("#cardNumber").textContent = "SESSION COMPLETE";
+  updateBookmarkButton(null);
   $("#answerFeedback").textContent = `${state.sessionAnswered} cards answered. Your progress is saved on this device.`;
   $("#answerFeedback").className = "answer-feedback success";
   setReviewControls(false);
@@ -535,6 +587,33 @@ function renderLibrary() {
   updateSelectionSummary();
 }
 
+function renderBookmarks() {
+  const query = $("#bookmarkSearchInput")?.value.trim().toLowerCase() || "";
+  const visible = state.cards
+    .filter((card) => state.bookmarkedCardIds.has(card.id))
+    .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
+    .sort((a, b) => state.sortAscending ? a.number - b.number : b.number - a.number);
+  $("#bookmarkResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
+  $("#bookmarkLibrary").innerHTML = visible.map((card) => `
+    <article class="library-card bookmark-library-card">
+      <div class="library-index">${String(card.number).padStart(3, "0")}</div>
+      <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
+      <div class="library-card-meta">
+        <div class="library-rank">${card.rank ? `#${escapeHtml(card.rank)}` : "A2"}</div>
+        <button class="remove-bookmark-button" data-bookmark-id="${escapeHtml(card.id)}" type="button" aria-label="Remove ${escapeHtml(card.german)} bookmark">Remove</button>
+      </div>
+    </article>
+  `).join("") || `<div class="empty-library">No bookmarked cards yet. Use Bookmark while practicing.</div>`;
+  $$(".remove-bookmark-button").forEach((button) => button.addEventListener("click", () => {
+    state.bookmarkedCardIds.delete(button.dataset.bookmarkId);
+    saveBookmarks();
+    renderBookmarks();
+    updateBookmarkButton(state.session[state.sessionIndex]);
+    showToast("Bookmark removed");
+  }));
+  updateBookmarkCount();
+}
+
 function renderPracticeTab() {
   const strip = $("#studyTabStrip");
   if (!strip) return;
@@ -609,6 +688,7 @@ function showView(viewName) {
   const panelName = viewName === "focused" ? "study" : viewName;
   $$(".view").forEach((view) => { view.hidden = view.dataset.panel !== panelName; });
   if (viewName === "browse") renderLibrary();
+  if (viewName === "bookmarks") renderBookmarks();
   if (viewName === "stats") refreshStats();
   if (panelName === "study") renderPracticeTab();
 }
@@ -688,6 +768,8 @@ async function init() {
     $("#soundToggle").style.color = state.soundOn ? "var(--blue)" : "#b5aea4";
     showToast(state.soundOn ? "Pronunciation on" : "Pronunciation muted");
   });
+  $("#bookmarkButton").addEventListener("click", toggleBookmark);
+  $("#bookmarkSearchInput").addEventListener("input", renderBookmarks);
   $("#resetProgressButton").addEventListener("click", () => {
     if (!Object.keys(state.progress).length || window.confirm("Reset all saved progress on this device?")) {
       state.progress = {};

@@ -136,7 +136,7 @@ h1 em { color: var(--coral); font-style: normal; }
 .study-tab.active .study-tab-close { color: var(--coral); }
 
 .study-grid { display: grid; grid-template-columns: minmax(0, 1fr) 212px; gap: clamp(28px, 4vw, 62px); margin-top: 57px; }
-.study-main { min-width: 0; max-width: 780px; }
+.study-main { min-width: 0; max-width: 680px; }
 .progress-row { display: grid; grid-template-columns: 132px minmax(100px, 1fr) 36px; align-items: end; gap: 18px; margin: 14px 0 0; }
 .progress-copy { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .progress-copy strong { color: var(--ink); font-family: var(--mono); font-size: 13px; font-weight: 500; }
@@ -145,11 +145,14 @@ h1 em { color: var(--coral); font-style: normal; }
 .progress-fill { width: 0%; height: 100%; border-radius: inherit; background: var(--coral); transition: width .4s ease; }
 .progress-percent { color: #a19a8f; font-family: var(--mono); font-size: 10px; text-align: right; }
 
-.flashcard { max-width: 760px; overflow: hidden; border: 1px solid #e0d9cf; border-radius: 16px; background: var(--white); box-shadow: var(--shadow); }
+.flashcard { max-width: 660px; overflow: hidden; border: 1px solid #e0d9cf; border-radius: 16px; background: var(--white); box-shadow: var(--shadow); }
 .card-topline { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee8de; }
 .tag { color: var(--coral-dark); font-size: 9px; letter-spacing: .14em; }
 .card-menu { padding: 0; border: 0; color: #a49d93; background: transparent; letter-spacing: 2px; font-size: 13px; }
 .card-menu:hover { color: var(--ink); }
+.bookmark-button { display: inline-flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid #ded6ca; border-radius: 6px; color: #8e877d; background: transparent; font-family: var(--mono); font-size: 9px; }
+.bookmark-button:hover, .bookmark-button.active { border-color: var(--coral); color: var(--coral-dark); background: var(--coral-soft); }
+.bookmark-button span:first-child { font-family: Georgia, serif; font-size: 16px; line-height: .8; }
 .card-body { padding: 24px 30px 26px; }
 .card-number { color: #c2baae; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; }
 .prompt-label { margin-top: 22px; color: #a69f95; letter-spacing: .08em; }
@@ -252,6 +255,8 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
 .library-rank { color: #a79f94; font-family: var(--mono); font-size: 9px; }
 .remove-card-button { padding: 5px 7px; border: 1px solid #e2a99a; border-radius: 5px; color: var(--coral-dark); background: #fff7f2; font-family: var(--mono); font-size: 9px; cursor: pointer; }
 .remove-card-button:hover { color: #fff; background: var(--coral); border-color: var(--coral); }
+.remove-bookmark-button { padding: 5px 7px; border: 1px solid #e2a99a; border-radius: 5px; color: var(--coral-dark); background: #fff7f2; font-family: var(--mono); font-size: 9px; cursor: pointer; }
+.remove-bookmark-button:hover { color: #fff; background: var(--coral); border-color: var(--coral); }
 
 .stats-grid { display: grid; grid-template-columns: 1.25fr .8fr; gap: 14px; margin-top: 56px; }
 .stat-feature, .stat-tile, .stats-history { min-height: 195px; padding: 24px; border: 1px solid #ded7ca; border-radius: 13px; background: rgba(255,253,250,.62); }
@@ -388,6 +393,8 @@ html, body { background: var(--paper); color: var(--ink); }
 .card-topline, .answer-area, .review-controls { border-color: #343840; }
 .tag { color: var(--coral-dark); }
 .card-menu { color: #9ea2ab; }
+.bookmark-button { border-color: #414650; color: #b6b8be; background: transparent; }
+.bookmark-button:hover, .bookmark-button.active { border-color: var(--coral); color: #ffd0c2; background: var(--coral-soft); }
 .card-number { color: #8f949e; }
 .prompt-label { color: #a8abb3; }
 .word-forms { color: #a3a6af; }
@@ -444,6 +451,8 @@ kbd { border-color: #414650; color: #a9adb5; background: #252931; }
 .library-meaning { color: #a3a6af; }
 .remove-card-button { border-color: #8d4f46; color: #ffb19b; background: #2a201e; }
 .remove-card-button:hover { color: #fff; background: #b95748; border-color: #b95748; }
+.remove-bookmark-button { border-color: #8d4f46; color: #ffb19b; background: #2a201e; }
+.remove-bookmark-button:hover { color: #fff; background: #b95748; border-color: #b95748; }
 .stat-feature, .stat-tile, .stats-history { border-color: #343840; background: #1b1f25; }
 .stat-feature { border-color: #563832; background: #2b2020; }
 .stat-feature .rail-label, .stat-feature p { color: #e1c4bc; }

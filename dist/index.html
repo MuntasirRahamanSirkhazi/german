@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f5f1e9" />
+    <meta name="theme-color" content="#111318" />
     <meta name="description" content="Karten is a focused German vocabulary practice app." />
     <title>Karten — German A2 practice</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,6 +47,11 @@
             <span class="nav-icon">▤</span>
             <span>Browse cards</span>
             <span class="nav-count muted" id="navBrowseCount">171</span>
+          </button>
+          <button class="nav-item" data-view="bookmarks" type="button">
+            <span class="nav-icon">☆</span>
+            <span>Bookmarked cards</span>
+            <span class="nav-count muted" id="navBookmarkCount">0</span>
           </button>
           <button class="nav-item" data-view="stats" type="button">
             <span class="nav-icon">◒</span>
@@ -94,7 +99,7 @@
             <div class="study-grid">
               <div class="study-main">
                 <article class="flashcard" id="flashcard">
-                  <div class="card-topline"><span class="tag">GERMAN → ENGLISH</span><button class="card-menu" type="button" aria-label="Card options">•••</button></div>
+                  <div class="card-topline"><span class="tag">GERMAN → ENGLISH</span><button class="bookmark-button" id="bookmarkButton" type="button" aria-label="Bookmark card" aria-pressed="false"><span aria-hidden="true">☆</span><span>Bookmark</span></button></div>
                   <div class="card-body">
                     <div class="card-number" id="cardNumber">CARD 001</div>
                     <div class="prompt-label">Choose the meaning</div>
@@ -168,6 +173,20 @@
             <div class="card-library" id="cardLibrary"></div>
           </section>
 
+          <section class="view bookmarks-view" id="bookmarksView" data-panel="bookmarks" hidden>
+            <div class="page-heading compact-heading">
+              <div><div class="eyebrow">Saved vocabulary <span class="eyebrow-line"></span> <span id="bookmarkCountLabel">0 cards</span></div><h1>Your<br /><em>bookmarks.</em></h1></div>
+              <div class="browse-search"><span>⌕</span><input id="bookmarkSearchInput" type="search" placeholder="Search bookmarks" aria-label="Search bookmarked cards" /></div>
+            </div>
+            <div class="browse-toolbar">
+              <div class="browse-selection-tools">
+                <span id="bookmarkResultLabel">0 words</span>
+                <span class="selection-summary">Saved from practice</span>
+              </div>
+            </div>
+            <div class="card-library" id="bookmarkLibrary"></div>
+          </section>
+
           <section class="view stats-view" data-panel="stats" hidden>
             <div class="page-heading compact-heading">
               <div><div class="eyebrow">A small look back <span class="eyebrow-line"></span> Your local stats</div><h1>See your<br /><em>momentum.</em></h1></div>
@@ -183,6 +202,6 @@
     </div>
 
     <div class="toast" id="toast" role="status"></div>
-    <script src="./app.js?v=20261126-2" type="module"></script>
+    <script src="./app.js?v=20261126-3" type="module"></script>
   </body>
 </html>
