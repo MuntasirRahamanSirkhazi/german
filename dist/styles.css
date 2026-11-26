@@ -292,7 +292,7 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
 .stats-history { grid-column: 1 / -1; min-height: 220px; }
 .history-header { display: flex; justify-content: space-between; }
 .history-caption { color: #aaa197; font-family: var(--mono); font-size: 10px; }
-.history-bars { display: flex; align-items: end; gap: 10px; height: 137px; margin-top: 23px; padding: 0 18px 0; border-bottom: 1px solid #ded7ca; }
+.history-bars { display: flex; align-items: end; gap: 10px; height: 137px; min-height: 137px; margin-top: 23px; padding: 0 18px 0; overflow: hidden; border-bottom: 1px solid #ded7ca; }
 .history-bar { flex: 1; min-width: 15px; max-width: 70px; border-radius: 5px 5px 0 0; background: #f0c2b5; }
 .history-bar.active { background: var(--coral); }
 

@@ -659,7 +659,12 @@ function renderHistory(stats) {
   const bars = $("#historyBars");
   if (!bars) return;
   const values = [0, 0, 0, 0, 0, Math.min(stats.attempts, 10), state.sessionAnswered];
-  bars.innerHTML = values.map((value, index) => `<div class="history-bar ${index === values.length - 1 ? "active" : ""}" style="height:${Math.max(value * 10, 8)}px" title="${value} answered"></div>`).join("");
+  const maxValue = Math.max(...values, 1);
+  const chartHeight = 120;
+  bars.innerHTML = values.map((value, index) => {
+    const height = value ? Math.max(8, Math.round((value / maxValue) * chartHeight)) : 8;
+    return `<div class="history-bar ${index === values.length - 1 ? "active" : ""}" style="height:${height}px" title="${value} answered"></div>`;
+  }).join("");
 }
 
 function getVisibleLibraryCards() {
