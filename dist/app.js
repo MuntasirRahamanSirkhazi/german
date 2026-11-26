@@ -1,6 +1,6 @@
 const SELECTED_DECK_KEY = "karten-selected-deck";
 const DECKS = {
-  a2: { name: "German A2", data: "./data/cards.json", count: 171 },
+  a2: { name: "German A2", data: "./data/cards.json", count: 723 },
   b1: { name: "German B1", data: "./data/b1-cards.json", count: 2632 },
 };
 let initialDeckKey = "a2";
@@ -24,6 +24,7 @@ const state = {
   repeatScheduled: new Set(),
   selectedCardIds: new Set(),
   bookmarkedCardIds: new Set(),
+  selectedBookmarkIds: new Set(),
   activeTabId: "main",
   practiceTabs: [],
   tabSessions: {},
@@ -213,6 +214,8 @@ function updateDeckUi() {
   $("#deckBreadcrumb").textContent = deck.name;
   $("#activeDeckTitle").textContent = `${deck.name} vocabulary`;
   $("#deckSelect").value = state.deckKey;
+  $("#deckA2Count").textContent = state.deckKey === "a2" ? state.cards.length.toLocaleString() : `${DECKS.a2.count.toLocaleString()}`;
+  $("#deckB1Count").textContent = `${DECKS.b1.count.toLocaleString()}`;
   $("#libraryCountLabel").textContent = `${state.cards.length.toLocaleString()} cards`;
   $("#navBrowseCount").textContent = state.cards.length.toLocaleString();
   updateBookmarkCount();
@@ -230,6 +233,7 @@ async function loadDeck(deckKey, notify = false) {
   state.deckKey = deckKey;
   state.cards = await response.json();
   state.selectedCardIds = new Set();
+  state.selectedBookmarkIds = new Set();
   state.practiceTabs = [];
   state.tabSessions = {};
   state.activeTabId = "main";
@@ -306,6 +310,34 @@ function startSelectedTest() {
   renderPracticeTab();
   showView("study");
   showToast(`Test started with ${selectedCards.length} cards`);
+}
+
+function startSelectedBookmarkTest() {
+  if (getActiveTab()?.type !== "main") {
+    showToast("Open the Study tab to create a new tab");
+    return;
+  }
+  const selectedCards = state.cards.filter((card) => state.selectedBookmarkIds.has(card.id) && state.bookmarkedCardIds.has(card.id));
+  if (!selectedCards.length) {
+    showToast("Select at least one bookmarked card first");
+    return;
+  }
+  saveSessionState();
+  const testNumber = state.practiceTabs.filter((tab) => tab.type === "selected").length + 1;
+  const tab = {
+    id: `bookmark-test-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    label: `Bookmarked test ${testNumber}`,
+    type: "selected",
+    cardIds: selectedCards.map((card) => card.id),
+  };
+  state.practiceTabs.push(tab);
+  state.activeTabId = tab.id;
+  state.selectedBookmarkIds.clear();
+  startSession();
+  renderBookmarks();
+  renderPracticeTab();
+  showView("study");
+  showToast(`Bookmarked test started with ${selectedCards.length} cards`);
 }
 
 function activateTab(tabId) {
@@ -576,7 +608,7 @@ function renderLibrary() {
       </div>
     </article>
   `).join("") || `<div class="empty-library">No cards match that search.</div>`;
-  $$(".card-select").forEach((input) => input.addEventListener("change", (event) => {
+  $("#cardLibrary").querySelectorAll(".card-select").forEach((input) => input.addEventListener("change", (event) => {
     const cardId = event.target.dataset.cardId;
     if (event.target.checked) state.selectedCardIds.add(cardId);
     else state.selectedCardIds.delete(cardId);
@@ -595,8 +627,11 @@ function renderBookmarks() {
     .sort((a, b) => state.sortAscending ? a.number - b.number : b.number - a.number);
   $("#bookmarkResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
   $("#bookmarkLibrary").innerHTML = visible.map((card) => `
-    <article class="library-card bookmark-library-card">
-      <div class="library-index">${String(card.number).padStart(3, "0")}</div>
+    <article class="library-card bookmark-library-card ${state.selectedBookmarkIds.has(card.id) ? "selected" : ""}">
+      <label class="library-select" title="Select ${escapeHtml(card.german)}">
+        <input class="card-select bookmark-select" type="checkbox" data-bookmark-id="${escapeHtml(card.id)}" ${state.selectedBookmarkIds.has(card.id) ? "checked" : ""} aria-label="Select ${escapeHtml(card.german)} bookmark" />
+        <span class="library-index">${String(card.number).padStart(3, "0")}</span>
+      </label>
       <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
       <div class="library-card-meta">
         <div class="library-rank">${card.rank ? `#${escapeHtml(card.rank)}` : "A2"}</div>
@@ -604,14 +639,60 @@ function renderBookmarks() {
       </div>
     </article>
   `).join("") || `<div class="empty-library">No bookmarked cards yet. Use Bookmark while practicing.</div>`;
+  $("#bookmarkLibrary").querySelectorAll(".bookmark-select").forEach((input) => input.addEventListener("change", (event) => {
+    const cardId = event.target.dataset.bookmarkId;
+    if (event.target.checked) state.selectedBookmarkIds.add(cardId);
+    else state.selectedBookmarkIds.delete(cardId);
+    event.target.closest(".library-card")?.classList.toggle("selected", event.target.checked);
+    updateBookmarkSelectionSummary();
+  }));
   $$(".remove-bookmark-button").forEach((button) => button.addEventListener("click", () => {
     state.bookmarkedCardIds.delete(button.dataset.bookmarkId);
+    state.selectedBookmarkIds.delete(button.dataset.bookmarkId);
     saveBookmarks();
     renderBookmarks();
     updateBookmarkButton(state.session[state.sessionIndex]);
     showToast("Bookmark removed");
   }));
   updateBookmarkCount();
+  updateBookmarkSelectionSummary();
+}
+
+function updateBookmarkSelectionSummary() {
+  const selectedCount = [...state.selectedBookmarkIds].filter((id) => state.bookmarkedCardIds.has(id)).length;
+  const canCreateTab = getActiveTab()?.type === "main";
+  const summary = $("#bookmarkSelectionSummary");
+  const selectedLabel = $("#bookmarkSelectedCount");
+  const selectVisibleButton = $("#selectVisibleBookmarksButton");
+  const clearButton = $("#clearBookmarkSelectionButton");
+  const testButton = $("#testBookmarkedButton");
+  if (selectedLabel) selectedLabel.textContent = String(selectedCount);
+  if (selectVisibleButton) selectVisibleButton.disabled = !canCreateTab || !state.bookmarkedCardIds.size;
+  if (clearButton) clearButton.disabled = selectedCount === 0;
+  if (testButton) testButton.disabled = !canCreateTab || selectedCount === 0;
+  if (summary) {
+    summary.textContent = !canCreateTab
+      ? "Open the Study tab to create a new test"
+      : selectedCount ? `${selectedCount} selected` : "Select cards to make a focused test";
+  }
+}
+
+function selectVisibleBookmarks() {
+  if (getActiveTab()?.type !== "main") {
+    showToast("Open the Study tab to create a new tab");
+    return;
+  }
+  const query = $("#bookmarkSearchInput")?.value.trim().toLowerCase() || "";
+  state.cards
+    .filter((card) => state.bookmarkedCardIds.has(card.id))
+    .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
+    .forEach((card) => state.selectedBookmarkIds.add(card.id));
+  renderBookmarks();
+}
+
+function clearSelectedBookmarks() {
+  state.selectedBookmarkIds.clear();
+  renderBookmarks();
 }
 
 function renderPracticeTab() {
@@ -730,9 +811,13 @@ function showToast(message) {
 
 function bindBrowseControls() {
   $("#searchInput")?.addEventListener("input", renderLibrary);
+  $("#bookmarkSearchInput")?.addEventListener("input", renderBookmarks);
   $("#selectVisibleButton")?.addEventListener("click", selectVisibleCards);
   $("#clearSelectionButton")?.addEventListener("click", clearSelectedCards);
   $("#testSelectedButton")?.addEventListener("click", startSelectedTest);
+  $("#selectVisibleBookmarksButton")?.addEventListener("click", selectVisibleBookmarks);
+  $("#clearBookmarkSelectionButton")?.addEventListener("click", clearSelectedBookmarks);
+  $("#testBookmarkedButton")?.addEventListener("click", startSelectedBookmarkTest);
   $("#sortButton")?.addEventListener("click", () => {
     state.sortAscending = !state.sortAscending;
     $("#sortButton").innerHTML = `Sort: ${state.sortAscending ? "original order" : "reverse order"} <span>⌄</span>`;
@@ -769,7 +854,6 @@ async function init() {
     showToast(state.soundOn ? "Pronunciation on" : "Pronunciation muted");
   });
   $("#bookmarkButton").addEventListener("click", toggleBookmark);
-  $("#bookmarkSearchInput").addEventListener("input", renderBookmarks);
   $("#resetProgressButton").addEventListener("click", () => {
     if (!Object.keys(state.progress).length || window.confirm("Reset all saved progress on this device?")) {
       state.progress = {};

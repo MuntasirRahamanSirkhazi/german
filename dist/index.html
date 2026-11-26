@@ -27,7 +27,7 @@
           <button class="deck-option active" data-deck="a2" type="button" role="tab" aria-selected="true">
             <span class="deck-level">A2</span>
             <span class="deck-option-copy"><strong>German A2</strong><small>Vocabulary</small></span>
-            <span class="deck-option-count" id="deckA2Count">171</span>
+            <span class="deck-option-count" id="deckA2Count">723</span>
           </button>
           <button class="deck-option" data-deck="b1" type="button" role="tab" aria-selected="false">
             <span class="deck-level b1">B1</span>
@@ -41,12 +41,12 @@
           <button class="nav-item active" data-view="study" type="button">
             <span class="nav-icon">✦</span>
             <span>Study</span>
-            <span class="nav-count" id="navStudyCount">171</span>
+            <span class="nav-count" id="navStudyCount">723</span>
           </button>
           <button class="nav-item" data-view="browse" type="button">
             <span class="nav-icon">▤</span>
             <span>Browse cards</span>
-            <span class="nav-count muted" id="navBrowseCount">171</span>
+            <span class="nav-count muted" id="navBrowseCount">723</span>
           </button>
           <button class="nav-item" data-view="bookmarks" type="button">
             <span class="nav-icon">☆</span>
@@ -155,12 +155,12 @@
 
           <section class="view browse-view" data-panel="browse" hidden>
             <div class="page-heading compact-heading">
-              <div><div class="eyebrow">Your vocabulary <span class="eyebrow-line"></span> <span id="libraryCountLabel">171 cards</span></div><h1>Browse your<br /><em>word bank.</em></h1></div>
+              <div><div class="eyebrow">Your vocabulary <span class="eyebrow-line"></span> <span id="libraryCountLabel">723 cards</span></div><h1>Browse your<br /><em>word bank.</em></h1></div>
               <div class="browse-search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search German or English" aria-label="Search cards" /></div>
             </div>
             <div class="browse-toolbar">
               <div class="browse-selection-tools">
-                <span id="browseResultLabel">171 words</span>
+                <span id="browseResultLabel">723 words</span>
                 <span class="selection-summary" id="selectionSummary">Select cards to make a focused test</span>
                 <button class="toolbar-button" id="selectVisibleButton" type="button">Select visible</button>
                 <button class="toolbar-button" id="clearSelectionButton" type="button" disabled>Clear</button>
@@ -181,7 +181,12 @@
             <div class="browse-toolbar">
               <div class="browse-selection-tools">
                 <span id="bookmarkResultLabel">0 words</span>
-                <span class="selection-summary">Saved from practice</span>
+                <span class="selection-summary" id="bookmarkSelectionSummary">Select cards to make a focused test</span>
+                <button class="toolbar-button" id="selectVisibleBookmarksButton" type="button">Select visible</button>
+                <button class="toolbar-button" id="clearBookmarkSelectionButton" type="button" disabled>Clear</button>
+              </div>
+              <div class="browse-actions">
+                <button class="toolbar-button primary" id="testBookmarkedButton" type="button" disabled>Test selected <span class="selected-count" id="bookmarkSelectedCount">0</span></button>
               </div>
             </div>
             <div class="card-library" id="bookmarkLibrary"></div>
@@ -202,6 +207,6 @@
     </div>
 
     <div class="toast" id="toast" role="status"></div>
-    <script src="./app.js?v=20261126-3" type="module"></script>
+    <script src="./app.js?v=20261126-4" type="module"></script>
   </body>
 </html>
