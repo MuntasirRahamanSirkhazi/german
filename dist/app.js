@@ -24,11 +24,12 @@ const state = {
   repeatScheduled: new Set(),
   selectedCardIds: new Set(),
   bookmarkedCardIds: new Set(),
+  importantBookmarkedIds: new Set(),
   selectedBookmarkIds: new Set(),
   importantCards: [],
   importantLoading: false,
   importantLoadPromise: null,
-  importantFilter: "all",
+  importantFilter: "A2",
   selectedImportantIds: new Set(),
   activeTabId: "main",
   practiceTabs: [],
@@ -69,8 +70,25 @@ function saveBookmarks() {
   updateBookmarkCount();
 }
 
+function loadImportantBookmarks() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-important-bookmarks`) || "[]"));
+  } catch {
+    return new Set();
+  }
+}
+
+function saveImportantBookmarks() {
+  try {
+    localStorage.setItem(`karten-german-${state.deckKey}-important-bookmarks`, JSON.stringify([...state.importantBookmarkedIds]));
+  } catch {
+    // Important bookmarks still work for the current visit if storage is unavailable.
+  }
+  updateBookmarkCount();
+}
+
 function updateBookmarkCount() {
-  const count = state.bookmarkedCardIds.size;
+  const count = state.bookmarkedCardIds.size + state.importantBookmarkedIds.size;
   const navCount = $("#navBookmarkCount");
   const pageCount = $("#bookmarkCountLabel");
   if (navCount) navCount.textContent = String(count);
@@ -80,14 +98,7 @@ function updateBookmarkCount() {
 function updateBookmarkButton(card) {
   const button = $("#bookmarkButton");
   if (!button) return;
-  if (getActiveTab()?.type === "important") {
-    button.disabled = true;
-    button.classList.remove("active");
-    button.setAttribute("aria-pressed", "false");
-    button.innerHTML = `<span aria-hidden="true">✦</span><span>Important test</span>`;
-    return;
-  }
-  const bookmarked = Boolean(card && state.bookmarkedCardIds.has(card.id));
+  const bookmarked = Boolean(card && getBookmarkSetForCard(card).has(card.id));
   button.disabled = !card;
   button.classList.toggle("active", bookmarked);
   button.setAttribute("aria-pressed", String(bookmarked));
@@ -97,10 +108,12 @@ function updateBookmarkButton(card) {
 function toggleBookmark() {
   const card = state.session[state.sessionIndex];
   if (!card) return;
-  const bookmarked = state.bookmarkedCardIds.has(card.id);
-  if (bookmarked) state.bookmarkedCardIds.delete(card.id);
-  else state.bookmarkedCardIds.add(card.id);
-  saveBookmarks();
+  const bookmarkSet = getBookmarkSetForCard(card);
+  const bookmarked = bookmarkSet.has(card.id);
+  if (bookmarked) bookmarkSet.delete(card.id);
+  else bookmarkSet.add(card.id);
+  if (isImportantCard(card)) saveImportantBookmarks();
+  else saveBookmarks();
   updateBookmarkButton(card);
   if (!$("#bookmarksView")?.hidden) renderBookmarks();
   showToast(bookmarked ? "Bookmark removed" : "Card bookmarked");
@@ -119,8 +132,30 @@ function getCardNumber(card) {
   return Number(card?.number ?? card?.priority ?? 0);
 }
 
+function getImportantLevel() {
+  return state.deckKey === "b1" ? "B1" : "A2";
+}
+
+function getCurrentImportantCards() {
+  return state.importantCards.filter((card) => card.level === getImportantLevel());
+}
+
+function isImportantCard(card) {
+  return String(card?.id || "").startsWith("important-");
+}
+
+function getBookmarkSetForCard(card) {
+  return isImportantCard(card) ? state.importantBookmarkedIds : state.bookmarkedCardIds;
+}
+
+function getBookmarkPool() {
+  return [...state.cards, ...getCurrentImportantCards()];
+}
+
 function getCardPoolForTab(tab) {
-  return tab?.type === "important" ? state.importantCards : state.cards;
+  if (tab?.type === "important") return getCurrentImportantCards();
+  if (tab?.type === "bookmarks") return getBookmarkPool();
+  return state.cards;
 }
 
 function getTabCards(tab) {
@@ -183,13 +218,13 @@ function restoreSessionState() {
     const savedTabs = JSON.parse(localStorage.getItem(`karten-german-${state.deckKey}-tabs`) || "null");
     if (Array.isArray(savedTabs?.tabs) && savedTabs.tabs.length) {
       const savedFocused = savedTabs.tabs
-        .filter((tab) => tab.id !== "main" && ["selected", "important"].includes(tab.type))
+        .filter((tab) => tab.id !== "main" && ["selected", "important", "bookmarks"].includes(tab.type))
         .map((tab, index) => {
-          const type = tab.type === "important" ? "important" : "selected";
-          const pool = type === "important" ? state.importantCards : state.cards;
+          const type = ["important", "bookmarks"].includes(tab.type) ? tab.type : "selected";
+          const pool = getCardPoolForTab({ type });
           return {
           id: String(tab.id),
-          label: String(tab.label || `${type === "important" ? "Important" : "Selected"} test ${index + 1}`),
+          label: String(tab.label || `${type === "important" ? "Important" : type === "bookmarks" ? "Bookmarked" : "Selected"} test ${index + 1}`),
           type,
           cardIds: pool.filter((card) => (tab.cardIds || []).includes(card.id)).map((card) => card.id),
         }; })
@@ -243,6 +278,7 @@ function updateDeckUi() {
   $("#deckB1Count").textContent = `${DECKS.b1.count.toLocaleString()}`;
   $("#libraryCountLabel").textContent = `${state.cards.length.toLocaleString()} cards`;
   $("#navBrowseCount").textContent = state.cards.length.toLocaleString();
+  $("#navImportantCount").textContent = getCurrentImportantCards().length.toLocaleString();
   updateBookmarkCount();
   $$(".deck-option").forEach((button) => {
     const selected = button.dataset.deck === state.deckKey;
@@ -261,6 +297,8 @@ async function loadDeck(deckKey, notify = false) {
   state.selectedCardIds = new Set();
   state.selectedBookmarkIds = new Set();
   state.selectedImportantIds = new Set();
+  state.importantBookmarkedIds = loadImportantBookmarks();
+  state.importantFilter = getImportantLevel();
   state.practiceTabs = [];
   state.tabSessions = {};
   state.activeTabId = "main";
@@ -344,17 +382,17 @@ function startSelectedBookmarkTest() {
     showToast("Open the Study tab to create a new tab");
     return;
   }
-  const selectedCards = state.cards.filter((card) => state.selectedBookmarkIds.has(card.id) && state.bookmarkedCardIds.has(card.id));
+  const selectedCards = getBookmarkPool().filter((card) => state.selectedBookmarkIds.has(card.id) && getBookmarkSetForCard(card).has(card.id));
   if (!selectedCards.length) {
     showToast("Select at least one bookmarked card first");
     return;
   }
   saveSessionState();
-  const testNumber = state.practiceTabs.filter((tab) => tab.type === "selected").length + 1;
+  const testNumber = state.practiceTabs.filter((tab) => ["selected", "important", "bookmarks"].includes(tab.type)).length + 1;
   const tab = {
     id: `bookmark-test-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     label: `Bookmarked test ${testNumber}`,
-    type: "selected",
+    type: "bookmarks",
     cardIds: selectedCards.map((card) => card.id),
   };
   state.practiceTabs.push(tab);
@@ -372,13 +410,13 @@ function startImportantTest() {
     showToast("Open the Study tab to create a new tab");
     return;
   }
-  const selectedCards = state.importantCards.filter((card) => state.selectedImportantIds.has(card.id));
+  const selectedCards = getCurrentImportantCards().filter((card) => state.selectedImportantIds.has(card.id));
   if (!selectedCards.length) {
     showToast("Select at least one important card first");
     return;
   }
   saveSessionState();
-  const testNumber = state.practiceTabs.filter((tab) => ["selected", "important"].includes(tab.type)).length + 1;
+  const testNumber = state.practiceTabs.filter((tab) => ["selected", "important", "bookmarks"].includes(tab.type)).length + 1;
   const tab = {
     id: `important-test-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     label: `Important test ${testNumber}`,
@@ -429,7 +467,7 @@ function closeTab(tabId) {
 }
 
 function buildOptions(card) {
-  const optionPool = getActiveTab()?.type === "important" ? state.importantCards : state.cards;
+  const optionPool = getCardPoolForTab(getActiveTab());
   const otherMeanings = shuffle(optionPool.filter((item) => item.id !== card.id)).slice(0, 3).map((item) => item.english);
   return shuffle([card.english, ...otherMeanings]);
 }
@@ -676,23 +714,30 @@ function renderLibrary() {
   updateSelectionSummary();
 }
 
-function renderBookmarks() {
+function getBookmarkedCardsForCurrentDeck() {
+  return getBookmarkPool().filter((card) => getBookmarkSetForCard(card).has(card.id));
+}
+
+function getVisibleBookmarkCards() {
   const query = $("#bookmarkSearchInput")?.value.trim().toLowerCase() || "";
-  const visible = state.cards
-    .filter((card) => state.bookmarkedCardIds.has(card.id))
-    .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
-    .sort((a, b) => state.sortAscending ? a.number - b.number : b.number - a.number);
+  return getBookmarkedCardsForCurrentDeck()
+    .filter((card) => `${card.german} ${card.english} ${card.forms} ${card.sentenceDe}`.toLowerCase().includes(query))
+    .sort((a, b) => state.sortAscending ? getCardNumber(a) - getCardNumber(b) : getCardNumber(b) - getCardNumber(a));
+}
+
+function renderBookmarks() {
+  const visible = getVisibleBookmarkCards();
   $("#bookmarkResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
   $("#bookmarkLibrary").innerHTML = visible.map((card) => `
     <article class="library-card bookmark-library-card ${state.selectedBookmarkIds.has(card.id) ? "selected" : ""}">
       <label class="library-select" title="Select ${escapeHtml(card.german)}">
         <input class="card-select bookmark-select" type="checkbox" data-bookmark-id="${escapeHtml(card.id)}" ${state.selectedBookmarkIds.has(card.id) ? "checked" : ""} aria-label="Select ${escapeHtml(card.german)} bookmark" />
-        <span class="library-index">${String(card.number).padStart(3, "0")}</span>
+        <span class="library-index">${String(getCardNumber(card)).padStart(3, "0")}</span>
       </label>
       <div><div class="library-word">${escapeHtml(card.german)}</div><div class="library-meaning">${escapeHtml(card.english)}</div></div>
       <div class="library-card-meta">
-        <div class="library-rank">${card.rank ? `#${escapeHtml(card.rank)}` : "A2"}</div>
-        <button class="remove-bookmark-button" data-bookmark-id="${escapeHtml(card.id)}" type="button" aria-label="Remove ${escapeHtml(card.german)} bookmark">Remove</button>
+        <div class="library-rank">${isImportantCard(card) ? `${escapeHtml(card.level)} · ${escapeHtml(card.partOfSpeech || "Core")}` : (card.rank ? `#${escapeHtml(card.rank)}` : getImportantLevel())}</div>
+        <button class="remove-bookmark-button" data-bookmark-id="${escapeHtml(card.id)}" data-bookmark-source="${isImportantCard(card) ? "important" : "deck"}" type="button" aria-label="Remove ${escapeHtml(card.german)} bookmark">Remove</button>
       </div>
     </article>
   `).join("") || `<div class="empty-library">No bookmarked cards yet. Use Bookmark while practicing.</div>`;
@@ -704,9 +749,11 @@ function renderBookmarks() {
     updateBookmarkSelectionSummary();
   }));
   $$(".remove-bookmark-button").forEach((button) => button.addEventListener("click", () => {
-    state.bookmarkedCardIds.delete(button.dataset.bookmarkId);
+    const bookmarkSet = button.dataset.bookmarkSource === "important" ? state.importantBookmarkedIds : state.bookmarkedCardIds;
+    bookmarkSet.delete(button.dataset.bookmarkId);
     state.selectedBookmarkIds.delete(button.dataset.bookmarkId);
-    saveBookmarks();
+    if (button.dataset.bookmarkSource === "important") saveImportantBookmarks();
+    else saveBookmarks();
     renderBookmarks();
     updateBookmarkButton(state.session[state.sessionIndex]);
     showToast("Bookmark removed");
@@ -716,7 +763,7 @@ function renderBookmarks() {
 }
 
 function updateBookmarkSelectionSummary() {
-  const selectedCount = [...state.selectedBookmarkIds].filter((id) => state.bookmarkedCardIds.has(id)).length;
+  const selectedCount = [...state.selectedBookmarkIds].filter((id) => getBookmarkedCardsForCurrentDeck().some((card) => card.id === id)).length;
   const canCreateTab = getActiveTab()?.type === "main";
   const summary = $("#bookmarkSelectionSummary");
   const selectedLabel = $("#bookmarkSelectedCount");
@@ -724,7 +771,7 @@ function updateBookmarkSelectionSummary() {
   const clearButton = $("#clearBookmarkSelectionButton");
   const testButton = $("#testBookmarkedButton");
   if (selectedLabel) selectedLabel.textContent = String(selectedCount);
-  if (selectVisibleButton) selectVisibleButton.disabled = !canCreateTab || !state.bookmarkedCardIds.size;
+  if (selectVisibleButton) selectVisibleButton.disabled = !canCreateTab || !getBookmarkedCardsForCurrentDeck().length;
   if (clearButton) clearButton.disabled = selectedCount === 0;
   if (testButton) testButton.disabled = !canCreateTab || selectedCount === 0;
   if (summary) {
@@ -739,11 +786,7 @@ function selectVisibleBookmarks() {
     showToast("Open the Study tab to create a new tab");
     return;
   }
-  const query = $("#bookmarkSearchInput")?.value.trim().toLowerCase() || "";
-  state.cards
-    .filter((card) => state.bookmarkedCardIds.has(card.id))
-    .filter((card) => `${card.german} ${card.english} ${card.forms}`.toLowerCase().includes(query))
-    .forEach((card) => state.selectedBookmarkIds.add(card.id));
+  getVisibleBookmarkCards().forEach((card) => state.selectedBookmarkIds.add(card.id));
   renderBookmarks();
 }
 
@@ -759,11 +802,11 @@ function renderPracticeTab() {
   state.practiceTabs = state.practiceTabs
     .map((tab, index) => ({
       id: String(tab.id || (index === 0 ? "main" : `test-${index}`)),
-      label: String(tab.label || (index === 0 ? "Study" : `${tab.type === "important" ? "Important" : "Selected"} test ${index}`)),
-      type: index === 0 ? "main" : tab.type === "important" ? "important" : "selected",
+      label: String(tab.label || (index === 0 ? "Study" : `${tab.type === "important" ? "Important" : tab.type === "bookmarks" ? "Bookmarked" : "Selected"} test ${index}`)),
+      type: index === 0 ? "main" : ["important", "bookmarks"].includes(tab.type) ? tab.type : "selected",
       cardIds: Array.isArray(tab.cardIds) ? tab.cardIds : null,
     }))
-    .filter((tab, index) => index === 0 || ["selected", "important"].includes(tab.type));
+    .filter((tab, index) => index === 0 || ["selected", "important", "bookmarks"].includes(tab.type));
   if (!state.practiceTabs.some((tab) => tab.id === state.activeTabId)) state.activeTabId = "main";
   strip.innerHTML = state.practiceTabs.map((tab) => {
     const active = tab.id === state.activeTabId;
@@ -851,23 +894,26 @@ function renderImportant() {
   }
   if (!state.importantCards.length) return;
 
+  const level = getImportantLevel();
+  state.importantFilter = level;
+  const levelCards = getCurrentImportantCards();
   const query = $("#importantSearchInput")?.value.trim().toLowerCase() || "";
-  const visible = state.importantCards.filter((card) => {
-    const matchesLevel = state.importantFilter === "all" || card.level === state.importantFilter;
+  const visible = levelCards.filter((card) => {
+    const matchesLevel = card.level === level;
     const matchesQuery = `${card.german} ${card.english} ${card.forms} ${card.sentenceDe}`.toLowerCase().includes(query);
     return matchesLevel && matchesQuery;
   });
-  const allCount = state.importantCards.length;
+  const allCount = levelCards.length;
   const a2Count = state.importantCards.filter((card) => card.level === "A2").length;
   const b1Count = state.importantCards.filter((card) => card.level === "B1").length;
   $("#importantResultLabel").textContent = `${visible.length} ${visible.length === 1 ? "word" : "words"}`;
-  $("#importantCountLabel").textContent = `${allCount} core cards`;
-  $("#importantAllCount").textContent = String(allCount);
-  $("#importantA2Count").textContent = String(a2Count);
-  $("#importantB1Count").textContent = String(b1Count);
+  $("#importantCountLabel").textContent = `${allCount} ${level} core cards`;
+  if ($("#importantAllCount")) $("#importantAllCount").textContent = String(allCount);
+  if ($("#importantA2Count")) $("#importantA2Count").textContent = String(a2Count);
+  if ($("#importantB1Count")) $("#importantB1Count").textContent = String(b1Count);
   $("#navImportantCount").textContent = String(allCount);
   $$(".important-filter").forEach((button) => {
-    const active = button.dataset.importantFilter === state.importantFilter;
+    const active = button.dataset.importantFilter === level;
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
   });
@@ -881,6 +927,7 @@ function renderImportant() {
         <div class="library-word">${escapeHtml(card.german)}</div>
         <div class="library-meaning">${escapeHtml(card.english)}</div>
         <div class="important-example"><span>${escapeHtml(card.sentenceDe || "Practice this word in context.")}</span>${card.sentenceEn ? `<small>${escapeHtml(card.sentenceEn)}</small>` : ""}</div>
+        <button class="important-bookmark-button${state.importantBookmarkedIds.has(card.id) ? " active" : ""}" data-important-bookmark-id="${escapeHtml(card.id)}" type="button" aria-label="${state.importantBookmarkedIds.has(card.id) ? "Remove bookmark from" : "Bookmark"} ${escapeHtml(card.german)}" aria-pressed="${state.importantBookmarkedIds.has(card.id)}">${state.importantBookmarkedIds.has(card.id) ? "&#9733;" : "&#9734;"} <span>${state.importantBookmarkedIds.has(card.id) ? "Bookmarked" : "Bookmark"}</span></button>
       </div>
       <div class="library-card-meta"><div class="library-rank">${escapeHtml((card.forms || "").split(" · ")[0] || "Core")}</div></div>
     </article>
@@ -892,11 +939,21 @@ function renderImportant() {
     event.target.closest(".library-card")?.classList.toggle("selected", event.target.checked);
     updateImportantSelectionSummary();
   }));
+  library.querySelectorAll(".important-bookmark-button").forEach((button) => button.addEventListener("click", () => {
+    const cardId = button.dataset.importantBookmarkId;
+    const bookmarked = state.importantBookmarkedIds.has(cardId);
+    if (bookmarked) state.importantBookmarkedIds.delete(cardId);
+    else state.importantBookmarkedIds.add(cardId);
+    saveImportantBookmarks();
+    renderImportant();
+    if (!$("#bookmarksView")?.hidden) renderBookmarks();
+    showToast(bookmarked ? "Bookmark removed" : "Important word bookmarked");
+  }));
   updateImportantSelectionSummary();
 }
 
 function updateImportantSelectionSummary() {
-  const selectedCount = [...state.selectedImportantIds].filter((id) => state.importantCards.some((card) => card.id === id)).length;
+  const selectedCount = [...state.selectedImportantIds].filter((id) => getCurrentImportantCards().some((card) => card.id === id)).length;
   const canCreateTab = getActiveTab()?.type === "main";
   const summary = $("#importantSelectionSummary");
   const selectedLabel = $("#importantSelectedCount");
@@ -904,7 +961,7 @@ function updateImportantSelectionSummary() {
   const clearButton = $("#clearImportantSelectionButton");
   const testButton = $("#testImportantButton");
   if (selectedLabel) selectedLabel.textContent = String(selectedCount);
-  if (selectVisibleButton) selectVisibleButton.disabled = !canCreateTab || !state.importantCards.length;
+  if (selectVisibleButton) selectVisibleButton.disabled = !canCreateTab || !getCurrentImportantCards().length;
   if (clearButton) clearButton.disabled = selectedCount === 0;
   if (testButton) testButton.disabled = !canCreateTab || selectedCount === 0;
   if (summary) {
@@ -920,8 +977,7 @@ function selectVisibleImportant() {
     return;
   }
   const query = $("#importantSearchInput")?.value.trim().toLowerCase() || "";
-  state.importantCards
-    .filter((card) => state.importantFilter === "all" || card.level === state.importantFilter)
+  getCurrentImportantCards()
     .filter((card) => `${card.german} ${card.english} ${card.forms} ${card.sentenceDe}`.toLowerCase().includes(query))
     .forEach((card) => state.selectedImportantIds.add(card.id));
   renderImportant();
@@ -992,9 +1048,14 @@ function bindBrowseControls() {
   $("#selectVisibleImportantButton")?.addEventListener("click", selectVisibleImportant);
   $("#clearImportantSelectionButton")?.addEventListener("click", clearSelectedImportant);
   $("#testImportantButton")?.addEventListener("click", startImportantTest);
-  $$(".important-filter").forEach((button) => button.addEventListener("click", () => {
-    state.importantFilter = button.dataset.importantFilter;
-    renderImportant();
+  $$(".important-filter").forEach((button) => button.addEventListener("click", async () => {
+    const deckKey = button.dataset.importantFilter.toLowerCase();
+    if (deckKey === state.deckKey) {
+      renderImportant();
+      return;
+    }
+    await selectDeck(deckKey);
+    showView("important");
   }));
   $("#sortButton")?.addEventListener("click", () => {
     state.sortAscending = !state.sortAscending;

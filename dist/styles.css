@@ -274,6 +274,8 @@ kbd { display: inline-grid; place-items: center; width: 18px; height: 18px; bord
 .important-card-content { min-width: 0; }
 .important-example { display: grid; gap: 4px; margin-top: 10px; color: #625d56; font-family: var(--display); font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
 .important-example small { color: #898177; font-family: var(--mono); font-size: 9px; line-height: 1.45; overflow-wrap: anywhere; }
+.important-bookmark-button { display: inline-flex; align-items: center; gap: 5px; width: fit-content; margin-top: 10px; padding: 5px 8px; border: 1px solid #ddd3c8; border-radius: 5px; color: #8c8277; background: transparent; font-family: var(--mono); font-size: 9px; cursor: pointer; }
+.important-bookmark-button:hover, .important-bookmark-button.active { border-color: var(--coral); color: var(--coral-dark); background: var(--coral-soft); }
 
 .stats-grid { display: grid; grid-template-columns: 1.25fr .8fr; gap: 14px; margin-top: 56px; }
 .stat-feature, .stat-tile, .stats-history { min-height: 195px; padding: 24px; border: 1px solid #ded7ca; border-radius: 13px; background: rgba(255,253,250,.62); }
@@ -493,3 +495,5 @@ kbd { border-color: #414650; color: #a9adb5; background: #252931; }
 .important-card-level span { color: #8f949e; }
 .important-example { color: #d5d3cf; }
 .important-example small { color: #a3a6af; }
+.important-bookmark-button { border-color: #3b404a; color: #b6b8be; }
+.important-bookmark-button:hover, .important-bookmark-button.active { border-color: var(--coral); color: #ffd0c2; background: var(--coral-soft); }
