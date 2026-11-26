@@ -59,6 +59,7 @@
             <div class="deck-mini-topline"><span class="live-dot"></span> Active deck</div>
             <div class="deck-mini-title" id="activeDeckTitle">German A2 vocabulary</div>
             <div class="deck-mini-meta"><span id="miniLearned">0</span> learned <span class="bullet">·</span> <span id="miniAccuracy">—</span> accuracy</div>
+            <div class="active-people"><span class="active-people-dot"></span><span><strong id="activePeopleCount">1</strong> active learner</span></div>
           </div>
           <button class="side-link" id="resetProgressButton" type="button"><span>↺</span> Reset progress</button>
         </div>
@@ -92,12 +93,6 @@
 
             <div class="study-grid">
               <div class="study-main">
-                <div class="progress-row">
-                  <div class="progress-copy"><span class="progress-kicker">Session progress</span><strong><span id="progressCurrent">1</span> <span class="progress-slash">/</span> <span id="progressTotal">171</span></strong></div>
-                  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-                  <div class="progress-percent" id="progressPercent">0%</div>
-                </div>
-
                 <article class="flashcard" id="flashcard">
                   <div class="card-topline"><span class="tag">GERMAN → ENGLISH</span><button class="card-menu" type="button" aria-label="Card options">•••</button></div>
                   <div class="card-body">
@@ -126,6 +121,12 @@
                     </div>
                   </div>
                 </article>
+
+                <div class="progress-row">
+                  <div class="progress-copy"><span class="progress-kicker">Session progress</span><strong><span id="progressCurrent">1</span> <span class="progress-slash">/</span> <span id="progressTotal">171</span></strong></div>
+                  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                  <div class="progress-percent" id="progressPercent">0%</div>
+                </div>
 
                 <div class="study-footer">
                   <div class="tip"><span class="tip-icon">✧</span><span><strong>Keep going.</strong> You’re building the recall that sticks.</span></div>
@@ -182,6 +183,6 @@
     </div>
 
     <div class="toast" id="toast" role="status"></div>
-    <script src="./app.js?v=20261125-1" type="module"></script>
+    <script src="./app.js?v=20261126-1" type="module"></script>
   </body>
 </html>
